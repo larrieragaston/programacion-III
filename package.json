@@ -1,0 +1,10 @@
+{
+  "name": "programacion-III-material",
+  "private": true,
+  "scripts": {
+    "dev": "bash dev.sh"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
