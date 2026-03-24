@@ -1,5 +1,5 @@
 ---
-theme: default
+theme: bricks
 title: Programación III - Introducción
 info: |
   Presentación introductoria de la materia Programación III.
@@ -8,10 +8,6 @@ author: Gastón Larriera
 keywords: programación funcional, INSPT, UTN
 transition: slide-left
 mdc: true
----
-
----
-layout: center
 ---
 
 # Programación III
@@ -24,18 +20,12 @@ INSPT - UTN
 layout: center
 ---
 
-# Presentación personal
-
----
-layout: default
----
-
 # Profesor: Gastón A. Larriera
 
 - Técnico Superior en Informática
 - Profesor en Disciplinas Industriales
 - Ingeniero en Informática
-- Software Engineer (MERCADOLIBRE)
+- Software Engineer ([MercadoLibre](https://www.mercadolibre.com.ar))
 
 ---
 layout: default
@@ -63,11 +53,22 @@ layout: default
 1. **Cálculo Lambda**
 2. **Clojure**
 
+<div class="flex gap-6 items-center justify-center mt-8">
+  <img src="/logos/lambda.svg" alt="Lambda" class="h-12" />
+  <img src="/logos/clojure.svg" alt="Clojure" class="h-12" />
+  <img src="/logos/lisp.svg" alt="Lisp" class="h-12" />
+  <img src="/logos/haskell.svg" alt="Haskell" class="h-12" />
+  <img src="/logos/scala.svg" alt="Scala" class="h-12" />
+</div>
+
 ---
 layout: default
 ---
 
 # Segunda parte
+
+<div class="grid grid-cols-2 gap-4">
+<div>
 
 1. **Programación Web FullStack**
    1. Mongo
@@ -80,11 +81,17 @@ layout: default
 5. **HTML**
 6. **CSS**
 
----
-layout: center
----
-
-# Condiciones de aprobación
+</div>
+<div class="flex flex-wrap gap-4 items-center justify-center content-center">
+  <img src="/logos/mongodb.svg" alt="MongoDB" class="h-10" />
+  <img src="/logos/express.svg" alt="Express" class="h-10" />
+  <img src="/logos/react.svg" alt="React" class="h-10" />
+  <img src="/logos/nodejs.svg" alt="Node.js" class="h-10" />
+  <img src="/logos/javascript.svg" alt="JavaScript" class="h-10" />
+  <img src="/logos/html5.svg" alt="HTML5" class="h-10" />
+  <img src="/logos/css3.svg" alt="CSS3" class="h-10" />
+</div>
+</div>
 
 ---
 layout: two-cols
@@ -94,7 +101,9 @@ layout: two-cols
 
 ::left::
 
-## Regularidad
+<div class="pr-4">
+
+### Regularidad
 
 - 75% de asistencia
 - 1er Parcial aprobado (6 o más)
@@ -103,24 +112,24 @@ layout: two-cols
 
 **Final:** Proyecto web full stack JS - MERN (100%)
 
+</div>
+
 ::right::
 
-## Promoción
+<div class="pl-4">
+
+### Promoción
 
 - 1er Parcial aprobado (8 o más)
 - Proyecto web full stack JS (100%)
+
+</div>
 
 ---
 layout: center
 ---
 
 # Vías de comunicación
-
----
-layout: center
----
-
-# Contacto
 
 <div class="grid grid-cols-2 gap-12 mt-8">
 <div class="text-left">
@@ -132,7 +141,7 @@ gaston.larriera@inspt.utn.edu.ar
 <div class="text-left">
 
 ### Aula virtual
-Programación III - 3.603
+[Programación III - 3.603](https://inspt.cvg.utn.edu.ar/course/view.php?id=2750)
 
 </div>
 </div>
@@ -185,4 +194,8 @@ System.out.println("Has color red?: " + colors.contains("red"));
 
 ### ¿Cuál es el problema?
 
-<!-- TODO: acá podés expandir la reflexión sobre imperativo vs declarativo -->
+<v-click>
+
+<!-- TODO: agregar problemas que resuelve la programación funcional -->
+
+</v-click>
