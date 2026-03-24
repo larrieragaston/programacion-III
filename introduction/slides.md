@@ -53,12 +53,12 @@ layout: default
 1. **Cálculo Lambda**
 2. **Clojure**
 
-<div class="flex gap-6 items-center justify-center mt-8">
-  <img src="/logos/lambda.svg" alt="Lambda" class="h-12" />
-  <img src="/logos/clojure.svg" alt="Clojure" class="h-12" />
-  <img src="/logos/lisp.svg" alt="Lisp" class="h-12" />
-  <img src="/logos/haskell.svg" alt="Haskell" class="h-12" />
-  <img src="/logos/scala.svg" alt="Scala" class="h-12" />
+<div class="relative w-full h-48 mt-4">
+  <img src="/logos/lambda.svg" alt="Lambda" class="absolute h-16" style="top: 10%; left: 5%;" />
+  <img src="/logos/clojure.svg" alt="Clojure" class="absolute h-14" style="top: 5%; left: 35%;" />
+  <img src="/logos/lisp.svg" alt="Lisp" class="absolute h-14" style="top: 50%; left: 55%;" />
+  <img src="/logos/haskell.svg" alt="Haskell" class="absolute h-12" style="top: 15%; left: 72%;" />
+  <img src="/logos/scala.svg" alt="Scala" class="absolute h-14" style="top: 55%; left: 15%;" />
 </div>
 
 ---
@@ -82,14 +82,14 @@ layout: default
 6. **CSS**
 
 </div>
-<div class="flex flex-wrap gap-4 items-center justify-center content-center">
-  <img src="/logos/mongodb.svg" alt="MongoDB" class="h-10" />
-  <img src="/logos/express.svg" alt="Express" class="h-10" />
-  <img src="/logos/react.svg" alt="React" class="h-10" />
-  <img src="/logos/nodejs.svg" alt="Node.js" class="h-10" />
-  <img src="/logos/javascript.svg" alt="JavaScript" class="h-10" />
-  <img src="/logos/html5.svg" alt="HTML5" class="h-10" />
-  <img src="/logos/css3.svg" alt="CSS3" class="h-10" />
+<div class="relative h-64">
+  <img src="/logos/mongodb.svg" alt="MongoDB" class="absolute h-16" style="top: 2%; left: 10%;" />
+  <img src="/logos/express.svg" alt="Express" class="absolute h-14" style="top: 8%; left: 60%;" />
+  <img src="/logos/react.svg" alt="React" class="absolute h-16" style="top: 32%; left: 35%;" />
+  <img src="/logos/nodejs.svg" alt="Node.js" class="absolute h-16" style="top: 28%; left: 75%;" />
+  <img src="/logos/javascript.svg" alt="JavaScript" class="absolute h-14" style="top: 58%; left: 15%;" />
+  <img src="/logos/html5.svg" alt="HTML5" class="absolute h-16" style="top: 62%; left: 55%;" />
+  <img src="/logos/css3.svg" alt="CSS3" class="absolute h-14" style="top: 82%; left: 35%;" />
 </div>
 </div>
 
