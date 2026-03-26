@@ -1,0 +1,13 @@
+{
+  "name": "programacion-III-fp-backus",
+  "private": true,
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build --base /programacion-III-material/fp-backus/",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@slidev/cli": "^52.14.1",
+    "@slidev/theme-bricks": "^0.25.0"
+  }
+}

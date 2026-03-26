@@ -77,6 +77,20 @@
     .card-content strong { display: block; font-size: 1rem; }
     .card-content span { font-size: 0.85rem; color: #64748b; }
 
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      vertical-align: middle;
+      margin-left: 0.4rem;
+    }
+    .badge-deprecated { background: #fef2f2; color: #dc2626; }
+    .badge-wip { background: #fffbeb; color: #d97706; }
+
     footer {
       margin-top: auto;
       padding: 2rem;
@@ -108,8 +122,26 @@
         <a href="./lambda-calculus/" data-dev-port="3032">
           <div class="card-number">2</div>
           <div class="card-content">
-            <strong>Cálculo Lambda (In progress)</strong>
+            <strong>Cálculo Lambda <span class="badge badge-wip">In progress</span></strong>
             <span>Fundamentos, reglas de conversión, estrategias de reducción, funciones lógicas y numéricas</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="./fp-backus/" data-dev-port="3033">
+          <div class="card-number">3</div>
+          <div class="card-content">
+            <strong>FP (Backus) <span class="badge badge-deprecated">Deprecated</span></strong>
+            <span>Lenguaje FP de John Backus: objetos, funciones, formas funcionales y definiciones</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="./clojure/" data-dev-port="3034">
+          <div class="card-number">4</div>
+          <div class="card-content">
+            <strong>Clojure <span class="badge badge-wip">In progress</span></strong>
+            <span>Fundamentos, datos, colecciones, evaluación de expresiones, formas especiales</span>
           </div>
         </a>
       </li>
