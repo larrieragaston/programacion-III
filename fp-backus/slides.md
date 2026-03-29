@@ -1,6 +1,6 @@
 ---
 theme: bricks
-title: "Programación III - FP (Backus) \U0001F6AB Deprecated"
+title: Programación III - FP Backus (Deprecated)
 info: |
   Lenguaje FP de John Backus - Programación III
   INSPT - UTN
@@ -10,33 +10,33 @@ transition: slide-left
 mdc: true
 ---
 
-# FP
+# FP — John Backus
 
-John Backus
+Unidad 2 — Programación III
 
----
-layout: center
----
-
-# Ideador
+<div class="abs-b mb-8 text-sm opacity-60">
+INSPT - UTN · Ciclo Lectivo 2026 · <span class="text-red-500 font-semibold">Deprecated</span>
+</div>
 
 ---
-layout: center
+layout: image-right
+image: /images/john-backus.jpg
 ---
 
 # John Warner Backus
 
-<div class="mt-6 text-left max-w-lg mx-auto">
+Científico de la computación estadounidense.
 
-- Científico de la Computación
-- IBM
-- FORTRAN
-- Programación funcional — FP
-- Premio Turing (1977)
+<div class="mt-4">
+
+- Trabajó en **IBM**
+- Creador de **FORTRAN** (1957)
+- Diseñó el sistema de programación funcional **FP** (1977)
+- **Premio Turing** (1977)
 
 </div>
 
-<div class="mt-4 text-sm italic opacity-80 max-w-lg mx-auto">
+<div class="mt-4 text-sm italic opacity-80">
 
 "Can programming be liberated from the von Neumann style?: a functional style and its algebra of programs"
 
@@ -52,28 +52,20 @@ layout: center
 layout: default
 ---
 
-# Sistema
+# Sistema FP
+
+El sistema FP es un lenguaje de programación funcional basado en la **definición y composición de funciones** sobre objetos.
 
 - Programación funcional
 - Definición de funciones
 - Átomos
 - Aplicaciones
 
----
-layout: default
----
+<div class="mt-4">
 
-# Programa funcional
+Un programa funcional es una **expresión** compuesta por un algoritmo y sus entradas, cuyo resultado se obtiene evaluando la expresión.
 
-- Expresión
-  - Algoritmo
-  - Entradas
-
----
-layout: center
----
-
-# Elementos
+</div>
 
 ---
 layout: default
@@ -88,16 +80,12 @@ layout: default
 - **Conjunto D** de definiciones de funciones
 
 ---
-layout: center
+layout: default
 ---
 
 # Objetos
 
----
-layout: default
----
-
-# Un objeto puede ser...
+Un objeto puede ser:
 
 - Un **átomo** (letras, cadenas, números), menos las palabras reservadas
 - Una **secuencia** de objetos `<x1, x2, ..., xn>`
@@ -117,7 +105,7 @@ layout: default
 layout: default
 ---
 
-# Ejemplos
+# Ejemplos — Objetos
 
 ```
 ⊥
@@ -130,24 +118,16 @@ PEPE
 ```
 
 ---
-layout: center
+layout: default
 ---
 
 # Aplicación
 
----
-layout: default
----
-
-# Definición
-
 Si **f** es una función y **x** es un objeto, entonces `f : x` es una **aplicación** y representa el objeto que resulta cuando se le aplica **f** a **x**.
 
----
-layout: default
----
+<v-click>
 
-# Ejemplos
+**Ejemplos:**
 
 ```
 -  : <10, 7>                  resulta 3
@@ -156,17 +136,13 @@ layout: default
 tl : <1, 2, 3>                resulta <2, 3>
 ```
 
----
-layout: center
----
-
-# Funciones (F)
+</v-click>
 
 ---
 layout: default
 ---
 
-# Funciones
+# Funciones (F)
 
 Todas las funciones **f** del conjunto F convierten objetos en otros objetos, y preservan el valor indefinido (`f : ⊥ = ⊥`).
 
@@ -324,8 +300,18 @@ $$f \circ g : x \equiv f : (g : x)$$
 **Ejemplo:**
 
 ```
-1 o tl : <A, B, C>    resulta B
+1 o tl : <A, B, C>
 ```
+
+<v-click>
+
+```
+≡ 1 : (tl : <A, B, C>)
+≡ 1 : <B, C>
+resulta B
+```
+
+</v-click>
 
 ---
 layout: default
@@ -338,8 +324,17 @@ $$[f_1, \ldots, f_n] : x \equiv \langle f_1 : x,\ f_2 : x,\ \ldots,\ f_n : x \ra
 **Ejemplo:**
 
 ```
-[tl, tlr] : <A, B, C>    resulta <<B, C>, <A, B>>
+[tl, tlr] : <A, B, C>
 ```
+
+<v-click>
+
+```
+≡ <tl : <A, B, C>, tlr : <A, B, C>>
+≡ <<B, C>, <A, B>>
+```
+
+</v-click>
 
 ---
 layout: default
@@ -352,8 +347,18 @@ $$(p \to f;\ g) : x \equiv (p : x) = T \to f : x\ ;\ (p : x) = F \to g : x\ ;\ \
 **Ejemplo:**
 
 ```
-(not o atom → 1; id) : <A, B, C>    resulta A
+(not o atom → 1; id) : <A, B, C>
 ```
+
+<v-click>
+
+```
+not o atom : <A, B, C> = not : (atom : <A, B, C>) = not : F = T
+→ 1 : <A, B, C>
+resulta A
+```
+
+</v-click>
 
 ---
 layout: default
@@ -366,8 +371,19 @@ $$\overline{X} : y \equiv y = \bot \to \bot\ ;\ X$$
 **Ejemplo:**
 
 ```
-+ o [id, 1̄] : 3    resulta 4
++ o [id, 1̄] : 3
 ```
+
+<v-click>
+
+```
+≡ + : ([id, 1̄] : 3)
+≡ + : <id : 3, 1̄ : 3>
+≡ + : <3, 1>
+resulta 4
+```
+
+</v-click>
 
 ---
 layout: default
@@ -381,10 +397,25 @@ $$/f : x \equiv x = \langle x_1 \rangle \to x_1\ ;\ x = \langle x_1, \ldots, x_n
 
 ```
 /+ : <1, 2, 3>
-  ≡ + : <1, /+ : <2, 3>>
-  ≡ + : <1, + : <2, 3>>
-  resulta 6
 ```
+
+<v-click>
+
+```
+≡ + : <1, /+ : <2, 3>>
+```
+
+</v-click>
+
+<v-click>
+
+```
+≡ + : <1, + : <2, 3>>
+≡ + : <1, 5>
+resulta 6
+```
+
+</v-click>
 
 ---
 layout: default
@@ -397,8 +428,17 @@ $$\alpha f : x \equiv x = \emptyset \to \emptyset\ ;\ x = \langle x_1, \ldots, x
 **Ejemplo:**
 
 ```
-α 1 : <<A, B, C>, <4, 5, 6>>    resulta <A, 4>
+α 1 : <<A, B, C>, <4, 5, 6>>
 ```
+
+<v-click>
+
+```
+≡ <1 : <A, B, C>, 1 : <4, 5, 6>>
+≡ <A, 4>
+```
+
+</v-click>
 
 ---
 layout: default
@@ -411,8 +451,17 @@ $$(bu\ f\ x) : y \equiv f : \langle x, y \rangle$$
 **Ejemplo:**
 
 ```
-(bu + 1) : 2  ≡  + : <1, 2>    resulta 3
+(bu + 1) : 2
 ```
+
+<v-click>
+
+```
+≡ + : <1, 2>
+resulta 3
+```
+
+</v-click>
 
 ---
 layout: default
@@ -426,8 +475,22 @@ $$(while\ p\ f) : x \equiv p : x = F \to x\ ;\ p : x = T \to (while\ p\ f) : (f 
 
 ```
 (while (not o null o tl) tl) : <A, B, C, D, E, F, G, H>
-  resulta <H>
 ```
+
+<v-click>
+
+```
+not o null o tl : <A, B, C, D, E, F, G, H> = T
+→ (while ...) : (tl : <A, B, C, D, E, F, G, H>)
+→ (while ...) : <B, C, D, E, F, G, H>
+→ (while ...) : <C, D, E, F, G, H>
+→ ... → (while ...) : <G, H>
+→ (while ...) : <H>
+not o null o tl : <H> = not : (null : ∅) = not : T = F
+resulta <H>
+```
+
+</v-click>
 
 ---
 layout: center
@@ -470,12 +533,25 @@ Definición más funcional:
 Def fact ≡ eq0 → 1̄; (/×) o iota
 ```
 
-**Ejemplo:**
+<v-click>
+
+**Expansión de ! : 4**
 
 ```
-! : 4       resulta 24
-fact : 4    resulta 24
+! : 4
+≡ × o [id, ! o sub1] : 4          // eq0 : 4 = F
+≡ × : <4, ! : 3>
+≡ × : <4, × : <3, ! : 2>>
+≡ × : <4, × : <3, × : <2, ! : 1>>>
+≡ × : <4, × : <3, × : <2, × : <1, ! : 0>>>>
+≡ × : <4, × : <3, × : <2, × : <1, 1>>>>   // eq0 : 0 = T → 1̄
+≡ × : <4, × : <3, × : <2, 1>>>
+≡ × : <4, × : <3, 2>>
+≡ × : <4, 6>
+resulta 24
 ```
+
+</v-click>
 
 ---
 layout: default
@@ -487,11 +563,37 @@ layout: default
 Def IP ≡ (/+) o (α×) o trans
 ```
 
-**Ejemplo:**
+**Ejemplo: IP : <<1, 2, 3>, <4, 5, 6>>**
+
+<v-click>
 
 ```
-IP : <<1, 2, 3>, <4, 5, 6>>    resulta 32
+trans : <<1, 2, 3>, <4, 5, 6>>
+  = <<1, 4>, <2, 5>, <3, 6>>
 ```
+
+</v-click>
+
+<v-click>
+
+```
+(α×) : <<1, 4>, <2, 5>, <3, 6>>
+  = <× : <1, 4>, × : <2, 5>, × : <3, 6>>
+  = <4, 10, 18>
+```
+
+</v-click>
+
+<v-click>
+
+```
+(/+) : <4, 10, 18>
+  = + : <4, + : <10, 18>>
+  = + : <4, 28>
+  resulta 32
+```
+
+</v-click>
 
 ---
 layout: default
@@ -511,6 +613,22 @@ MM : <<<1, 2, 3>, <4, 5, 6>, <7, 8, 9>>,
 
 resulta <<1, 4, 1>, <4, 10, 4>, <7, 16, 7>>
 ```
+
+---
+layout: center
+---
+
+# Resumen
+
+<div class="text-left max-w-lg mx-auto mt-4">
+
+- **Objetos**: átomos, secuencias e indefinido
+- **Aplicación**: `f : x` como operación fundamental
+- **Funciones primitivas**: selectores, predicados, aritméticas, lógicas, manipulación de secuencias
+- **Formas funcionales**: composición, construcción, condición, constante, inserción, α, bu, while
+- **Definición de funciones**: iota, factorial, producto interno, producto matricial
+
+</div>
 
 ---
 layout: center
