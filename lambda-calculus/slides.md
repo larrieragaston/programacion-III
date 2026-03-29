@@ -1,6 +1,7 @@
 ---
 theme: bricks
-title: Programación III - Cálculo Lambda (In progress)
+title: Programación III - Cálculo Lambda
+download: true
 info: |
   Cálculo Lambda - Programación III
   INSPT - UTN
@@ -939,6 +940,26 @@ Cons = λx.λy.Pair False (Pair x y)
 Head = λz.First (Second z)
 Tail = λz.Second (Second z)
 ```
+
+</div>
+
+---
+layout: default
+---
+
+# Referencias y recursos
+
+<div class="text-sm">
+
+**Paper original**
+
+- Church, A. (1936). *An Unsolvable Problem of Elementary Number Theory* — [PDF (anotado)](https://www.fermatslibrary.com/p/d3c45049) · [PDF directo](https://phil415.pbworks.com/f/Church.pdf)
+
+**Intérpretes online**
+
+- [Lambda Calculus Interpreter](https://lambda-calculus-interpreter.vercel.app/) — reducción β paso a paso con árbol de parseo
+- [Lambda Calculator](https://cburch.com/lambda/) — evaluación eager/lazy configurable
+- [λ-Calculus Playground](https://sshwy.github.io/lamcalc/en/playground.html) — Church numerals y combinadores predefinidos
 
 </div>
 

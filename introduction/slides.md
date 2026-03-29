@@ -1,6 +1,7 @@
 ---
 theme: bricks
 title: Programación III - Introducción
+download: true
 info: |
   Presentación introductoria de la materia Programación III.
   INSPT - UTN

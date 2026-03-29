@@ -21,32 +21,76 @@
       width: 100%;
       background: linear-gradient(135deg, #1e3a5f, #2563eb);
       color: white;
-      padding: 3rem 2rem;
+      padding: 1.8rem 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header-logo { height: 52px; flex-shrink: 0; }
+
+    .header-center {
+      flex: 1;
       text-align: center;
     }
 
-    header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
-    header p { font-size: 1.1rem; opacity: 0.85; }
+    .header-center h1 { font-size: 1.8rem; font-weight: 700; line-height: 1.2; }
+    .header-center p { font-size: 0.95rem; opacity: 0.85; margin-top: 0.15rem; }
+    .header-center .subtitle { font-size: 0.8rem; opacity: 0.65; }
+
+    .header-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .header-buttons a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 0.4rem;
+      color: white;
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 500;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .header-buttons a:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
 
     main {
-      max-width: 720px;
+      max-width: 780px;
       width: 100%;
-      padding: 2rem 1.5rem;
+      padding: 1.5rem 1.5rem 2rem;
     }
 
-    h2 {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
+    .section { margin-bottom: 2rem; }
+    .section:last-child { margin-bottom: 0; }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 600;
       color: #334155;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #e2e8f0;
     }
 
-    .card-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .card-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
 
     .card-list a {
       display: flex;
       align-items: center;
       gap: 1rem;
-      padding: 1rem 1.25rem;
+      padding: 0.85rem 1.1rem;
       background: white;
       border: 1px solid #e2e8f0;
       border-radius: 0.75rem;
@@ -60,97 +104,160 @@
       box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
     }
 
-    .card-number {
+    .card-icon {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 0.5rem;
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 0.4rem;
       background: #eff6ff;
       color: #2563eb;
-      font-weight: 700;
-      font-size: 1.1rem;
       flex-shrink: 0;
     }
 
-    .card-content strong { display: block; font-size: 1rem; }
-    .card-content span { font-size: 0.85rem; color: #64748b; }
+    .card-icon svg { width: 1.1rem; height: 1.1rem; }
+
+    .card-content strong { display: block; font-size: 0.95rem; }
+    .card-content span { font-size: 0.8rem; color: #64748b; }
 
     .badge {
       display: inline-block;
       padding: 0.15rem 0.5rem;
       border-radius: 0.375rem;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.03em;
       vertical-align: middle;
       margin-left: 0.4rem;
     }
-    .badge-deprecated { background: #fef2f2; color: #dc2626; }
-    .badge-wip { background: #fffbeb; color: #d97706; }
+    .badge-deprecated {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+    }
+
+    .deprecated-card a {
+      opacity: 0.5;
+      border-color: #fecaca;
+    }
+    .deprecated-card a:hover {
+      opacity: 0.7;
+      border-color: #f87171;
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
+    }
+    .deprecated-card .card-icon { background: #fef2f2; color: #dc2626; }
 
     footer {
       margin-top: auto;
-      padding: 2rem;
-      font-size: 0.85rem;
+      padding: 1.5rem 2rem;
+      font-size: 0.8rem;
       color: #94a3b8;
       text-align: center;
+      line-height: 1.6;
+    }
+
+    footer a { color: #64748b; text-decoration: none; }
+    footer a:hover { color: #2563eb; text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      header { flex-direction: column; text-align: center; padding: 1.5rem 1.2rem; }
+      .header-buttons { flex-direction: row; flex-wrap: wrap; justify-content: center; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Programación III</h1>
-    <p>INSPT - UTN &middot; Material de clase</p>
+    <img src="./logo-inspt.png" alt="INSPT - UTN" class="header-logo" />
+    <div class="header-center">
+      <h1>Programación III</h1>
+      <p>Turno Noche</p>
+      <div class="subtitle">Material de clase &middot; Ciclo Lectivo 2026</div>
+    </div>
+    <nav class="header-buttons">
+      <a href="https://inspt.cvg.utn.edu.ar/course/view.php?id=2750" target="_blank">&#x1F393; Campus Virtual</a>
+      <a href="mailto:gaston.larriera@inspt.utn.edu.ar">&#x2709;&#xFE0F; Mail al docente</a>
+      <a href="https://www.inspt.utn.edu.ar/" target="_blank">&#x1F3E2; Web INSPT</a>
+    </nav>
   </header>
 
   <main>
-    <h2>Presentaciones</h2>
-    <ul class="card-list">
-      <li>
-        <a href="./introduction/" data-dev-port="3031">
-          <div class="card-number">1</div>
-          <div class="card-content">
-            <strong>Introducción</strong>
-            <span>Presentación de la materia, condiciones de cursada y contacto</span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a href="./lambda-calculus/" data-dev-port="3032">
-          <div class="card-number">2</div>
-          <div class="card-content">
-            <strong>Cálculo Lambda <span class="badge badge-wip">In progress</span></strong>
-            <span>Fundamentos, reglas de conversión, estrategias de reducción, funciones lógicas y numéricas</span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a href="./fp-backus/" data-dev-port="3033">
-          <div class="card-number">3</div>
-          <div class="card-content">
-            <strong>FP (Backus) <span class="badge badge-deprecated">Deprecated</span></strong>
-            <span>Lenguaje FP de John Backus: objetos, funciones, formas funcionales y definiciones</span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a href="./clojure/" data-dev-port="3034">
-          <div class="card-number">4</div>
-          <div class="card-content">
-            <strong>Clojure <span class="badge badge-wip">In progress</span></strong>
-            <span>Fundamentos, datos, colecciones, evaluación de expresiones, formas especiales</span>
-          </div>
-        </a>
-      </li>
-      <!-- Agregar futuras presentaciones: usar data-dev-port para el puerto local de Slidev -->
-    </ul>
+
+    <div class="section">
+      <h2 class="section-title">Introducción</h2>
+      <ul class="card-list">
+        <li>
+          <a href="./introduction/" data-dev-port="3031">
+            <div class="card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
+            </div>
+            <div class="card-content">
+              <strong>Presentación de la materia</strong>
+              <span>Condiciones de cursada, contenidos, vías de comunicación y contacto</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Unidad 1 — Cálculo Lambda</h2>
+      <ul class="card-list">
+        <li>
+          <a href="./lambda-calculus/" data-dev-port="3032">
+            <div class="card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
+            </div>
+            <div class="card-content">
+              <strong>Presentación</strong>
+              <span>Fundamentos, reglas de conversión, estrategias de reducción, funciones lógicas y numéricas</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Unidad 2 — Clojure</h2>
+      <ul class="card-list">
+        <li>
+          <a href="./clojure/" data-dev-port="3034">
+            <div class="card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
+            </div>
+            <div class="card-content">
+              <strong>Presentación</strong>
+              <span>Fundamentos, datos, colecciones, evaluación de expresiones, formas especiales</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">FP — John Backus <span class="badge badge-deprecated">Deprecated</span></h2>
+      <ul class="card-list">
+        <li class="deprecated-card">
+          <a href="./fp-backus/" data-dev-port="3033">
+            <div class="card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
+            </div>
+            <div class="card-content">
+              <strong>Presentación</strong>
+              <span>Lenguaje FP de John Backus: objetos, funciones, formas funcionales y definiciones</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+
   </main>
 
   <footer>
-    Gastón Larriera &middot; gaston.larriera@inspt.utn.edu.ar
+    Gastón Larriera &middot; <a href="mailto:gaston.larriera@inspt.utn.edu.ar">gaston.larriera@inspt.utn.edu.ar</a>
+    <br />
+    <a href="https://www.inspt.utn.edu.ar/" target="_blank">INSPT - UTN</a>
   </footer>
 
   <script>

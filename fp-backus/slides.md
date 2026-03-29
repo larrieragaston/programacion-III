@@ -1,6 +1,7 @@
 ---
 theme: bricks
 title: Programación III - FP Backus (Deprecated)
+download: true
 info: |
   Lenguaje FP de John Backus - Programación III
   INSPT - UTN

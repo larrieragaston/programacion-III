@@ -1,6 +1,7 @@
 ---
 theme: bricks
 title: Programación III - Clojure
+download: true
 info: |
   Clojure - Programación III
   INSPT - UTN
@@ -654,6 +655,28 @@ layout: default
 *Referencia completa: [clojure.org/api](https://clojure.org/api/api)*
 
 </div>
+
+</div>
+
+---
+layout: default
+---
+
+# Recursos
+
+<div class="text-sm">
+
+**Oficiales**
+
+- [clojure.org](https://clojure.org/) — página oficial del lenguaje
+- [Guía de instalación](https://clojure.org/guides/install_clojure) — incluye instrucciones para Windows, macOS y Linux
+- [Referencia del lenguaje](https://clojure.org/reference/reader) — especificación y referencia oficial
+
+**Documentación y práctica**
+
+- [ClojureDocs](https://clojuredocs.org/) — documentación con ejemplos de la comunidad
+- [TryClj](https://tryclj.com/) — REPL online para probar Clojure en el navegador
+- [Clojure for the Brave and True](https://www.braveclojure.com/) — tutorial completo y gratuito
 
 </div>
 
