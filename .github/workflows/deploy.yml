@@ -30,6 +30,7 @@ jobs:
           mkdir -p "$SITE_DIR"
 
           cp index.html "$SITE_DIR/"
+          cp favicon.svg "$SITE_DIR/" 2>/dev/null || true
           cp logo-inspt.png "$SITE_DIR/" 2>/dev/null || true
 
           for dir in */; do
