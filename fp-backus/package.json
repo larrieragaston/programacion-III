@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "slidev",
-    "build": "slidev build --base /programacion-III-material/fp-backus/",
+    "build": "slidev build --base /programacion-III/fp-backus/",
     "export": "slidev export"
   },
   "dependencies": {

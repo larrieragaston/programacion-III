@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "slidev",
-    "build": "slidev build --base /programacion-III-material/introduction/",
+    "build": "slidev build --base /programacion-III/introduction/",
     "export": "slidev export"
   },
   "dependencies": {

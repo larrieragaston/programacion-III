@@ -40,7 +40,7 @@ Use this template — only change the `name` and `build --base` path:
   "private": true,
   "scripts": {
     "dev": "slidev",
-    "build": "slidev build --base /programacion-III-material/<slug>/",
+    "build": "slidev build --base /programacion-III/<slug>/",
     "export": "slidev export"
   },
   "dependencies": {

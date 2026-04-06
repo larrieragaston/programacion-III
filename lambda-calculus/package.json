@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "slidev",
-    "build": "slidev build --base /programacion-III-material/lambda-calculus/",
+    "build": "slidev build --base /programacion-III/lambda-calculus/",
     "export": "slidev export"
   },
   "dependencies": {

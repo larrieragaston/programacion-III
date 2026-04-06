@@ -15,7 +15,7 @@ Each presentation is a standalone [Slidev](https://sli.dev/) project inside its 
 
 Presentations are automatically deployed to GitHub Pages on every push to `main`.
 
-**Live site:** https://larrieragaston.github.io/programacion-III-material/
+**Live site:** https://larrieragaston.github.io/programacion-III/
 
 ## Presentations
 
@@ -68,7 +68,7 @@ cd my-new-topic
   "private": true,
   "scripts": {
     "dev": "slidev",
-    "build": "slidev build --base /programacion-III-material/my-new-topic/",
+    "build": "slidev build --base /programacion-III/my-new-topic/",
     "export": "slidev export"
   },
   "dependencies": {
@@ -108,7 +108,7 @@ The port is assigned automatically by `dev.sh` in alphabetical folder order.
 ## Project structure
 
 ```
-programacion-III-material/
+programacion-III/
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml          # GitHub Actions: builds all presentations and deploys to Pages
@@ -147,8 +147,14 @@ The workflow:
 4. Uploads everything to GitHub Pages
 
 Published URLs:
-- **Index:** https://larrieragaston.github.io/programacion-III-material/
-- **Presentations:** `https://larrieragaston.github.io/programacion-III-material/{folder-name}/`
+- **Index:** https://larrieragaston.github.io/programacion-III/
+- **Presentations:** `https://larrieragaston.github.io/programacion-III/{folder-name}/`
+
+### GitHub repository name
+
+The repository on GitHub should be named **`programacion-III`** (misma forma en la URL de Pages: `/programacion-III/`). El `slidev build --base` debe coincidir con ese primer segmento. Si renombrás o forkeás el repo, actualizá cada `--base` en los `*/package.json` y volvé a desplegar.
+
+Tras renombrar en GitHub, los clones viejos suelen seguir funcionando por redirección; podés actualizar el remoto con `git remote set-url origin https://github.com/<usuario>/programacion-III.git`.
 
 ## Useful commands
 

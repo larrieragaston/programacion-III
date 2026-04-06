@@ -1,5 +1,5 @@
 {
-  "name": "programacion-III-material",
+  "name": "programacion-iii",
   "private": true,
   "scripts": {
     "dev": "bash dev.sh"
