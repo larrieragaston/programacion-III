@@ -1,0 +1,20 @@
+{
+  "name": "programacion-III-lambda-calculus-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "playwright install chromium",
+    "docs:install-browsers": "playwright install chromium",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:pdf": "vitepress build docs && node scripts/print-pdfs.mjs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "markdown-it-mathjax3": "^4.3.2",
+    "playwright": "^1.49.1",
+    "serve-handler": "^6.1.6",
+    "vitepress": "^1.6.3",
+    "vue": "^3.5.13"
+  }
+}

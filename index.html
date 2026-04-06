@@ -216,6 +216,17 @@
             </div>
           </a>
         </li>
+        <li>
+          <a href="./lambda-calculus-docs/" data-dev-port="5173" data-dev-path="/">
+            <div class="card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><path d="M14 2v6h6" /><path d="M10 13h4" /><path d="M10 17h8" /><path d="M10 9h2" /></svg>
+            </div>
+            <div class="card-content">
+              <strong>Material teórico</strong>
+              <span>Apunte, guía de ejercicios y ejercicios adicionales (sitio VitePress)</span>
+            </div>
+          </a>
+        </li>
       </ul>
     </div>
 
@@ -264,7 +275,15 @@
   <script>
     if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
       document.querySelectorAll('a[data-dev-port]').forEach(function (link) {
-        link.href = 'http://localhost:' + link.dataset.devPort + '/';
+        var port = link.dataset.devPort;
+        var path = link.dataset.devPath;
+        var base = 'http://localhost:' + port;
+        if (path) {
+          if (path.charAt(0) !== '/') path = '/' + path;
+          link.href = base + path;
+        } else {
+          link.href = base + '/';
+        }
       });
     }
   </script>
