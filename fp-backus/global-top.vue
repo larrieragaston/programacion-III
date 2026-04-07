@@ -1,5 +1,11 @@
 <template>
-  <a class="home-link" :href="homeHref" title="Volver al índice" aria-label="Volver al índice principal">
+  <a
+    v-if="!isPrintMode"
+    class="home-link"
+    :href="homeHref"
+    title="Volver al índice"
+    aria-label="Volver al índice principal"
+  >
     <svg aria-hidden="true" viewBox="0 0 24 24" class="home-icon">
       <path d="M3 11.5 12 4l9 7.5" />
       <path d="M5 10.5V20h14v-9.5" />
@@ -10,6 +16,13 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+const isPrintMode = computed(
+  () => 'print' in route.query || route.name === 'export',
+)
 
 const homeHref = computed(() => {
   if (typeof window === 'undefined') return '/programacion-III/'
@@ -67,11 +80,5 @@ const homeHref = computed(() => {
 .home-link:focus-visible {
   outline: 2px solid #60a5fa;
   outline-offset: 2px;
-}
-
-@media print {
-  .home-link {
-    display: none !important;
-  }
 }
 </style>
