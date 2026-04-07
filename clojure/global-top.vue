@@ -68,4 +68,10 @@ const homeHref = computed(() => {
   outline: 2px solid #60a5fa;
   outline-offset: 2px;
 }
+
+@media print {
+  .home-link {
+    display: none !important;
+  }
+}
 </style>
