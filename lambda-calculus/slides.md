@@ -26,7 +26,7 @@ layout: image-right
 image: /images/alonzo-church.jpg
 ---
 
-# Alonzo Church
+# Alonzo Church — Creador del Cálculo Lambda
 
 Lógico y matemático estadounidense.
 
@@ -128,10 +128,10 @@ layout: default
 # Ejemplo — Reducción funcional
 
 ```
-primero (ordenar (unir (a, ordenar (b))))
-→ primero (ordenar (unir (a, b)))
-→ primero (ordenar (a, b))
-→ primero (a, b)
+primero (ordenar (unir (["perro", "conejo"], ordenar (["ratón", "gato"]))))
+→ primero (ordenar (unir (["perro", "conejo"], ["gato", "ratón"])))
+→ primero (ordenar (["perro", "conejo", "gato", "ratón"]))
+→ primero (["conejo", "gato", "perro", "ratón"])
 → "conejo"
 ```
 
@@ -219,7 +219,10 @@ $$\lambda x.M\ N \equiv \lambda x.(M\ N)$$
 
 **Ejemplo completo:**
 
-$$(((\lambda x.\ (\lambda y.\ (y\ x)))\ a)\ b) \equiv \lambda x\ y.\ y\ x\ \ a\ \ b$$
+$$((\lambda x.(\lambda y.(y\ x)))\ a)\ b$$
+$$\equiv (\lambda x.(\lambda y.(y\ x)))\ a\ b$$
+$$\equiv (\lambda x.\lambda y.\ y\ x)\ a\ b$$
+$$\equiv (\lambda x\ y.\ y\ x)\ a\ b$$
 
 </div>
 
