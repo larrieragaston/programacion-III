@@ -87,10 +87,17 @@
 
     .card-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
 
-    .card-list a {
+    .card-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .card-main-link {
       display: flex;
       align-items: center;
       gap: 1rem;
+      flex: 1;
       padding: 0.85rem 1.1rem;
       background: white;
       border: 1px solid #e2e8f0;
@@ -100,9 +107,45 @@
       transition: box-shadow 0.15s, border-color 0.15s;
     }
 
-    .card-list a:hover {
+    .card-main-link:hover {
       border-color: #2563eb;
       box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
+    }
+
+    .card-download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.7rem 0.8rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 0.75rem;
+      color: #1d4ed8;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+
+    .card-download:hover {
+      background: #dbeafe;
+      border-color: #93c5fd;
+      color: #1e40af;
+    }
+
+    .card-download svg {
+      width: 0.95rem;
+      height: 0.95rem;
+    }
+
+    .card-download.is-disabled {
+      pointer-events: none;
+      background: #f8fafc;
+      border-color: #e2e8f0;
+      color: #94a3b8;
+      cursor: not-allowed;
     }
 
     .card-icon {
@@ -139,11 +182,11 @@
       border: 1px solid #fca5a5;
     }
 
-    .deprecated-card a {
+    .deprecated-card .card-main-link {
       opacity: 0.5;
       border-color: #fecaca;
     }
-    .deprecated-card a:hover {
+    .deprecated-card .card-main-link:hover {
       opacity: 0.7;
       border-color: #f87171;
       box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
@@ -165,6 +208,8 @@
     @media (max-width: 640px) {
       header { flex-direction: column; text-align: center; padding: 1.5rem 1.2rem; }
       .header-buttons { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+      .card-item { flex-direction: column; align-items: stretch; }
+      .card-download { justify-content: center; }
     }
   </style>
 </head>
@@ -189,15 +234,21 @@
       <h2 class="section-title">Introducción</h2>
       <ul class="card-list">
         <li>
-          <a href="./introduction/" data-dev-port="3031">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-            </div>
-            <div class="card-content">
-              <strong>Presentación de la materia</strong>
-              <span>Condiciones de cursada, contenidos, vías de comunicación y contacto</span>
-            </div>
-          </a>
+          <div class="card-item">
+            <a class="card-main-link" href="./introduction/" data-dev-port="3031">
+              <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
+              </div>
+              <div class="card-content">
+                <strong>Presentación de la materia</strong>
+                <span>Condiciones de cursada, contenidos, vías de comunicación y contacto</span>
+              </div>
+            </a>
+            <a class="card-download" href="./introduction/pdfs/exports/introduction-slides-export.pdf" download>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
+              Descargar
+            </a>
+          </div>
         </li>
       </ul>
     </div>
@@ -206,37 +257,55 @@
       <h2 class="section-title">Unidad 1 — Cálculo Lambda</h2>
       <ul class="card-list">
         <li>
-          <a href="./lambda-calculus/" data-dev-port="3032">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-            </div>
-            <div class="card-content">
-              <strong>Presentación</strong>
-              <span>Fundamentos, reglas de conversión, estrategias de reducción, funciones lógicas y numéricas</span>
-            </div>
-          </a>
+          <div class="card-item">
+            <a class="card-main-link" href="./lambda-calculus/" data-dev-port="3032">
+              <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
+              </div>
+              <div class="card-content">
+                <strong>Presentación</strong>
+                <span>Fundamentos, reglas de conversión, estrategias de reducción, funciones lógicas y numéricas</span>
+              </div>
+            </a>
+            <a class="card-download" href="./lambda-calculus/pdfs/exports/lambda-calculus-slides-export.pdf" download>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
+              Descargar
+            </a>
+          </div>
         </li>
         <li>
-          <a href="./lambda-calculus/pdfs/originales/calculo-lambda-apunte.pdf" target="_blank" rel="noopener noreferrer">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><path d="M14 2v6h6" /><path d="M12 18v-6" /><path d="m9 15 3 3 3-3" /></svg>
-            </div>
-            <div class="card-content">
-              <strong>Apunte teórico + ejercicios</strong>
-              <span>Documento con el apunte teórico y la guía de ejercicios</span>
-            </div>
-          </a>
+          <div class="card-item">
+            <a class="card-main-link" href="./lambda-calculus/pdfs/originales/calculo-lambda-apunte.pdf" target="_blank" rel="noopener noreferrer">
+              <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><path d="M14 2v6h6" /><path d="M12 18v-6" /><path d="m9 15 3 3 3-3" /></svg>
+              </div>
+              <div class="card-content">
+                <strong>Apunte teórico + ejercicios</strong>
+                <span>Documento con el apunte teórico y la guía de ejercicios</span>
+              </div>
+            </a>
+            <a class="card-download" href="./lambda-calculus/pdfs/originales/calculo-lambda-apunte.pdf" download>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
+              Descargar
+            </a>
+          </div>
         </li>
         <li>
-          <a href="./lambda-calculus/pdfs/originales/calculo-lambda-ejercicios-adicionales.pdf" target="_blank" rel="noopener noreferrer">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><path d="M14 2v6h6" /><path d="M12 18v-6" /><path d="m9 15 3 3 3-3" /></svg>
-            </div>
-            <div class="card-content">
-              <strong>Ejercicios adicionales</strong>
-              <span>Hoja de ejercicios complementarios</span>
-            </div>
-          </a>
+          <div class="card-item">
+            <a class="card-main-link" href="./lambda-calculus/pdfs/originales/calculo-lambda-ejercicios-adicionales.pdf" target="_blank" rel="noopener noreferrer">
+              <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><path d="M14 2v6h6" /><path d="M12 18v-6" /><path d="m9 15 3 3 3-3" /></svg>
+              </div>
+              <div class="card-content">
+                <strong>Ejercicios adicionales</strong>
+                <span>Hoja de ejercicios complementarios</span>
+              </div>
+            </a>
+            <a class="card-download" href="./lambda-calculus/pdfs/originales/calculo-lambda-ejercicios-adicionales.pdf" download>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
+              Descargar
+            </a>
+          </div>
         </li>
       </ul>
     </div>
@@ -245,15 +314,21 @@
       <h2 class="section-title">Unidad 2 — Clojure</h2>
       <ul class="card-list">
         <li>
-          <a href="./clojure/" data-dev-port="3034">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-            </div>
-            <div class="card-content">
-              <strong>Presentación</strong>
-              <span>Fundamentos, datos, colecciones, evaluación de expresiones, formas especiales</span>
-            </div>
-          </a>
+          <div class="card-item">
+            <a class="card-main-link" href="./clojure/" data-dev-port="3034">
+              <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
+              </div>
+              <div class="card-content">
+                <strong>Presentación</strong>
+                <span>Fundamentos, datos, colecciones, evaluación de expresiones, formas especiales</span>
+              </div>
+            </a>
+            <a class="card-download" href="./clojure/pdfs/exports/clojure-slides-export.pdf" download>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
+              Descargar
+            </a>
+          </div>
         </li>
       </ul>
     </div>
@@ -262,15 +337,21 @@
       <h2 class="section-title">FP — John Backus <span class="badge badge-deprecated">Deprecated</span></h2>
       <ul class="card-list">
         <li class="deprecated-card">
-          <a href="./fp-backus/" data-dev-port="3033">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-            </div>
-            <div class="card-content">
-              <strong>Presentación</strong>
-              <span>Lenguaje FP de John Backus: objetos, funciones, formas funcionales y definiciones</span>
-            </div>
-          </a>
+          <div class="card-item">
+            <a class="card-main-link" href="./fp-backus/" data-dev-port="3033">
+              <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
+              </div>
+              <div class="card-content">
+                <strong>Presentación</strong>
+                <span>Lenguaje FP de John Backus: objetos, funciones, formas funcionales y definiciones</span>
+              </div>
+            </a>
+            <a class="card-download" href="./fp-backus/pdfs/exports/fp-backus-slides-export.pdf" download>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
+              Descargar
+            </a>
+          </div>
         </li>
       </ul>
     </div>
@@ -285,10 +366,24 @@
 
   <script>
     if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-      document.querySelectorAll('a[data-dev-port]').forEach(function (link) {
+      document.querySelectorAll('.card-main-link[data-dev-port]').forEach(function (link) {
         link.href = 'http://localhost:' + link.dataset.devPort + '/';
       });
     }
+
+    document.querySelectorAll('.card-download').forEach(function (link) {
+      fetch(link.href, { method: 'HEAD' }).then(function (response) {
+        if (!response.ok) {
+          link.classList.add('is-disabled');
+          link.textContent = 'No disponible';
+          link.removeAttribute('download');
+        }
+      }).catch(function () {
+        link.classList.add('is-disabled');
+        link.textContent = 'No disponible';
+        link.removeAttribute('download');
+      });
+    });
   </script>
 </body>
 </html>

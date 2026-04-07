@@ -2,7 +2,8 @@
   "name": "programacion-iii",
   "private": true,
   "scripts": {
-    "dev": "bash dev.sh"
+    "dev": "bash dev.sh",
+    "dev:no-export": "DISABLE_EXPORTS_ON_DEV=1 bash dev.sh"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
