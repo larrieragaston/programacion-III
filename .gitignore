@@ -5,3 +5,4 @@ lambda-calculus-docs/docs/.vitepress/dist
 lambda-calculus-docs/docs/.vitepress/cache
 # Generated from Markdown (npm run docs:pdf)
 lambda-calculus-docs/docs/public/pdfs/*.pdf
+**/pdfs/exports/*.pdf

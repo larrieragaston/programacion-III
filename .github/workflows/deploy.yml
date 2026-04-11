@@ -27,6 +27,7 @@ jobs:
       - name: Build all presentations
         run: |
           SITE_DIR="${GITHUB_WORKSPACE}/_site"
+          rm -rf "$SITE_DIR"
           mkdir -p "$SITE_DIR"
 
           cp index.html "$SITE_DIR/"
@@ -40,9 +41,17 @@ jobs:
               npm ci
               npm i -D playwright-chromium
               npx playwright install --with-deps chromium
+              EXPORT_FILE="${dir%/}-slides-export.pdf"
+              EXPORT_PATH="pdfs/exports/${EXPORT_FILE}"
+              rm -f pdfs/exports/*.pdf slides-export.pdf *-slides-export.pdf *-export.pdf
+              npm run export
               npm run build
               mkdir -p "$SITE_DIR/${dir%/}"
               cp -r dist/* "$SITE_DIR/${dir%/}/"
+              if [ -f "$EXPORT_PATH" ]; then
+                mkdir -p "$SITE_DIR/${dir%/}/pdfs/exports"
+                cp "$EXPORT_PATH" "$SITE_DIR/${dir%/}/pdfs/exports/$EXPORT_FILE"
+              fi
               cd ..
             fi
           done
