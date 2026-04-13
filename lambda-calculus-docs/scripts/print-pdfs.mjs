@@ -23,7 +23,7 @@ const base =
   process.env.VP_BASE !== undefined && process.env.VP_BASE !== ''
     ? process.env.VP_BASE
     : process.env.CI === 'true'
-      ? '/programacion-III-material/lambda-calculus-docs/'
+      ? '/programacion-III/lambda-calculus-docs/'
       : '/'
 
 /** [html, pdfFilename, título en cabecera del PDF] */
@@ -116,17 +116,43 @@ function escapeHtml(text) {
     .replace(/"/g, '&quot;')
 }
 
+/** Logo INSPT del repo raíz (misma imagen que el índice P3); data URI para headerTemplate de Chromium. */
+function pdfHeaderLogoDataUri() {
+  const logoPath = path.join(repoRoot, 'logo-inspt.png')
+  if (!fs.existsSync(logoPath)) return ''
+  return `data:image/png;base64,${fs.readFileSync(logoPath).toString('base64')}`
+}
+
 function pdfHeaderTemplate(docTitle) {
   const t = escapeHtml(docTitle)
-  return `<div style="width:100%;box-sizing:border-box;padding:6px 48px 8px;font-size:8px;color:#0f172a;border-bottom:1px solid #cbd5e1;font-family:system-ui,sans-serif;">
-  <div style="font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Universidad Tecnológica Nacional · INSPT</div>
-  <div style="margin-top:2px;">Programación III · Ciclo lectivo 2026</div>
-  <div style="margin-top:5px;font-size:10px;font-weight:700;">${t}</div>
-  <div style="margin-top:3px;font-size:8px;">Prof. Gastón A. Larriera</div>
+  const logoSrc = pdfHeaderLogoDataUri()
+  const logoHtml = logoSrc
+    ? `<img src="${logoSrc}" alt="" style="height:28px;width:auto;max-width:120px;object-fit:contain;vertical-align:middle;display:inline-block;" />`
+    : ''
+  return `<div style="width:100%;box-sizing:border-box;padding:8px 40px 10px;font-size:8px;color:#0f172a;border-bottom:1px solid #64748b;font-family:system-ui,-apple-system,sans-serif;">
+  <table style="width:100%;border-collapse:collapse;margin:0;padding:0;">
+    <tr>
+      <td style="vertical-align:middle;width:52%;padding:0 10px 6px 0;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          ${logoHtml}
+          <div style="line-height:1.35;">
+            <div style="font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Universidad Tecnológica Nacional · INSPT</div>
+          </div>
+        </div>
+      </td>
+      <td style="vertical-align:middle;width:48%;text-align:right;padding:0 0 6px 10px;">
+        <div style="font-size:10px;font-weight:700;line-height:1.35;">${t}</div>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top;padding:0 10px 0 0;line-height:1.4;">Programación III · Ciclo lectivo 2026</td>
+      <td style="vertical-align:top;text-align:right;padding:0 0 0 10px;line-height:1.4;">Prof. Gastón A. Larriera</td>
+    </tr>
+  </table>
 </div>`
 }
 
-const pdfFooterTemplate = `<div style="width:100%;box-sizing:border-box;padding:4px 48px 0;font-size:9px;color:#64748b;text-align:center;font-family:system-ui,sans-serif;">
+const pdfFooterTemplate = `<div style="width:100%;box-sizing:border-box;padding:4px 40px 0;font-size:9px;color:#64748b;text-align:right;font-family:system-ui,-apple-system,sans-serif;">
   <span class="pageNumber"></span> / <span class="totalPages"></span>
 </div>`
 
@@ -172,7 +198,7 @@ for (const [html, pdfName, docTitle] of pages) {
     displayHeaderFooter: true,
     headerTemplate: pdfHeaderTemplate(docTitle),
     footerTemplate: pdfFooterTemplate,
-    margin: { top: '108px', bottom: '52px', left: '14mm', right: '14mm' },
+    margin: { top: '118px', bottom: '48px', left: '14mm', right: '14mm' },
     tagged: true,
   })
   copyPdfToLambdaCalculus(outPath, pdfName)

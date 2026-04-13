@@ -31,6 +31,8 @@ jobs:
           mkdir -p "$SITE_DIR"
 
           cp index.html "$SITE_DIR/"
+          cp index.css "$SITE_DIR/" 2>/dev/null || true
+          cp index.js "$SITE_DIR/" 2>/dev/null || true
           cp favicon.svg "$SITE_DIR/" 2>/dev/null || true
           cp logo-inspt.png "$SITE_DIR/" 2>/dev/null || true
 
@@ -55,6 +57,14 @@ jobs:
               cd ..
             fi
           done
+
+          echo "Building lambda-calculus-docs (VitePress)..."
+          cd "${GITHUB_WORKSPACE}/lambda-calculus-docs"
+          npm ci --ignore-scripts
+          CI=true npm run docs:build
+          mkdir -p "${SITE_DIR}/lambda-calculus-docs"
+          cp -r docs/.vitepress/dist/* "${SITE_DIR}/lambda-calculus-docs/"
+          cd "${GITHUB_WORKSPACE}"
 
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -36,7 +36,7 @@ const base =
   process.env.VP_BASE !== undefined && process.env.VP_BASE !== ''
     ? process.env.VP_BASE
     : process.env.CI === 'true'
-      ? '/programacion-III-material/lambda-calculus-docs/'
+      ? '/programacion-III/lambda-calculus-docs/'
       : '/'
 
 /** Índice del repo (README). Override: P3_MATERIAL_HOME=https://... */

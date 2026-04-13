@@ -79,6 +79,7 @@
   .VPDocAside,
   aside.aside,
   .VPFooter,
+  .VPFooter.has-sidebar,
   .VPDocFooter,
   .pager,
   .prev-next,
@@ -98,6 +99,20 @@
   .vp-doc {
     padding: 0 !important;
     max-width: none !important;
+  }
+
+  /* Evita duplicar el título que ya va en el encabezado del PDF (Playwright). */
+  .vp-doc > h1:first-of-type {
+    display: none !important;
+  }
+
+  /* Quita reglas horizontales entre bloques y el estilo “divisor” sobre h2 del tema. */
+  .vp-doc hr {
+    display: none !important;
+  }
+
+  .vp-doc h2 {
+    border-top: none !important;
   }
 
   body {

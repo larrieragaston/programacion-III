@@ -53,7 +53,7 @@ Links on the index page automatically detect localhost and point to the correct 
 
 ### Cálculo λ — material escrito (VitePress)
 
-The folder [`lambda-calculus-docs/`](lambda-calculus-docs/) is a [VitePress](https://vitepress.dev/) site: **Apunte**, **Guía de ejercicios** (`ejercicios.md`), and **Ejercicios adicionales**. Local dev uses VitePress `base` `/` so URLs like `http://localhost:5173/pdfs/...` work; GitHub Actions sets `CI=true` so production builds use the Pages path (override with `VP_BASE=...` if needed).
+The folder [`lambda-calculus-docs/`](lambda-calculus-docs/) is a [VitePress](https://vitepress.dev/) site: **Apunte**, **Guía de ejercicios** (`ejercicios.md`), and **Ejercicios adicionales**. Local dev uses VitePress `base` `/` so URLs like `http://localhost:5173/pdfs/...` work; GitHub Actions sets `CI=true` so production builds use `/programacion-III/lambda-calculus-docs/` (override with `VP_BASE=...` if the site root changes). The Pages workflow builds this site and copies it to `_site/lambda-calculus-docs/`.
 
 ```bash
 cd lambda-calculus-docs && npm install   # runs postinstall: playwright install chromium

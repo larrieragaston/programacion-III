@@ -36,7 +36,7 @@ npm run docs:preview           # previsualizar el build estático
 En `docs/.vitepress/config.ts`, `base` se resuelve así:
 
 - **Local (sin `CI`):** `base: '/'` — rutas como `/apunte/`, `/pdfs/...` funcionan en `localhost:5173`.
-- **CI (`CI=true`):** `base: '/programacion-III-material/lambda-calculus-docs/'` para GitHub Pages bajo el repo `programacion-III-material`.
+- **CI (`CI=true`):** `base: '/programacion-III/lambda-calculus-docs/'` para GitHub Pages del repo `programacion-III` (`https://usuario.github.io/programacion-III/`).
 - **Override manual:** `VP_BASE=/foo/ npm run docs:dev` (o el mismo prefijo en build).
 
 `vite.publicDir` apunta a `docs/public` (PDFs y estáticos).
