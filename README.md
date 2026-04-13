@@ -53,7 +53,7 @@ Links on the index page automatically detect localhost and point to the correct 
 
 ### Cálculo λ — material escrito (VitePress)
 
-The folder [`lambda-calculus-docs/`](lambda-calculus-docs/) is a [VitePress](https://vitepress.dev/) site: **Apunte**, **Guía de ejercicios** (`ejercicios.md`), and **Ejercicios adicionales**. Local dev uses VitePress `base` `/` so URLs like `http://localhost:5173/pdfs/...` work; GitHub Actions sets `CI=true` so production builds use `/programacion-III/lambda-calculus-docs/` (override with `VP_BASE=...` if the site root changes). The Pages workflow builds this site and copies it to `_site/lambda-calculus-docs/`.
+The folder [`lambda-calculus-docs/`](lambda-calculus-docs/) is a [VitePress](https://vitepress.dev/) site: **Apunte**, **Guía de ejercicios** (`ejercicios.md`), and **Ejercicios adicionales**. Local dev uses VitePress `base` `/` so URLs like `http://localhost:5173/pdfs/...` work; GitHub Actions sets `CI=true` so production builds use `/programacion-III/lambda-calculus-docs/` (override with `VP_BASE=...` if the site root changes). The Pages workflow builds this site, runs PDF export, and copies `dist` to `_site/lambda-calculus-docs/`; the same export refreshes the PDF linked from the main index under `lambda-calculus/pdfs/originales/`.
 
 ```bash
 cd lambda-calculus-docs && npm install   # runs postinstall: playwright install chromium
@@ -159,10 +159,10 @@ programacion-III/
 Automatic via GitHub Actions on every push to `main`.
 
 The workflow:
-1. Copies `index.html` to the build output
-2. Finds every subfolder containing a Slidev `package.json`
-3. Runs `npm ci && npm run build` in each one
-4. Uploads everything to GitHub Pages
+1. Copies the site index (`index.html`, `index.css`, `index.js`, assets) into `_site/`
+2. Builds **lambda-calculus-docs** (VitePress), runs **Playwright** (`scripts/print-pdfs.mjs`) to regenerate the three PDF en `lambda-calculus/public/pdfs/originales/`, and copies the VitePress `dist` to `_site/lambda-calculus-docs/`
+3. Finds every subfolder with Slidev in `package.json`, runs `npm run export` (PDF diapositivas) and `npm run build`, copies each `dist` into `_site/{folder}/` (el build de `lambda-calculus` incluye los PDF del paso 2 vía `public/`)
+4. Uploads `_site` to GitHub Pages
 
 Published URLs:
 - **Index:** https://larrieragaston.github.io/programacion-III/
