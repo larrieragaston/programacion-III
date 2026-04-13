@@ -1,6 +1,5 @@
 ---
 title: Ejercicios adicionales — Cálculo λ
-aside: false
 ---
 
 # Ejercicios adicionales

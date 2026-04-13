@@ -1,7 +1,6 @@
 ---
 title: Guía de ejercicios — Cálculo λ
 description: Ejercicios de la guía del apunte e intérpretes en línea.
-aside: false
 ---
 
 # Guía de ejercicios

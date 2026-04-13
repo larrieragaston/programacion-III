@@ -97,6 +97,10 @@ export default defineConfig({
       },
     ],
     socialLinks: [],
+    outline: {
+      label: 'En esta página',
+      level: 'deep',
+    },
     footer: {
       message: 'Programación III — INSPT',
     },

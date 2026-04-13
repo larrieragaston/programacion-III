@@ -1,7 +1,6 @@
 ---
 title: Apunte teórico — Cálculo λ
 description: Teoría de cálculo lambda (sintaxis, semántica, combinadores).
-aside: false
 ---
 
 # Apunte teórico — Cálculo λ
