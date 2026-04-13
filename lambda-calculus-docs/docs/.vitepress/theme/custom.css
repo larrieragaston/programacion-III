@@ -29,7 +29,7 @@
   font-size: 0.92em;
 }
 
-/* Guías de ejercicios: sangría visible en sublistas (a), b), viñetas, etc.) */
+/* Guías de ejercicios: sangría en sublistas con viñetas */
 .vp-doc :is(ul, ol) :is(ul, ol) {
   margin-top: 0.35em;
   margin-bottom: 0.45em;
@@ -42,6 +42,31 @@
 
 .vp-doc li > :is(ul, ol) {
   margin-top: 0.35em;
+}
+
+/* Ejercicios adicionales: subítems con letras a), b), c)… (reinicia en cada enunciado) */
+.Layout.ejercicios-adicionales .vp-doc ol > li {
+  counter-reset: ej-adic-sub;
+}
+
+.Layout.ejercicios-adicionales .vp-doc ol > li > ul {
+  list-style: none;
+  padding-inline-start: 0.25em;
+}
+
+.Layout.ejercicios-adicionales .vp-doc ol > li > ul > li {
+  counter-increment: ej-adic-sub;
+  position: relative;
+  padding-inline-start: 1.85em;
+}
+
+.Layout.ejercicios-adicionales .vp-doc ol > li > ul > li::before {
+  content: counter(ej-adic-sub, lower-alpha) ") ";
+  position: absolute;
+  left: 0;
+  width: 1.7em;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
 }
 
 /**
