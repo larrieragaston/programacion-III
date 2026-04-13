@@ -1,3 +1,20 @@
+/* El tema por defecto oculta el pie cuando hay sidebar; queremos el enlace al índice P3 siempre. */
+.VPFooter.has-sidebar {
+  display: block !important;
+}
+
+/* Ítem del nav “Programación III” (HTML desde config) */
+.nav-p3-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.nav-p3-home svg {
+  flex-shrink: 0;
+  opacity: 0.92;
+}
+
 /* Cuerpo del apunte: énfasis y expresiones */
 .vp-doc p,
 .vp-doc li {
