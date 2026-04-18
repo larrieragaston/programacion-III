@@ -51,6 +51,24 @@ This launches:
 
 Links on the index page automatically detect localhost and point to the correct dev port.
 
+### Cálculo λ — material escrito (VitePress)
+
+The folder [`lambda-calculus-docs/`](lambda-calculus-docs/) is a [VitePress](https://vitepress.dev/) site: **Apunte**, **Guía de ejercicios** (`ejercicios.md`), and **Ejercicios adicionales**. Local dev uses VitePress `base` `/` so URLs like `http://localhost:5173/pdfs/...` work; GitHub Actions sets `CI=true` so production builds use `/programacion-III/lambda-calculus-docs/` (override with `VP_BASE=...` if the site root changes). The Pages workflow builds this site, runs PDF export, and copies `dist` to `_site/lambda-calculus-docs/`; the same export refreshes the PDF linked from the main index under `lambda-calculus/pdfs/originales/`.
+
+```bash
+cd lambda-calculus-docs && npm install   # runs postinstall: playwright install chromium
+npm run docs:install-browsers            # if docs:pdf fails with “Executable doesn't exist”
+npm run docs:dev                         # http://localhost:5173
+npm run docs:build                       # static site only → docs/.vitepress/dist
+npm run docs:pdf                         # build + export PDFs (Playwright print of the built HTML)
+```
+
+Serve the repo root (e.g. `npx serve . -l 3030`) and open the cards for Unidad 1; they point to port `5173` with `data-dev-path` (see root `index.html`). Run `npm run docs:pdf` after clone if you need working PDF links under `docs/public/pdfs/` (those files are gitignored).
+
+**Migrating from PDF again:** use [`pdf_to_md.py`](pdf_to_md.py) against `lambda-calculus-docs/source-pdfs/`, then run [`lambda-calculus-docs/scripts/restructure_docs.py`](lambda-calculus-docs/scripts/restructure_docs.py) to strip headers/CC text, promote section titles, and split the **guía de ejercicios** into `ejercicios.md`. Edit the Markdown by hand afterward.
+
+**PDF export** matches the site: `docs:pdf` builds the site and prints `apunte.html`, `ejercicios.html`, and `ejercicios-adicionales.html` to `docs/public/pdfs/*.pdf` via Playwright (not `md-to-pdf`).
+
 ## Adding a new presentation
 
 1. Create the folder:
@@ -141,10 +159,10 @@ programacion-III/
 Automatic via GitHub Actions on every push to `main`.
 
 The workflow:
-1. Copies `index.html` to the build output
-2. Finds every subfolder containing a Slidev `package.json`
-3. Runs `npm ci && npm run build` in each one
-4. Uploads everything to GitHub Pages
+1. Copies the site index (`index.html`, `index.css`, `index.js`, assets) into `_site/`
+2. Builds **lambda-calculus-docs** (VitePress), runs **Playwright** (`scripts/print-pdfs.mjs`) to regenerate the three PDF en `lambda-calculus/public/pdfs/originales/`, and copies the VitePress `dist` to `_site/lambda-calculus-docs/`
+3. Finds every subfolder with Slidev in `package.json`, runs `npm run export` (PDF diapositivas) and `npm run build`, copies each `dist` into `_site/{folder}/` (el build de `lambda-calculus` incluye los PDF del paso 2 vía `public/`)
+4. Uploads `_site` to GitHub Pages
 
 Published URLs:
 - **Index:** https://larrieragaston.github.io/programacion-III/

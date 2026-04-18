@@ -1,0 +1,121 @@
+/* El tema por defecto oculta el pie cuando hay sidebar; queremos el enlace al índice P3 siempre. */
+.VPFooter.has-sidebar {
+  display: block !important;
+}
+
+/* Ítem del nav “Programación III” (HTML desde config) */
+.nav-p3-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.nav-p3-home svg {
+  flex-shrink: 0;
+  opacity: 0.92;
+}
+
+/* Cuerpo del apunte: énfasis y expresiones */
+.vp-doc p,
+.vp-doc li {
+  line-height: 1.65;
+}
+
+.vp-doc strong {
+  color: var(--vp-c-text-1);
+}
+
+.vp-doc .shiki {
+  font-size: 0.92em;
+}
+
+/* Guías de ejercicios: sangría en sublistas con viñetas */
+.vp-doc :is(ul, ol) :is(ul, ol) {
+  margin-top: 0.35em;
+  margin-bottom: 0.45em;
+  padding-inline-start: 1.4em;
+}
+
+.vp-doc :is(ul, ol) :is(ul, ol) :is(ul, ol) {
+  padding-inline-start: 1.25em;
+}
+
+.vp-doc li > :is(ul, ol) {
+  margin-top: 0.35em;
+}
+
+/* Ejercicios adicionales: subítems con letras a), b), c)… (reinicia en cada enunciado) */
+.Layout.ejercicios-adicionales .vp-doc ol > li {
+  counter-reset: ej-adic-sub;
+}
+
+.Layout.ejercicios-adicionales .vp-doc ol > li > ul {
+  list-style: none;
+  padding-inline-start: 0.25em;
+}
+
+.Layout.ejercicios-adicionales .vp-doc ol > li > ul > li {
+  counter-increment: ej-adic-sub;
+  position: relative;
+  padding-inline-start: 1.85em;
+}
+
+.Layout.ejercicios-adicionales .vp-doc ol > li > ul > li::before {
+  content: counter(ej-adic-sub, lower-alpha) ") ";
+  position: absolute;
+  left: 0;
+  width: 1.7em;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+}
+
+/**
+ * PDF / vista previa de impresión: sin cromo de VitePress (evita “Menu”, “On this page”, etc.).
+ */
+@media print {
+  .VPNav,
+  .VPSidebar,
+  .VPLocalNav,
+  .VPDocAside,
+  aside.aside,
+  .VPFooter,
+  .VPFooter.has-sidebar,
+  .VPDocFooter,
+  .pager,
+  .prev-next,
+  .edit-link,
+  .VPSkipLink,
+  .VPLocalNavOutlineDropdown,
+  .VPDocAsideOutline {
+    display: none !important;
+  }
+
+  .VPContent {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .VPDoc,
+  .vp-doc {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  /* Evita duplicar el título que ya va en el encabezado del PDF (Playwright). */
+  .vp-doc > h1:first-of-type {
+    display: none !important;
+  }
+
+  /* Quita reglas horizontales entre bloques y el estilo “divisor” sobre h2 del tema. */
+  .vp-doc hr {
+    display: none !important;
+  }
+
+  .vp-doc h2 {
+    border-top: none !important;
+  }
+
+  body {
+    print-color-adjust: exact;
+  }
+}

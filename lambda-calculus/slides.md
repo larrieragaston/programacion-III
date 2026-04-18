@@ -323,7 +323,7 @@ layout: default
 
 $$\beta\text{-redex} \Rightarrow (\lambda x.M)\ N$$
 
-Consiste en realizar la **reducción** de una β-redex: sustituir todas las ocurrencias libres de $x$ en $M$ por $N$.
+Consiste en realizar la **reducción** de una β-redex: sustituir todas las ocurrencias libres de $x$ en $M$ por $N$ (usando sustitución **sin captura**: si hiciera falta, se renombra el parámetro con $\alpha$ antes de sustituir).
 
 ---
 layout: default
