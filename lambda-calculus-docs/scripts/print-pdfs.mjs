@@ -196,22 +196,46 @@ fs.mkdirSync(outDir, { recursive: true })
 resolvePlaywrightBrowsersPath()
 const { chromium } = await import('playwright')
 
-const server = http.createServer((req, res) =>
-  handler(req, res, { public: dist }),
-)
+/**
+ * VitePress escribe HTML con `base` (p. ej. /programacion-III/lambda-calculus-docs/) pero los
+ * archivos viven en la raíz de `dist`. Sirviendo con ese prefijo, las peticiones a assets
+ * coinciden con lo que pide el HTML y las rutas de página (CI / GitHub Pages).
+ */
+function siteBasePrefix() {
+  if (!base || base === '/') return ''
+  return base.endsWith('/') ? base.slice(0, -1) : base
+}
+
+const basePrefix = siteBasePrefix()
+
+const server = http.createServer((req, res) => {
+  if (basePrefix && req.url) {
+    const q = req.url.indexOf('?')
+    const pathPart = q === -1 ? req.url : req.url.slice(0, q)
+    const query = q === -1 ? '' : req.url.slice(q)
+    if (pathPart === basePrefix || pathPart.startsWith(`${basePrefix}/`)) {
+      const stripped = pathPart.slice(basePrefix.length) || '/'
+      req.url = stripped + query
+    }
+  }
+  return handler(req, res, { public: dist })
+})
 
 await new Promise((resolve, reject) => {
   server.listen(4173, '127.0.0.1', (err) => (err ? reject(err) : resolve()))
 })
 
 const browser = await chromium.launch()
-const page = await browser.newPage()
+/** Sin JS evita que la hidratación de Vue reemplace el HTML SSR antes del PDF (fallaba en CI). */
+const context = await browser.newContext({ javaScriptEnabled: false })
+const page = await context.newPage()
+await page.setViewportSize({ width: 1920, height: 1080 })
 
 for (const [html, pdfName, docTitle] of pages) {
   const url = `http://127.0.0.1:4173${base}${html}`
   console.error('PDF ←', url)
-  await page.goto(url, { waitUntil: 'networkidle', timeout: 90_000 })
-  await page.waitForSelector('.vp-doc', { state: 'visible', timeout: 30_000 })
+  await page.goto(url, { waitUntil: 'load', timeout: 90_000 })
+  await page.waitForSelector('.vp-doc', { state: 'attached', timeout: 60_000 })
   await page.emulateMedia({ media: 'print' })
   const outPath = path.join(outDir, pdfName)
   await page.pdf({
@@ -227,6 +251,7 @@ for (const [html, pdfName, docTitle] of pages) {
   copyPdfToLambdaCalculus(outPath, pdfName)
 }
 
+await context.close()
 await browser.close()
 server.close()
 console.error('PDFs en docs/public/pdfs/ y copiados a lambda-calculus/.../pdfs/originales/')
