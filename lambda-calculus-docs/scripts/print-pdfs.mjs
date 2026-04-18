@@ -116,9 +116,9 @@ function escapeHtml(text) {
     .replace(/"/g, '&quot;')
 }
 
-/** Logo INSPT del repo raíz (misma imagen que el índice P3); data URI para headerTemplate de Chromium. */
+/** Logo UTN (ícono + palabra) en `utn-mark-logo.png`; data URI para headerTemplate de Chromium. */
 function pdfHeaderLogoDataUri() {
-  const logoPath = path.join(repoRoot, 'logo-inspt.png')
+  const logoPath = path.join(__dirname, '../utn-mark-logo.png')
   if (!fs.existsSync(logoPath)) return ''
   return `data:image/png;base64,${fs.readFileSync(logoPath).toString('base64')}`
 }
@@ -126,27 +126,50 @@ function pdfHeaderLogoDataUri() {
 function pdfHeaderTemplate(docTitle) {
   const t = escapeHtml(docTitle)
   const logoSrc = pdfHeaderLogoDataUri()
+  /** PNG ~cuadrado (294×301); altura fija y ancho proporcional. */
+  const logoH = 58
   const logoHtml = logoSrc
-    ? `<img src="${logoSrc}" alt="" style="height:28px;width:auto;max-width:120px;object-fit:contain;vertical-align:middle;display:inline-block;" />`
+    ? `<img src="${logoSrc}" alt="" style="height:${logoH}px;width:auto;display:block;margin:0;padding:0;border:0;" />`
     : ''
-  return `<div style="width:100%;box-sizing:border-box;padding:8px 40px 10px;font-size:8px;color:#0f172a;border-bottom:1px solid #64748b;font-family:system-ui,-apple-system,sans-serif;">
-  <table style="width:100%;border-collapse:collapse;margin:0;padding:0;">
+  /** Una sola pila tipográfica; peso y color por fila (sin text-transform). */
+  const fontStack = `font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:10px;line-height:1.35;`
+  const row1 = `${fontStack}font-weight:700;color:#0f172a;`
+  const row1Right = `${row1}text-align:right;`
+  const row2 = `${fontStack}font-weight:700;color:#64748b;`
+  const row2Right = `${row2}text-align:right;`
+  const row3 = `${fontStack}font-weight:400;color:#64748b;`
+  const row3Right = `${row3}text-align:right;`
+  const instituteLine = `${row2}white-space:nowrap;`
+  const rowGap = 'padding:6px 0 0 0;'
+  return `<div style="width:100%;box-sizing:border-box;padding:10px 40px 12px;color:#0f172a;border-bottom:1px solid #64748b;${fontStack}">
+  <table style="width:100%;border-collapse:collapse;margin:0;padding:0;table-layout:fixed;">
+    <colgroup><col style="width:72px;" /><col /><col /></colgroup>
     <tr>
-      <td style="vertical-align:middle;width:52%;padding:0 10px 6px 0;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          ${logoHtml}
-          <div style="line-height:1.35;">
-            <div style="font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Universidad Tecnológica Nacional · INSPT</div>
-          </div>
-        </div>
+      <td rowspan="3" style="vertical-align:middle;padding:0 6px 0 0;border:0;line-height:0;">
+        <div style="display:inline-block;line-height:0;">${logoHtml}</div>
       </td>
-      <td style="vertical-align:middle;width:48%;text-align:right;padding:0 0 6px 10px;">
-        <div style="font-size:10px;font-weight:700;line-height:1.35;">${t}</div>
+      <td style="vertical-align:top;padding:0 10px 0 0;border:0;">
+        <div style="${row1}">UNIVERSIDAD TECNOLÓGICA NACIONAL</div>
+      </td>
+      <td style="vertical-align:top;padding:0;border:0;">
+        <div style="${row1Right}">${t}</div>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align:top;padding:0 10px 0 0;line-height:1.4;">Programación III · Ciclo lectivo 2026</td>
-      <td style="vertical-align:top;text-align:right;padding:0 0 0 10px;line-height:1.4;">Prof. Gastón A. Larriera</td>
+      <td style="vertical-align:top;border:0;${rowGap}padding-right:10px;">
+        <div style="${instituteLine}">INSTITUTO NACIONAL SUPERIOR DE PROFESORADO TECNICO</div>
+      </td>
+      <td style="vertical-align:top;border:0;${rowGap}text-align:right;">
+        <div style="${row2Right}">Prof. Ing. Gaston A. Larriera</div>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top;border:0;${rowGap}padding-right:10px;">
+        <div style="${row3}">PROGRAMACIÓN III</div>
+      </td>
+      <td style="vertical-align:top;border:0;${rowGap}text-align:right;">
+        <div style="${row3Right}">TURNO NOCHE</div>
+      </td>
     </tr>
   </table>
 </div>`
@@ -198,7 +221,7 @@ for (const [html, pdfName, docTitle] of pages) {
     displayHeaderFooter: true,
     headerTemplate: pdfHeaderTemplate(docTitle),
     footerTemplate: pdfFooterTemplate,
-    margin: { top: '118px', bottom: '48px', left: '14mm', right: '14mm' },
+    margin: { top: '172px', bottom: '48px', left: '14mm', right: '14mm' },
     tagged: true,
   })
   copyPdfToLambdaCalculus(outPath, pdfName)

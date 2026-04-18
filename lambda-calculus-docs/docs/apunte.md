@@ -17,7 +17,12 @@ $$
 \mathrm{succ}(x) = x + 1
 $$
 
-Donde $\mathrm{succ}(4) = 4 + 1 = 5$. En **notación de flecha** se omite el nombre de la función: $x \mapsto x+1$.
+Donde $\mathrm{succ}(4) = 4 + 1 = 5$. 
+
+En **notación de flecha** se omite el nombre de la función: 
+$$
+$x \mapsto x+1$.
+$$
 
 El inglés Alan Turing, el austríaco Kurt Gödel y el estadounidense Alonzo Church definieron la computabilidad mediante tres modelos equivalentes: cada uno define la misma clase de funciones computables (**tesis de Church-Turing**).
 
@@ -34,17 +39,22 @@ de entrada. Para su ejecución, se le aplican a E ciertas reglas de conversión.
 La reducción consiste en reemplazar una parte P de E por otra expresión P’ de acuerdo con las reglas
 de conversión dadas. En notación esquemática:
 
+```text
 E[P] → E[P’], siempre y cuando P → P’ esté de acuerdo con las reglas.
+```
 
 Este proceso de reducción se repetirá hasta que la expresión resultante no tenga más partes que
 puedan convertirse (en este curso, sobre todo **$\beta$-redex**). Esa **forma normal** (cuando existe) se puede interpretar como la **salida** del programa funcional. Más adelante veremos que a veces interesa una noción más débil, la **forma normal de cabecera**, y que **no todo término** llega a una forma normal: eso modela también **bucles** o **recursión sin base** en lenguajes reales.
 
 Por ejemplo:
+
+```text
 (7 + 4) × (8 + 5 × 3)
 → 11 × (8 + 5 × 3)
 → 11 × (8 + 15)
 → 11 × 23
 → 253
+```
 
 En este caso, las reglas de reducción consisten en las tablas de sumar y multiplicar valores numéricos.
 
@@ -52,11 +62,13 @@ Mediante reglas de reducción también pueden convertirse datos simbólicos (no 
 
 Por ejemplo:
 
+```text
 primero (ordenar (unir ([“perro”, “conejo”], ordenar ([“ratón”, “gato”]))))
 → primero (ordenar (unir ([“perro”, “conejo”], [“gato”, “ratón”])))
 → primero (ordenar ([“perro”, “conejo”, “gato”, “ratón”]))
 → primero ([“conejo”, “gato”, “perro”, “ratón”])
 → “conejo”
+```
 
 Las funciones como primero, ordenar y unir se pueden programar fácilmente combinando
 algunas reglas de conversión, por lo que se las denomina combinadores.
@@ -67,18 +79,22 @@ primer ejemplo también puede reducirse de las siguientes maneras:
 
 Cambiando el orden de reducción:
 
+```text
 (7 + 4) × (8 + 5 × 3)
 → (7 + 4) × (8 + 15)
 → 11 × (8 + 15)
 → 11 × 23
 → 253
+```
 
 Reduciendo varias expresiones al mismo tiempo:
 
+```text
 (7 + 4) × (8 + 5 × 3)
 → 11 × (8 + 15)
 → 11 × 23
 → 253
+```
 
 ## 2. Sintaxis del cálculo lambda
 
@@ -96,16 +112,20 @@ En la jerga de programación funcional, **$\lambda x.\,M$** es una **función an
 
 **Ejemplos:**
 
-- $x$
-- $(\lambda x.\,x)$
-- $((\lambda x.\,x)\,y)$
-- $(\lambda x.\,(x\,y))\,((\lambda y.\,(y\,y))\,z)$
-- $((\lambda x.\,(x\,y))\,(\lambda y.\,(y\,y)))\,z$
+```text
+x
+(λx. x)
+((λx. x) y)
+(λx. (x y)) ((λy. (y y)) z)
+((λx. (x y)) (λy. (y y))) z
+```
 
 En [Biwascheme](https://www.biwascheme.org) es posible evaluar en línea la siguiente aplicación escrita en Lisp / Scheme. Como se puede ver, la sintaxis de estos lenguajes (en especial el uso de los paréntesis)
 es bastante similar a la sintaxis del cálculo lambda:
 
+```text
 ((lambda (x) (+ x 1)) 4)
+```
 
 ### 2.1 Convenciones
 Para evitar tener que usar un número excesivo de paréntesis, se establecen ciertas convenciones al
@@ -115,21 +135,29 @@ Por ejemplo, para reducir el número de paréntesis de la expresión (((λx.(λy
 
 1) Se omiten los paréntesis externos:
 
-((λx.(λy.(y x))) a) b
+$$
+((\lambda x.(\lambda y.(y\, x)))\, a)\, b
+$$
 
 2) Se asume que las aplicaciones se asocian a la izquierda:
 
-(λx.(λy.(y x))) a b
+$$
+(\lambda x.(\lambda y.(y\, x)))\, a\, b
+$$
 
 3) Se asume que el cuerpo de las abstracciones se extiende hasta que se cierra un paréntesis o
 se alcanza el final de la expresión:
 
-(λx.λy.y x) a b
+$$
+(\lambda x.\lambda y.y\, x)\, a\, b
+$$
 
 4) Opcionalmente (porque esto no disminuye el número de paréntesis), se pueden contraer
 múltiples abstracciones lambda:
 
-(λx y.y x) a b
+$$
+(\lambda x\, y.y\, x)\, a\, b
+$$
 
 Se obtiene de esta forma una expresión lambda que es equivalente a la original.
 
@@ -155,23 +183,14 @@ La variable x ocurre ligada en la expresión N si y solo si:
 donde x ocurre ligada en M  y/o en P
 
 Ejemplos:
-- λz.x y
 
-x libre, y libre
-
-- λx.x y
-
-x ligada, y libre
-
-- λy.x y
-
-x libre, y ligada
-
-- λx y.x y
-
-x ligada, y ligada
-
-- (λz.z x y) (λx.x)     x libre (operador), x ligada (operando), y libre, z ligada
+| Expresión | *x* e *y* (libre / ligada) |
+| --- | --- |
+| λz.x y | *x* libre, *y* libre |
+| λx.x y | *x* ligada, *y* libre |
+| λy.x y | *x* libre, *y* ligada |
+| λx y.x y | *x* ligada, *y* ligada |
+| (λz.z x y) (λx.x) | *x* libre (operador), *x* ligada (operando), *y* libre, *z* ligada |
 
 Aquí conviene el vocabulario de **ocurrencias**: la misma letra puede tener una ocurrencia **libre** y otra **ligada** en el mismo término (son “cosas distintas” ligadas a contextos distintos). En implementaciones reales, los nombres internos no importan: lo que cuenta es la **estructura** del término salvo $\alpha$ (renombre de parámetros).
 
@@ -183,7 +202,9 @@ otra. Como resultado, ambas expresiones denotan lo mismo y son, por lo tanto, eq
 Consiste en hacer un renombramiento de variable en una abstracción que tiene la forma λx.M.
 Si la variable y no ocurre libre en M, es posible sustituir por y todas las ocurrencias libres de x en M:
 
+```text
 λx.M =α λy.M[y/x]
+```
 
 Ejemplos:
 
@@ -211,44 +232,51 @@ Consiste en realizar la reducción de una β-redex (expresión reducible β), qu
 operador es una abstracción. Es decir, una β-redex es una aplicación que tiene la forma  (λx.M) N.
 
 Ejemplos:
-- (λx.(λu.u) (λv.x v)) ((λt.t t) w) Una β-redex que contiene otras dos
 
-- (λx.x x) (λy.y y)
-
-Una β-redex
-
-- (λx.x) (λy.y y) z
-
-Una β-redex
-
-- x (λy.y y)
-
-Ninguna β-redex
+| Expresión | Situación |
+| --- | --- |
+| (λx.(λu.u) (λv.x v)) ((λt.t t) w) | Una β-redex que contiene otras dos |
+| (λx.x x) (λy.y y) | Una β-redex |
+| (λx.x) (λy.y y) z | Una β-redex |
+| x (λy.y y) | Ninguna β-redex |
 
 Una expresión lambda que no contiene ninguna β-redex está en forma normal. Mientras no se llegue
 a la forma normal, puede seguir aplicándose la regla de conversión Beta, que consiste en sustituir por
 $N$ todas las ocurrencias **libres** de $x$ en $M$, obteniendo $M[N/x]$ (**sustitución capturando-evitante**): si alguna variable libre de $N$ quedaría ligada por un $\lambda$ de $M$, antes se renombra ese $\lambda$ con $\alpha$.
 
+```text
 (λx.M) N =β M[N/x]
+```
 
 Ejemplos:
-- (λu.u z u) a
-   =β  a z a
 
-- (λx y.y x) y a
-   =α  (λx z.z x) y a  Obs:  Es obligatorio para evitar que  y  se ligue al entrar
-   =β  (λz.z y) a
-   =β  a y
+```text
+(λu.u z u) a
+=β  a z a
+```
 
-- (λx.(λu.u) (λv.x v)) ((λt.t t) w)
-   =β  (λu.u) (λv.(λt.t t) w v)
-   =β  λv.(λt.t t) w v
-   =β  λv.w w v
+```text
+(λx y.y x) y a
+=α  (λx z.z x) y a  Obs:  Es obligatorio para evitar que  y  se ligue al entrar
+=β  (λz.z y) a
+=β  a y
+```
 
-- (λt.z) ((λx.x x) (λy.y y))
-   =β  z
+```text
+(λx.(λu.u) (λv.x v)) ((λt.t t) w)
+=β  (λu.u) (λv.(λt.t t) w v)
+=β  λv.(λt.t t) w v
+=β  λv.w w v
+```
 
-- (λx.x x) (λy.y y)                    Obs: No termina nunca. No tiene forma normal.
+```text
+(λt.z) ((λx.x x) (λy.y y))
+=β  z
+```
+
+```text
+(λx.x x) (λy.y y)                    Obs: No termina nunca. No tiene forma normal.
+```
 
 ### 4.3 Regla de conversión Eta (η)
 Consiste en realizar la reducción de una η-redex (expresión reducible η), que es una abstracción que
@@ -259,11 +287,18 @@ La regla de conversión Eta establece que:
 λv.M v =η M
 
 Ejemplos:
-- (λx v.x v) ((λt.t t) w) =β λv.((λt.t t) w) v =β λv.w w v =η w w
 
-- (λv.w x y v) z =η w x y z     Obs:  También (λv.w x y v) z =β w x y z
+```text
+(λx v.x v) ((λt.t t) w) =β λv.((λt.t t) w) v =β λv.w w v =η w w
+```
 
-- λx.x t x   Obs:  λx.M x  no es una η-redex con  M ≡ x t  porque x es libre en M
+```text
+(λv.w x y v) z =η w x y z     Obs:  También (λv.w x y v) z =β w x y z
+```
+
+```text
+λx.x t x   Obs:  λx.M x  no es una η-redex con  M ≡ x t  porque x es libre en M
+```
 
 ## 5. Estrategias de reducción
 La reducción de una expresión lambda a su forma normal (si esta existe) puede realizarse de diversas
@@ -277,19 +312,25 @@ dentro de una abstracción lambda, hasta llegar a una expresión en forma normal
 normal form, una expresión sin β-redex en su inicio), que no siempre coincide con la forma normal.
 
 Ejemplo:
-- (λu.u (λt.t) ((λy.y) u)) ((λz.z) x)
-   =β (λz.z) x (λt.t) ((λy.y) ((λz.z) x))
-   =β x (λt.t) ((λy.y) ((λz.z) x))
+
+```text
+(λu.u (λt.t) ((λy.y) u)) ((λz.z) x)
+=β (λz.z) x (λt.t) ((λy.y) ((λz.z) x))
+=β x (λt.t) ((λy.y) ((λz.z) x))
+```
 
 ### 5.2 Orden normal
 Consiste en ir reduciendo siempre la β-redex más externa desde la izquierda.
 
 Ejemplo:
-- (λu.u (λt.t) ((λy.y) u)) ((λz.z) x)
-   =β (λz.z) x (λt.t) ((λy.y) ((λz.z) x))
-   =β x (λt.t) ((λy.y) ((λz.z) x))
-   =β x (λt.t) ((λz.z) x)
-   =β x (λt.t) x
+
+```text
+(λu.u (λt.t) ((λy.y) u)) ((λz.z) x)
+=β (λz.z) x (λt.t) ((λy.y) ((λz.z) x))
+=β x (λt.t) ((λy.y) ((λz.z) x))
+=β x (λt.t) ((λz.z) x)
+=β x (λt.t) x
+```
 
 Si existe la forma normal de una expresión lambda, esta estrategia siempre permite llegar a ella.
 
@@ -298,10 +339,13 @@ Consiste en ir reduciendo siempre la β-redex más interna desde la izquierda y 
 dentro de una abstracción lambda.
 
 Ejemplo:
-- (λu.u (λt.t) ((λy.y) u)) ((λz.z) x)
-   =β (λu.u (λt.t) ((λy.y) u)) x
-   =β x (λt.t) ((λy.y) x)
-   =β x (λt.t) x
+
+```text
+(λu.u (λt.t) ((λy.y) u)) ((λz.z) x)
+=β (λu.u (λt.t) ((λy.y) u)) x
+=β x (λt.t) ((λy.y) x)
+=β x (λt.t) x
+```
 
 Aunque una expresión lambda tenga forma normal, esta estrategia no siempre permite llegar a ella.
 
@@ -309,10 +353,13 @@ Aunque una expresión lambda tenga forma normal, esta estrategia no siempre perm
 Consiste en ir reduciendo siempre la β-redex más interna desde la izquierda.
 
 Ejemplo:
-- (λu.u (λt.t) ((λy.y) u)) ((λz.z) x)
-   =β (λu.u (λt.t) u) ((λz.z) x)
-   =β (λu.u (λt.t) u) x
-   =β x (λt.t) x
+
+```text
+(λu.u (λt.t) ((λy.y) u)) ((λz.z) x)
+=β (λu.u (λt.t) u) ((λz.z) x)
+=β (λu.u (λt.t) u) x
+=β x (λt.t) x
+```
 
 Aunque una expresión lambda tenga forma normal, esta estrategia no siempre permite llegar a ella.
 
@@ -321,78 +368,98 @@ Mediante algunos ejemplos se muestran a continuación las características de la
 
 La siguiente expresión lambda no tiene forma normal:
 
+```text
 (λu.(λt.t) ((λy.y) w)) ((λv.v) r) ((λz.z z) (λx.x x))
+```
 
 Call-by-name
 
+```text
 (λu.(λt.t) ((λy.y) w)) ((λv.v) r) ((λz.z z) (λx.x x))
 =β  (λt.t) ((λy.y) w) ((λz.z z) (λx.x x))
 =β  (λy.y) w ((λz.z z) (λx.x x))
 =β  w ((λz.z z) (λx.x x))
+```
 
 Se llega a la forma normal de cabecera
 Orden normal
 
+```text
 (λu.(λt.t) ((λy.y) w)) ((λv.v) r) ((λz.z z) (λx.x x))
 =β  (λt.t) ((λy.y) w) ((λz.z z) (λx.x x))
 =β  (λy.y) w ((λz.z z) (λx.x x))
 =β  w ((λz.z z) (λx.x x))
 =β  w ((λx.x x) (λx.x x)) ...
+```
 
 Se produce un ciclo infinito
 
 Call-by-value
 
+```text
 (λu.(λt.t) ((λy.y) w)) ((λv.v) r) ((λz.z z) (λx.x x))
 =β  (λu.(λt.t) ((λy.y) w)) r ((λz.z z) (λx.x x))
 =β  (λt.t) ((λy.y) w) ((λz.z z) (λx.x x))
 =β  (λt.t) w ((λz.z z) (λx.x x))
 =β  w ((λz.z z) (λx.x x))
 =β  w ((λx.x x) (λx.x x)) ...
+```
 
 Se produce un ciclo infinito
 
 Orden aplicativo
 
+```text
 (λu.(λt.t) ((λy.y) (w))) ((λv.v) r) ((λz.z z) (λx.x x))
 =β  (λu.(λt.t) w) ((λv.v) r) ((λz.z z) (λx.x x))
 =β  (λu.w) ((λv.v) r) ((λz.z z) (λx.x x))
 =β  (λu.w) r ((λz.z z) (λx.x x))
 =β  w ((λz.z z) (λx.x x))
 =β  w ((λx.x x) (λx.x x)) ...
+```
 
 Se produce un ciclo infinito
 
 La siguiente expresión lambda sí tiene forma normal:
 
+```text
 (λu.w ((λy.y) t)) ((λz.z z) (λx.x x))
+```
 
 Call-by-name
 
+```text
 (λu.w ((λy.y) t)) ((λz.z z) (λx.x x))
 =β  w ((λy.y) t)
+```
 
 Se llega a la forma normal de cabecera
 Orden normal
 
+```text
 (λu.w ((λy.y) t)) ((λz.z z) (λx.x x))
 =β  w ((λy.y) t)
 =β  w t
+```
 
 Se llega a la forma normal
 
 Call-by-value
 
+```text
 (λu.w ((λy.y) t)) ((λz.z z) (λx.x x))
 =β  (λu.w ((λy.y) t)) ((λx.x x) (λx.x x)) ...
+```
 
 Se produce un ciclo infinito
 
 Orden aplicativo
 
+```text
 (λu.w ((λy.y) t)) ((λz.z z) (λx.x x))
 =β  (λu.w t) ((λz.z z) (λx.x x))
 =β  (λu.w t) ((λx.x x) (λx.x x)) ...
+```
 
 Se produce un ciclo infinito
 
@@ -404,7 +471,10 @@ y funciones lógicas aplicables sobre ellos. Es la idea de **codificación de da
 
 Una condición de la forma  si p entonces q; si no r  se representa en cálculo lambda de la siguiente
 manera:
+
+```text
 If = λp.λq.λr.p q r
+```
 
 Al utilizar la regla de conversión Beta en una aplicación que tenga If como operador y tres
 operandos (por ejemplo, a, b y c), se obtendrá otra aplicación que tendrá a como operador y dos
@@ -412,60 +482,73 @@ operandos (b y c). Si a representa el valor verdadero, al aplicar nuevamente la 
 Beta, deberá obtenerse b. En cambio, si a representa el valor falso, deberá obtenerse c. Para ello, se
 adoptan las siguientes representaciones de los valores de verdad:
 
+```text
 True = λx.λy.x         (Selección del primero de dos operandos)
 
 False = λx.λy.y         (Selección del segundo de dos operandos)
+```
 
 *(Estas son las codificaciones clásicas de **Church** para los booleanos.)*
 
 En efecto, la reducción de  If True b c  da  b,  y la de  If False b c  da  c:
 
+```text
 (λp.λq.λr.p q r) (λx.λy.x) b c
 =β (λq.λr.(λx.λy.x) q r) b c
 =β (λr.(λx.λy.x) b r) c
 =β (λx.λy.x) b c
 =β (λy.b) c
 =β b
+```
+
+```text
 (λp.λq.λr.p q r) (λx.λy.y) b c
 =β (λq.λr.(λx.λy.y) q r) b c
 =β (λr.(λx.λy.y) b r) c
 =β (λx.λy.y) b c
 =β (λy.y) c
 =β c
+```
 
 La negación se representa mediante la siguiente abstracción:
 
+```text
 Not = λp.p False True
+```
 
 Es sencillo verificar que **Not True** se reduce a **False** y **Not False** a **True** (con True $= \lambda x.\lambda y.\,x$ y False $= \lambda x.\lambda y.\,y$):
 
+```text
 (λp.p False True) True
 =β True False True
 =β (λx.λy.x) False True
 =β (λy.False) True
 =β False
+```
 
+```text
 (λp.p False True) False
 =β False False True
 =β (λx.λy.y) False True
 =β (λy.y) True
 =β True
+```
 
 Las 16 posibles funciones lógicas diádicas (conectivos) se pueden definir mediante abstracciones.
 Por ejemplo, la conjunción, la disyunción y la disyunción exclusiva se definen así:
 
+```text
 Conjunción:
 And = λp.λq.p q False
-
-(*Si $p$ es True, se devuelve $q$; si $p$ es False, se ignora $q$ y se devuelve False.*)
 
 Disyunción:
 Or = λp.λq.p True q
 
-(*Si $p$ es True, se devuelve True sin evaluar $q$ en esta codificación; si $p$ es False, se devuelve $q$.*)
-
 Disyunción exclusiva:
 Xor = λp.λq.p (q False True) q
+```
+
+(*And: si $p$ es True, se devuelve $q$; si $p$ es False, se ignora $q$ y se devuelve False. Or: si $p$ es True, se devuelve True sin evaluar $q$ en esta codificación; si $p$ es False, se devuelve $q$.*)
 
 ## 7. Representación de números · Funciones numéricas y relacionales
 También mediante abstracciones se pueden definir numerales (representaciones de números) y
@@ -475,119 +558,131 @@ funciones numéricas y relacionales aplicables sobre ellos.
 
 El número  0  se representa así:
 
+```text
 0 = λf.λx.x
+```
 
 La función  Succ  se define de la siguiente manera:
 
+```text
 Succ = λn.λf.λx.f (n f x)
+```
 
 La representación del número  1  se obtiene reduciendo la aplicación  Succ 0:
 
+```text
 (λn.λf.λx.f (n f x)) (λf.λx.x)
 =β λf.λx.f ((λf.λx.x) f x)
 =β λf.λx.f ((λx.x) x)
 =β λf.λx.f x
+```
 
 El numeral  2  se obtiene reduciendo  la aplicación Succ (Succ 0) o  Succ 1, y así sucesivamente:
 
+```text
 0 = λf.λx.x
 1 = λf.λx.f x
 2 = λf.λx.f (f x)
 3 = λf.λx.f (f (f x))
 4 = λf.λx.f (f (f (f x)))
 5 = λf.λx.f (f (f (f (f x))))
+```
 
 Puede verificarse que al reducir la aplicación  Succ 3  se obtiene el numeral  4:
 
+```text
 (λn.λf.λx.f (n f x)) (λf.λx.f (f (f x)))
 =β λf.λx.f ((λf.λx.f (f (f x))) (f) x)
 =β λf.λx.f ((λx.f (f (f x))) (x))
 =β λf.λx.f (f (f (f x)))
+```
 
 Algunas funciones numéricas que se pueden utilizar con los numerales son las siguientes:
 
+```text
 Predecesor de un número:
 Pred = λn.λf.λx.n (λg.λh.h (g f)) (λu.x) (λu.u)
 
 Suma de dos números:
 Add = λm.λn.λf.λx.m f (n f x)
 
-Resta de dos números (convención de este apunte: **$m - n$**, es decir, aplicar $\mathrm{Pred}$ $n$ veces a $m$):
- Sub = λm.λn.n Pred m
+Resta de dos números (convención de este apunte: m − n, es decir, aplicar Pred n veces a m):
+Sub = λm.λn.n Pred m
 
 Producto de dos números:
- Mul = λm.λn.λf.λx.m (n f) x
+Mul = λm.λn.λf.λx.m (n f) x
 
-Potencia de dos números (base $m$, exponente $n$):
- Pow = λm.λn.λf.λx.n m f x
+Potencia de dos números (base m, exponente n):
+Pow = λm.λn.λf.λx.n m f x
+```
 
 (Nota: con numerales de Church suele escribirse también la forma corta **$\lambda m.\lambda n.\,n\,m$**; al aplicarla a numerales coincide con la versión que explicita $f$ y $x$.)
 
 Enésimo término de la sucesión de Fibonacci (con $F(0)=0$, $F(1)=1$, …; el término itera un paso sobre un par de valores acumulados):
+
+```text
 Fibo = λn.n (λf.λa.λb.f b (Add a b)) (λx.λy.x) (λf.λx.x) (λf.λx.f x)
+```
 
 Las funciones relacionales que se pueden utilizar con los numerales son las siguientes:
 
 Evaluar si un número es igual a cero:
 
+```text
 IsZero = λn.n (λz.(λx.λy.y)) (λx.λy.x)
+```
 
 Por ejemplo, la reducción de  IsZero 4  da  False:
 
+```text
 (λn.n (λz.λx.λy.y) (λx.λy.x)) (λf.λx.f (f (f (f x))))
-
 =β (λf.λx.f (f (f (f x)))) (λz.λx.λy.y) (λx.λy.x)
-
 =β (λx.(λz.λx.λy.y) ((λz.λx.λy.y) ((λz.λx.λy.y) ((λz.λx.λy.y) x)))) (λx.λy.x)
-
 =β (λz.λx.λy.y) ((λz.λx.λy.y) ((λz.λx.λy.y) ((λz.λx.λy.y) (λx.λy.x))))
-
 =β λx.λy.y
+```
 
 En cambio, la reducción de  IsZero 0  da  True:
 
+```text
 (λn.n (λz.λx.λy.y) (λx.λy.x)) (λf.λx.x)
-
 =β (λf.λx.x) (λz.λx.λy.y) (λx.λy.x)
-
 =β (λx.x) (λx.λy.x)
-
 =β λx.λy.x
+```
 
-Evaluar si un número es menor o igual que otro:
-
+```text
+Menor o igual:
 Lte = λx.λy.IsZero (Sub x y)
 
-Evaluar si un número es mayor o igual que otro:
-
+Mayor o igual:
 Gte = λx.λy.Lte y x
 
-Evaluar si un número es menor que otro:
-
+Menor que:
 Lt = λx.λy.Not (Gte x y)
 
-Evaluar si un número es mayor que otro:
-
+Mayor que:
 Gt = λx.λy.Not (Lte x y)
 
-Evaluar si dos números son iguales:
-
+Igualdad:
 Eq = λx.λy.And (Lte x y) (Gte x y)
 
-Evaluar si dos números son distintos:
-
+Distinto:
 Ne = λx.λy.Not (Eq x y)
+```
 
 ## 8. Combinadores
 Las expresiones lambda que no contienen ninguna variable libre se denominan combinadores.
 Algunos combinadores de uso frecuente tienen designaciones propias, por ejemplo los tres que dan
 nombre al cálculo de combinadores  SKI (el cual es un tipo de lógica combinatoria):
 
+```text
 S = λx.λy.λz.x z (y z)     Función de fusión (Verschmelzungsfunktion)
 
 K = λx.λy.x                Función de constancia (Konstanzfunktion)
 
 I = λx.x                   Función de identidad (Identitätsfunktion)
+```
 
 Todo el cálculo lambda puede reformularse en el cálculo de combinadores SKI, que tiene una
 sola operación básica: la aplicación. Al ser equivalente al cálculo lambda, el cálculo de combinadores
@@ -597,14 +692,17 @@ todos los demás. Por ejemplo, I = S K K.
 
 En efecto, al reducir S K K se obtiene I:
 
+```text
 (λx.λy.λz.x z (y z)) (λx.λy.x) (λx.λy.x)
 =β  (λy.λz.(λx.λy.x) z (y z)) (λx.λy.x)
 =β  λz.(λx.λy.x) (z) ((λx.λy.x) z)
 =β  λz.(λy.z) ((λx.λy.x) z)
 =β  λz.z
+```
 
 Otros combinadores muy conocidos son los siguientes:
 
+```text
 B = λx.λy.λz.x (y z)
 
 C = λx.λy.λz.x z y
@@ -630,14 +728,17 @@ Y = λf.(λx.f (x x)) (λx.f (x x))              Obs: Definido por Curry
 Θ = (λx.λy.y (x x y)) (λx.λy.y (x x y))       Obs: Definido por Turing
 
 Ω = (λx.x x) (λx.x x)
+```
 
 Las funciones recursivas se deben representar usando algún operador de punto fijo, como  Y  o  Θ.
 Por ejemplo, las funciones factorial y cociente se definirían así:
 
+```text
 Fact = Y (λf.λx.If (IsZero x) 1 (Mul x (f (Pred x))))
 
 Div = λn.(Y (λc.λn.λm.λf.λx.(λd.If (IsZero d) (0 f x)
        (f (c d m f x))) (Sub n m))) (Succ n)
+```
 
 ## 9. Pares y listas
 Las abstracciones permiten definir pares ordenados y listas. Un par ordenado está compuesto de dos
@@ -645,19 +746,28 @@ elementos, denominados primero y segundo.
 
 El par ordenado  (a . b)  se representa así:
 
+```text
 (a . b) = λs.s a b
+```
 
 La función  Pair  utilizada para construir pares ordenados se define de la siguiente manera:
 
+```text
 Pair = λx.λy.λs.s x y
+```
 
 Las funciones  First  y  Second  devuelven, respectivamente, los elementos primero y segundo de
 un par ordenado:
+
+```text
 First = λp.p True
 
 Second = λp.p False
+```
+
 Por ejemplo:
 
+```text
 First (Pair p q)
 (λp.p (λx.λy.x)) ((λx.λy.λs.s x y) p q)
 =β (λp.p (λx.λy.x)) ((λy.λs.s p y) q)
@@ -666,6 +776,9 @@ First (Pair p q)
 =β (λx.λy.x) p q
 =β (λy.p) q
 =β p
+```
+
+```text
 Second (Pair p q)
 (λp.p (λx.λy.y)) ((λx.λy.λs.s x y) p q)
 =β (λp.p (λx.λy.y)) ((λy.λs.s p y) q)
@@ -674,6 +787,7 @@ Second (Pair p q)
 =β (λx.λy.y) p q
 =β (λy.y) q
 =β q
+```
 
 Una lista puede estar vacía (es un par ordenado cuyo elemento primero tiene el valor True) o puede
 estar formada por un par ordenado cuyo elemento primero tiene el valor False y su elemento
@@ -681,29 +795,43 @@ segundo es un par ordenado con dos valores: cabeza y cola.
 
 La lista vacía se define así:
 
+```text
 Nil = Pair True True    Obs: Es más recomendable usar  Nil = λz.z
+```
 
 *(Con `Nil = Pair True True`, se tiene `First Nil = True`. Con `Cons`, la cabeza va en un par interno y la etiqueta externa es `False`, así `First (Cons …) = False`.)*
 
 La lista (a b c) se representa así (notación informal “estilo Lisp” para leer la anidación de pares):
 
+```text
 (False . (a . (False . (b . (False . (c . (λz.z)))))))
+```
 
 La función para verificar si una lista está vacía es la siguiente:
 
+```text
 Null = First
+```
 
 Una aplicación cuyo operador sea la función Null se reduce a True si el operando es Nil o a False
 si el operando es cualquier par ordenado cuyo elemento primero tenga el valor False.
 
 Para construir un nodo de una lista, indicando la cabeza  x  y la cola  y, se define la función Cons:
 
+```text
 Cons = λx.λy.Pair False (Pair x y)
+```
 
 Las funciones  Head  y  Tail  devuelven, respectivamente, los elementos cabeza y cola de una lista:
 
+```text
 Head = λz.First (Second z)
 
 Tail = λz.Second (Second z)
+```
+
 Por ejemplo:
+
+```text
 (Head (Tail (Tail (Cons a (Cons b (Cons c Nil))))))  da  c.
+```
