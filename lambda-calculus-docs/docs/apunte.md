@@ -1,11 +1,41 @@
 ---
 title: Apunte teórico — Cálculo λ
-description: Teoría de cálculo lambda (sintaxis, semántica, combinadores) — Programación III, origen del paradigma funcional.
+description: Teoría de cálculo lambda (sintaxis, semántica, combinadores) y mapa de temas afines — Programación III, origen del paradigma funcional.
 ---
 
 # Apunte teórico — Cálculo λ
 
 Este apunte acompaña **Programación III** en la carrera de **Informática** (INSPT — UTN). El objetivo no es convertir al lector en lógico matemático, sino mostrar el **origen histórico y formal** del paradigma de **programación funcional**: qué es una función cuando se la piensa como regla de cálculo sobre expresiones, cómo se **ejecuta** un programa sin máquina de Von Neumann explícita, y por qué lenguajes como Lisp, Scheme, Haskell o Clojure heredan ideas del **$\lambda$-cálculo** (hoy con tipos, módulos, entrada/salida, etc., que aquí se dejan de lado).
+
+## De Programación I y II a III: otro paradigma, otra cabeza
+
+**Sí: es un cambio de *mindset*.** En **Programación I** (estructurada) uno suele pensar en *pasos*: leer, inicializar, repetir, contar, acumular en una variable, imprimir. El programa es una **secuencia de órdenes** a la máquina. En **Programación II** (orientada a objetos) el centro pasa a ser *quién tiene la responsabilidad*: objetos con **estado interno**, mensajes, polimorfismo; el flujo sigue siendo muy “imperativo” por detrás, solo que organizado en clases.
+
+En **programación funcional** el centro es otro: **qué valor se obtiene** a partir de datos y funciones, sin que el foco principal sea *cómo mutar la memoria paso a paso*. No es que “no haya estado” en el mundo real (bases de datos, red, UI), sino que en el **núcleo del modelo mental** las piezas son **expresiones** y **funciones** que se **componen**, no tanto procedimientos que “hacen cosas” a variables globales.
+
+**Analogía cotidiana.** El estilo imperativo se parece a una **receta con hornallas prendidas todo el tiempo** (subir el fuego, bajar, mezclar, volver a subir). El estilo funcional se parece más a **armar una cuenta de matemáticas o un presupuesto**: se va **simplificando** $((7+4)\times\cdots)$ hasta un resultado; si cambia un dato, se **rearma** el cálculo. Esa simplificación paso a paso es lo que aquí se llama **reducción**.
+
+### Qué concepto del apunte se parece a qué cosa “de verdad” (FP moderna)
+
+| En este apunte (λ puro) | En lenguajes funcionales (lo que suele encontrarse en la práctica) |
+|-------------------------|--------------------------------------------------------------|
+| $\lambda x.\,M$ — abstracción | Funciones anónimas, **lambdas**, `fn`, `lambda`; **bloques** que devuelven expresión. |
+| $M\,N$ — aplicación | Llamar a una función; en estilo punto: `map(xs, f)` vs `map f xs`. |
+| Currying — $\lambda x\,\lambda y.\,M$ | Funciones que “devuelven” funciones; APIs tipo `add(3)` que devuelve otra función; **partial application**. |
+| Variables libres / ligadas | **Clausuras**: la función “recuerda” el entorno donde nació (variables del scope). |
+| $\beta$-reducción | Sustituir argumento en el cuerpo: el modelo mental de **evaluar** una llamada. |
+| Combinadores ($S$, $K$, …) | Patrones sin variables sueltas: se parece a **point-free style**, pipes, `compose`. |
+| Church booleans / `If` | Condicionales como **expresiones** (con valor), no solo como ramas que “ejecutan” efectos. |
+| Numerales de Church ($n\,f\,x$ = aplicar $n$ veces) | `fold`, `reduce`, `iterate`: **repetir una operación** una cantidad de veces. |
+| Estrategias (CBN / CBV) | **Lazy** vs **strict**; si un argumento caro no se usa, ¿conviene calcularlo igual? |
+| $Y$ — punto fijo | `rec`, **recursión** sin nombre global; trampolines en algunos runtimes. |
+
+Ninguna fila es una identidad perfecta (los lenguajes tienen tipos, efectos, optimizaciones), pero sirve para orientarse: cada símbolo abstracto del apunte tiene un **paralelo** en el código que uno suele conocer o encontrará al programar.
+
+### Sobre la curva de aprendizaje
+
+- **No hace falta** imaginar memoria y PC para seguir el λ puro; hace falta **paciencia** con el símbolo. Es como aprender **otra gramática**: al principio incomoda, luego ordena el pensamiento.
+- Lo que uno trae de orientación a objetos **no se descarta**: composición, nombres claros, tests y “responsabilidades” siguen valiendo; lo que cambia es **dónde se pone el centro** del diseño (funciones y datos inmutables frente a objetos que mutan).
 
 ## Introducción
 
@@ -30,6 +60,8 @@ El inglés Alan Turing, el austríaco Kurt Gödel y el estadounidense Alonzo Chu
 ## 1. Programas como expresiones
 Un programa funcional consiste en una expresión E que representa tanto el algoritmo como los datos
 de entrada. Para su ejecución, se le aplican a E ciertas reglas de conversión.
+
+> **Lectura “humana”.** En imperativo el enfoque es “dar tantos pasos hasta obtener la respuesta”. En este modelo se dice: “esta **expresión grande** es la misma que esta **más chica**”, hasta llegar a algo que ya no se puede simplificar. Es el mismo espíritu que $(a+b)(a-b)=a^2-b^2$: **reglas que preservan el significado** y reducen el trabajo.
 
 La reducción consiste en reemplazar una parte P de E por otra expresión P’ de acuerdo con las reglas
 de conversión dadas. En notación esquemática:
@@ -61,9 +93,9 @@ primero (ordenar (unir ([“perro”, “conejo”], ordenar ([“ratón”, “
 Las funciones como primero, ordenar y unir se pueden programar fácilmente combinando
 algunas reglas de conversión, por lo que se las denomina combinadores.
 
-Los sistemas de reducción generalmente satisfacen la propiedad de Church-Rosser, que establece que
-la forma normal obtenida es independiente del orden de reducción de los subtérminos. De hecho, el
-primer ejemplo también puede reducirse de las siguientes maneras:
+En el $\lambda$-cálculo (con $\beta$), la **propiedad de Church–Rosser** (confluencia) implica que si un término puede reducirse a dos resultados distintos, ambos pueden seguir reduciéndose hasta un término común. En particular, **si existe una forma normal**, es **única** (no depende del orden en que se elijan las redex). Eso **no** garantiza que toda secuencia de reducción termine: hay términos sin forma normal. El primer ejemplo aritmético, en cambio, sí termina y puede reducirse, por ejemplo, así:
+
+**Transparencia referencial y efectos.** Esa “misma respuesta sin importar *cómo* simplifiqué” es la idea de la **transparencia referencial**: reemplazar una subexpresión por otra **equivalente** sin cambiar el resultado final. En **JavaScript** y **Clojure** suele priorizarse escribir funciones **puras** (sin efectos ocultos) para poder razonar así; el $\lambda$-cálculo puro es el caso donde eso vale *siempre*. En el navegador o la JVM hace falta delimitar dónde hay efectos (I/O, mutación, reloj).
 
 Cambiando el orden de reducción:
 
@@ -107,6 +139,8 @@ es bastante similar a la sintaxis del cálculo lambda:
 
 ((lambda (x) (+ x 1)) 4)
 
+**Ejemplos en Clojure y JavaScript.** La misma idea con otra sintaxis: en Clojure, `((fn [x] (+ x 1)) 4)` o `#(+ % 1)` aplicado a `4`; en JavaScript, `((x) => x + 1)(4)`. En ambos lenguajes la **función es un valor** que se puede pasar a otra función (orden superior), guardar o devolver: es lo que se llama **first-class functions**, heredado del modelo $\lambda$.
+
 ### 2.1 Convenciones
 Para evitar tener que usar un número excesivo de paréntesis, se establecen ciertas convenciones al
 escribir expresiones lambda.
@@ -135,6 +169,8 @@ Se obtiene de esta forma una expresión lambda que es equivalente a la original.
 
 **Currying.** La convención $\lambda x\,y.\,M$ es azúcar para $\lambda x.\,\lambda y.\,M$: una función de **dos** argumentos es en realidad una función de un argumento que devuelve otra función. Así se hace en Haskell y en la API de colecciones de muchos lenguajes.
 
+> **Analogía.** Un curried `f` es como un **dispenser** por etapas: primero se elige el sabor ($x$), y la máquina entrega **otro** dispenser que espera el tamaño ($y$). No es “más misterioso” que un método que devuelve un objeto con otro método; solo que aquí el objeto *es* otra función.
+
 ## 3. Variables libres y ligadas
 Sean x, y, z variables y M, N, P expresiones lambda cualesquiera:
 
@@ -145,7 +181,7 @@ La variable x ocurre libre en la expresión N si y solo si:
 2) N ≡ λz.M  siendo x ≠ z y donde x ocurre libre en M
 
 3) N ≡ M P
-donde x ocurre libre en M  y en P
+donde x ocurre libre en M **o** en P (equivalentemente: en al menos uno de los dos)
 
 La variable x ocurre ligada en la expresión N si y solo si:
 
@@ -174,6 +210,10 @@ x ligada, y ligada
 - (λz.z x y) (λx.x)     x libre (operador), x ligada (operando), y libre, z ligada
 
 Aquí conviene el vocabulario de **ocurrencias**: la misma letra puede tener una ocurrencia **libre** y otra **ligada** en el mismo término (son “cosas distintas” ligadas a contextos distintos). En implementaciones reales, los nombres internos no importan: lo que cuenta es la **estructura** del término salvo $\alpha$ (renombre de parámetros).
+
+> **Analogía lingüística.** “Cuando **Juan** dijo que **él** aprobaría…”: el segundo pronombre está **ligado** al sujeto de la oración; si se habla de **otro** Juan de la calle, ese nombre está **libre** del contexto de la frase. El $\lambda$ corresponde a “cuando se nombra *este* parámetro…”.
+
+**Inmutabilidad en lenguajes reales.** En el $\lambda$-cálculo no hay “asignación” que pise un valor: al **reducir**, aparece un término **nuevo**. En **Clojure** encaja con colecciones **persistentes** y `let` para ligaduras locales, y con herramientas como átomos o refs cuando el estado debe cambiar de forma explícita. En **JavaScript** suele usarse `const`, evitar mutar argumentos y preferir que `map` o el *spread* devuelvan **estructuras nuevas** en lugar de alterar las originales.
 
 ## 4. Reglas de conversión
 En el cálculo lambda existen tres reglas de conversión que permiten transformar una expresión en
@@ -231,6 +271,8 @@ $N$ todas las ocurrencias **libres** de $x$ en $M$, obteniendo $M[N/x]$ (**susti
 
 (λx.M) N =β M[N/x]
 
+**Pureza y efectos laterales.** La $\beta$ modela “sustituir el argumento en el cuerpo”. Si el cuerpo o el argumento **imprimieran**, **mutaran** estado global o **leyeran** la hora, el resultado puede depender del **orden** de evaluación o del mundo exterior: deja de valer el modelo de “solo reglas de reescritura”. Por eso conviene separar un **núcleo puro** (más fácil de probar y componer) de un **borde con efectos** (HTTP, DOM, `println`, etc.).
+
 Ejemplos:
 - (λu.u z u) a
    =β  a z a
@@ -265,11 +307,34 @@ Ejemplos:
 
 - λx.x t x   Obs:  λx.M x  no es una η-redex con  M ≡ x t  porque x es libre en M
 
+### 4.4 Equivalencia vs reducción · divergencia
+
+Conviene separar dos ideas:
+
+- **Reducción en un paso** ($\to_\beta$): se eligió **una** redex y se la contrajo. Una **cadena** de pasos se escribe $M \twoheadrightarrow_\beta N$ (cero o más pasos).
+- **Equivalencia** ($=_\beta$): $M$ y $N$ son **$\beta$-convertibles** si se puede pasar de uno al otro usando $\beta$ en **cualquier** dirección (incluyendo “deshacer” un paso). Lo mismo con $=_\alpha$, $=_\eta$ y mezclas habituales ($=_{\beta\eta}$, etc.).
+
+En la práctica de los ejercicios casi siempre se **reduce** en una dirección hasta una forma normal, pero las reglas $\alpha$/$\eta$ sirven para **reescribir** sin cambiar el significado.
+
+**Término que no termina.** Ya apareció $(\lambda x.\,x\,x)\,(\lambda x.\,x\,x)$. Es habitual definir $\Omega$ exactamente así: no hay cadena de $\beta$ que llegue a forma normal; la reducción puede continuar **sin fin**. En un lenguaje real, algo análogo sería una recursión sin caso base o un ciclo que no produce valor.
+
+### 4.5 Resumen de las tres reglas
+
+| Regla | Forma típica | Idea en una frase |
+|-------|----------------|-------------------|
+| $\alpha$ | $\lambda x.\,M \;=_\alpha\; \lambda y.\,M[y/x]$ (con $y$ fresco) | Renombrar parámetros: “misma función, otro nombre de argumento”. |
+| $\beta$ | $(\lambda x.\,M)\,N \to_\beta M[N/x]$ | **Aplicar** una función: sustitución en el cuerpo. |
+| $\eta$ | $\lambda v.\,M\,v \to_\eta M$ si $v \notin FV(M)$ | Quitar un “envoltorio” que solo pasa el argumento a $M$. |
+
+> **Tres gestos en lenguaje plano.** $\alpha$: “le cambié el nombre al parámetro, es la misma función”. $\beta$: “**metí** el argumento en la función y simplifiqué”. $\eta$: “saqué un envoltorio que solo pasaba el mismo valor al interior; era **redundante**”.
+
 ## 5. Estrategias de reducción
 La reducción de una expresión lambda a su forma normal (si esta existe) puede realizarse de diversas
 maneras. A continuación se describen cuatro de las estrategias más conocidas.
 
 **Vínculo con lenguajes reales (idea general):** **call-by-name** y **orden normal** se parecen a la **evaluación perezosa** (no calcular un argumento hasta hacer falta; ej. Haskell en la práctica). **Call-by-value** y **orden aplicativo** se parecen a la **evaluación estricta** (evaluar argumentos antes de entrar al cuerpo; ej. la mayoría de los lenguajes de la familia ML, Scheme, etc.). La tabla del final resume **qué redex** se elige en cada paso; los ejemplos muestran que esa elección puede marcar la diferencia entre **terminar** o **diverger**.
+
+> **Analogía.** **Call-by-value** es como **pagar al entrar** al cine: aunque uno se vaya a los cinco minutos, ya se pagó la entrada. **Call-by-name** es como “**cobramos solo si se usa** el servicio”: si la función ni mira el argumento, tal vez nunca haga falta calcularlo (y en ejemplos concretos eso puede ser la diferencia entre colgar o no).
 
 ### 5.1 Call-by-name
 Consiste en ir reduciendo siempre la β-redex más externa desde la izquierda y que no esté ubicada
@@ -398,9 +463,13 @@ Se produce un ciclo infinito
 
 Conclusiones: El **orden normal** (elegir siempre la $\beta$-redex **más externa** a la **izquierda**, aunque esté bajo un $\lambda$) tiene la propiedad clave: **si el término tiene forma normal**, esta estrategia **llega** a ella (no se “pierde” en un camino que solo diverge). Eso **no** dice que todo término termine: en el $\lambda$-cálculo no tipado hay términos **sin** forma normal. **Call-by-name** y **call-by-value** añaden restricciones que modelan implementaciones; **call-by-name** suele relacionarse con hallar **forma normal de cabecera** cuando corresponde, mientras que **call-by-value** puede **no** encontrar la forma normal aun existiendo. **Orden aplicativo** es el “hermano” interno de call-by-value (permite redex bajo $\lambda$) y comparte muchas de sus limitaciones. En la práctica, los lenguajes añaden **tipos**, **constantes** y reglas para que la evaluación sea predecible y eficiente.
 
+**Cortocircuito en JavaScript.** Los operadores `&&` y `||` son **perezosos** en la segunda expresión (no la evalúan si ya tienen el resultado): la intuición es parecida a `And`/`Or` de Church, donde una rama puede no usarse. No confundir con `&` y `|` *bitwise*, que se comportan distinto.
+
 ## 6. Representación de valores de verdad · Funciones lógicas
 Mediante abstracciones es posible definir representaciones de los valores verdadero y falso,
 y funciones lógicas aplicables sobre ellos. Es la idea de **codificación de datos como comportamiento**: un booleano no es un bit en memoria, sino una función que **elige** entre dos alternativas (como un `if` que recibe dos continuaciones).
+
+> **Analogía.** Puede imaginarse un **cruce de ferrocarril** con dos rieles: el booleano no “es un palito”; es el **mecanismo** que manda el tren por la rama A o por la rama B. En programación funcional moderna, los `if`/`match` suelen ser **expresiones con valor** (como el operador ternario `?:` en varios lenguajes), no solo “sentencias” que alteran el flujo imperativo.
 
 Una condición de la forma  si p entonces q; si no r  se representa en cálculo lambda de la siguiente
 manera:
@@ -467,11 +536,17 @@ Or = λp.λq.p True q
 Disyunción exclusiva:
 Xor = λp.λq.p (q False True) q
 
+**Condicionales en Clojure.** Allí `if` es una **expresión** con valor (como en este formalismo), no solo una sentencia. Los booleanos (`true`/`false`) no son codificación de Church, pero la idea es parecida: `and` y `or` son **macros** con **cortocircuito** (pueden no evaluar una rama), en la misma línea que no reducir un ramal que no corresponde.
+
 ## 7. Representación de números · Funciones numéricas y relacionales
 También mediante abstracciones se pueden definir numerales (representaciones de números) y
 funciones numéricas y relacionales aplicables sobre ellos.
 
 **Numerales de Church.** La idea es que el natural $n$ sea una función que **aplica** $f$ exactamente $n$ veces sobre $x$: así el “contenido” del número es **iteración**. No es una representación eficiente en una computadora real, pero es compacta para razonar y conecta con **fold** / `reduce` en lenguajes funcionales.
+
+> **Analogía.** El número no es “la etiqueta del cajón”; es **cuántas veces se repite una acción**: “dar **tres** vueltas a la manzana”, “picar el ajo **dos** veces”. Por eso el numeral de Church “habla” con un $f$ y un $x$: *repetir esta transformación tantas veces sobre este valor inicial*.
+
+**`reduce` en Clojure y JavaScript.** En ambos entornos aparece la misma idea: función de acumulación, valor inicial y recorrido de una colección. En estilo funcional conviene que cada paso produzca el **siguiente** acumulado sin depender de mutar un objeto compartido; en JavaScript a veces se usa un objeto mutable como acumulador, lo cual exige más cuidado.
 
 El número  0  se representa así:
 
@@ -595,6 +670,10 @@ SKI es lo suficientemente potente como para codificar cualquier función computa
 combinadores S y K se denominan combinadores estándar, ya que con ellos es posible representar
 todos los demás. Por ejemplo, I = S K K.
 
+> **Analogía.** $S$ y $K$ son como **dos ladrillos** de LEGO con los que, repitiendo y encajando, se puede armar cualquier figura (cualquier función). En código, la idea se parece a construir todo con **composición** y pocos primitivos, aunque en la práctica se usan más piezas con nombre (`map`, `filter`, etc.) por legibilidad.
+
+**Composición y orden superior.** En Clojure, `comp` arma “$f$ después de $g$”: `(comp f g)`. En JavaScript suele escribirse `x => f(g(x))` o con utilidades de estilo *lodash/fp*. Los combinadores $B$ (composición) y $C$ (intercambio de argumentos) son antecedentes de esos patrones; `map`, `filter` y `partial` son ejemplos cotidianos de **orden superior** cuando las funciones son valores.
+
 En efecto, al reducir S K K se obtiene I:
 
 (λx.λy.λz.x z (y z)) (λx.λy.x) (λx.λy.x)
@@ -631,8 +710,13 @@ Y = λf.(λx.f (x x)) (λx.f (x x))              Obs: Definido por Curry
 
 Ω = (λx.x x) (λx.x x)
 
-Las funciones recursivas se deben representar usando algún operador de punto fijo, como  Y  o  Θ.
-Por ejemplo, las funciones factorial y cociente se definirían así:
+Las funciones recursivas se suelen expresar con un **combinador de punto fijo** como $Y$ o $\Theta$ (definidos arriba).
+
+En el $\lambda$-cálculo **no tipado**, el combinador $Y$ cumple $Y\,g =_\beta g\,(Y\,g)$ para cualquier $g$, lo que permite expresar recursión sin un nombre global. En lenguajes **estrictos** (evaluación estilo call-by-value), esta $Y$ **no** puede usarse tal cual: hace falta una variante (combinador de punto fijo para CBV) o mecanismos del lenguaje (`let rec`, evaluación lazy). A nivel de este apunte basta con captar la idea: la recursión aparece como **punto fijo** de un funcional.
+
+> **Analogía.** Es como definir “el factorial es: si $n=0$ se devuelve 1; si no, $n$ por **el factorial** de $n-1$”: la palabra “factorial” vuelve a aparecer en su propia definición. $Y$ es el truco formal que permite **nombrar** esa autorreferencia cuando no existe `def factorial` en el lenguaje minimal.
+
+Por ejemplo, el factorial y un esquema de **división** (la división entera completa en numerales de Church es extensa; lo siguiente **ilustra** el patrón con $Y$ e `If`):
 
 Fact = Y (λf.λx.If (IsZero x) 1 (Mul x (f (Pred x))))
 
@@ -675,9 +759,9 @@ Second (Pair p q)
 =β (λy.y) q
 =β q
 
-Una lista puede estar vacía (es un par ordenado cuyo elemento primero tiene el valor True) o puede
-estar formada por un par ordenado cuyo elemento primero tiene el valor False y su elemento
-segundo es un par ordenado con dos valores: cabeza y cola.
+Una lista puede estar vacía o no. En esta codificación, un nodo de lista es un **par**: la **primera** componente del par actúa como **etiqueta** (`True` = lista vacía, `False` = nodo con cabeza y cola). Por eso `Null = First`: lee la etiqueta y distingue vacío de no vacío.
+
+> **Analogía.** Una lista encadenada es como un **tren**: cada vagón (`Cons`) dice “acá va un pasajero (cabeza) y el resto del tren (cola)”. El **vagón fantasma** inicial que marca “no hay más formación” es `Nil`. En lenguajes con listas nativas (`[]` y `::`) no se razona así en el día a día, pero la idea de **cabeza + cola** es la misma que en recursión sobre listas en Programación I.
 
 La lista vacía se define así:
 
@@ -694,11 +778,13 @@ La función para verificar si una lista está vacía es la siguiente:
 Null = First
 
 Una aplicación cuyo operador sea la función Null se reduce a True si el operando es Nil o a False
-si el operando es cualquier par ordenado cuyo elemento primero tenga el valor False.
+si el operando es un nodo `Cons` (etiqueta False).
 
 Para construir un nodo de una lista, indicando la cabeza  x  y la cola  y, se define la función Cons:
 
 Cons = λx.λy.Pair False (Pair x y)
+
+**Listas persistentes.** En Clojure, listas y `cons` permiten **compartir estructura**: por ejemplo, `conj` no invalida la lista anterior para quien aún la referencia. En JavaScript, `[...xs, x]` o `.concat` siguen una idea parecida si no se muta `xs` *in-place*.
 
 Las funciones  Head  y  Tail  devuelven, respectivamente, los elementos cabeza y cola de una lista:
 
@@ -707,3 +793,44 @@ Head = λz.First (Second z)
 Tail = λz.Second (Second z)
 Por ejemplo:
 (Head (Tail (Tail (Cons a (Cons b (Cons c Nil))))))  da  c.
+
+## 10. Temas que este apunte no desarrolla (y por qué importan)
+
+Este apunte centra el **$\lambda$-cálculo no tipado** como historia y como lenguaje mínimo. Lo que sigue es un mapa breve del paradigma y de la teoría de lenguajes; los detalles quedan para lectura u otras asignaturas.
+
+### 10.1 Azúcar sintáctico: `let`, nombres locales y clausuras
+
+En texto y en pizarra se escribe a menudo **$\texttt{let}\; x = N \;\texttt{in}\; M$** (o definiciones con nombre). En $\lambda$ puro eso es azúcar de **$(\lambda x.\,M)\,N$**: el nombre $x$ es el parámetro de una función aplicada al valor $N$. En una implementación real, el **entorno** guarda qué valor tiene cada variable libre en el cuerpo: eso es la **clausura** cuando una función “recuerda” variables del contexto donde se creó.
+
+> **Quienes vienen de orientación a objetos.** La imagen es parecida a un objeto que guarda datos y expone un método que los usa; aquí el encapsulado suele ser **otra función**. En Java, las lambdas que capturan variables **efectivamente finales** ilustran la misma idea de entorno capturado.
+
+### 10.2 Call-by-need (evaluación perezosa con memoria)
+
+**Call-by-name** no vuelve a calcular un argumento si se usa dos veces… pero **sí** puede recalcularlo cada vez. **Call-by-need** (idea central de Haskell) es como CBN, pero **memoiza** el resultado de la primera demanda del argumento. Así se evita trabajo duplicado sin perder la semántica perezosa en muchos casos.
+
+**Evaluación diferida en Clojure.** Las *lazy seqs* y formas como `lazy-seq` o `delay` retrasan el trabajo hasta **consumir** el siguiente valor (salvo detalles del lenguaje: *chunking*, efectos en el cuerpo, etc.).
+
+### 10.3 $\lambda$-cálculo simplemente tipado y más allá
+
+En el $\lambda$-cálculo **no tipado** se pueden escribir términos “locos” que **no tienen** interpretación razonable como programa (p. ej. aplicar un número como si fuera función). Los lenguajes de producción usan **sistemas de tipos** que descartan esos términos **antes** de ejecutar. El **$\lambda$-cálculo simplemente tipado** es el primer paso: cada variable tiene un tipo, las aplicaciones están restringidas y, crucialmente, **toda** reducción termina (no hay $\Omega$). A partir de ahí se construyen sistemas más ricos (polimorfismo, tipos dependientes, etc.). Una curiosidad histórica: el **isomorfismo de Curry–Howard** relaciona pruebas y programas (“proposiciones como tipos”); queda fuera del alcance de este apunte, pero explica por qué el $\lambda$-cálculo tipado es central en fundamentos.
+
+### 10.4 Constantes, $\delta$-reglas y “$\lambda$ más aritmética”
+
+Aquí los números y booleanos son **codificaciones**. Los intérpretes reales suelen tener **literales** y primitivas (`+`, `if`, etc.) con reglas extra ($\delta$-reducción). Eso acerca el modelo a la implementación sin reemplazar la lección sobre **codificación** y **combinadores**.
+
+### 10.5 Otras codificaciones de datos
+
+Los **numerales de Church** no son la única opción. Por ejemplo, los **numerales de Scott** representan un natural como “caso cero o sucesor de otro”, alineados con **tipos inductivos** (como `data Nat = Z | S Nat` en Haskell). Para listas y árboles existen codificaciones análogas. Sirven para comparar estilos de razonamiento y eficiencia teórica.
+
+### 10.6 Máquinas abstractas
+
+La reducción en papel no es cómo ejecuta la máquina. Modelos como la **SECD** o la **máquina de Krivine** traducen estrategias de evaluación a **estados** (código + pila + entorno). Conectan este apunte con compiladores e intérpretes reales.
+
+### 10.7 Lecturas posibles (opcional)
+
+- H. P. Barendregt, *The Lambda Calculus: Its Syntax and Semantics* — referencia clásica (exigente).
+- B. C. Pierce, *Types and Programming Languages* — $\lambda$ tipado y fundamentos orientados a informática.
+
+---
+
+**Cierre.** El hilo conductor es: **expresión**, **reducción**, **estrategia**, **datos codificados**, **recursión por punto fijo** y **combinadores**. El resto del paradigma funcional (módulos, efectos, concurrencia, ecosistemas concretos) se apoya en estas ideas, pero ya no en el $\lambda$-cálculo puro de los años 30. Los apartados que relacionan el texto con **JavaScript** y **Clojure** sirven como puente hacia la práctica con lenguajes reales.

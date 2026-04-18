@@ -136,6 +136,28 @@ primero (ordenar (unir (["perro", "conejo"], ordenar (["ratón", "gato"]))))
 ```
 
 ---
+layout: default
+---
+
+# Church–Rosser y forma normal
+
+- **Confluencia** (propiedad de Church–Rosser): si un término se reduce de dos maneras distintas, ambos caminos pueden seguir hasta un término común.
+- Si existe **forma normal** (sin β-redex), es **única**: no depende del orden en que se elijan las redex.
+- Eso **no** implica que toda reducción termine: hay términos **sin** forma normal (p. ej. $\Omega = (\lambda x.\,x\,x)\,(\lambda x.\,x\,x)$).
+
+*(Detalle y demostraciones: **apunte teórico** del curso.)*
+
+---
+layout: default
+---
+
+# Material de estudio
+
+- **Apunte teórico** (cálculo λ): definiciones, ejemplos y temas de profundización — **fuente de verdad** respecto de esta unidad.
+- **Guía de ejercicios** y **ejercicios adicionales**: mismo criterio de definiciones y convenciones que el apunte.
+- Esta **presentación** resume ideas para clase; ante dudas, priorizar el apunte.
+
+---
 layout: center
 ---
 
@@ -264,7 +286,7 @@ La variable **x** ocurre **ligada** en la expresión N si y solo si:
 La variable **x** ocurre **libre** en la expresión N si y solo si:
 
 - $N = \lambda z.M$ siendo $x \neq z$ y donde x ocurre libre en M
-- $N = M\ P$ donde x ocurre libre en M y en P
+- $N = M\ P$ donde x ocurre libre en M **o** en P (al menos en uno de los dos)
 
 </div>
 
@@ -308,9 +330,9 @@ layout: default
 
 ```
 λx.x                      →α λy.y
-λx.y x                    →α λz.y z
-λx.z x x (λu x.x u) v x   →α λy.z y y (λu x.x u) v y
-λx y.x z y                → ?
+λx.y x                    →α λz.y z        (nombre fresco; no confundir con renombrar a «y»)
+λx.z x x (λu.λv.u v) v x  →α λy.z y y (λu.λv.u v) v y
+λx y.x z y                → ?             (requiere α previo si se renombra el parámetro que choca con z)
 ```
 
 ---
@@ -371,9 +393,19 @@ layout: default
 <v-click>
 
 ```
-(λz w.w z w) w x =β ?
+(λz w.w z w) w x =β ?    // λz w = λz.λw.w z w
 
 (λx.x x) (λy.y y) =β ?
+```
+
+</v-click>
+
+<v-click>
+
+```
+((λz.λw.w z w) w) x =β (λw.w w w) x =β x x x
+
+(λx.x x) (λy.y y) →β … (no termina; no tiene forma normal)
 ```
 
 </v-click>
@@ -388,9 +420,9 @@ layout: default
 
 $$\eta\text{-redex} \Rightarrow \lambda v.M\ v$$
 
-$$\text{Conversión} \Rightarrow \lambda v.M\ v =_\eta M$$
+$$\text{Conversión} \Rightarrow \lambda v.M\ v =_\eta M \quad\text{(con } v \notin FV(M)\text{)}$$
 
-Si una función solo aplica $M$ a su argumento, es equivalente a $M$ directamente.
+Si el cuerpo es $M$ aplicado solo a la variable del $\lambda$, y $v$ no es libre en $M$, el $\lambda$ es **redundante** (extensionalidad).
 
 ---
 layout: default
@@ -416,9 +448,9 @@ layout: default
 <v-click>
 
 ```
-(λv.w x y v) z  =η ?
+(λv.w x y v) z  =β w x y z   (=η respecto de λv.w x y v si v ∉ FV(w x y))
 
-λx.x t x  =η ?
+λx.x t x  → no es η-redex (x es libre en el cuerpo x t)
 ```
 
 </v-click>
@@ -494,12 +526,6 @@ Consiste en ir reduciendo siempre la β-redex más **interna desde la izquierda*
   =β (λu.u (λt.t) u) x
   =β x (λt.t) x
 ```
-
-<div class="mt-2">
-
-(*) Permite llegar a su forma normal de cabecera
-
-</div>
 
 ---
 layout: default
@@ -579,12 +605,18 @@ layout: default
 
 <div class="text-sm">
 
-| Estrategia | β-redex elegida | ¿Entra en λ? | Forma normal |
+| Estrategia | β-redex elegida | ¿Entra en λ? | Resultado (ver apunte) |
 |---|---|---|---|
-| **Call-by-name** | Más externa, izquierda | No | De cabecera |
-| **Orden normal** | Más externa, izquierda | Sí | Completa (garantizada si existe) |
-| **Call-by-value** | Más interna, izquierda | No | De cabecera |
-| **Orden aplicativo** | Más interna, izquierda | Sí | De cabecera |
+| **Call-by-name** | Más externa, izquierda | No | Suele relacionarse con **HNF** / evaluación perezosa |
+| **Orden normal** | Más externa, izquierda | Sí | **FN completa si existe** (estrategia estándar) |
+| **Call-by-value** | Más interna, izquierda | No | Puede **no** llegar a la FN aun existiendo |
+| **Orden aplicativo** | Más interna, izquierda | Sí | Parecido a CBV; **no** garantiza FN |
+
+</div>
+
+<div class="mt-2 text-xs opacity-80">
+
+Call-by-name / orden normal ↔ *lazy*; call-by-value / aplicativo ↔ *strict* (idea general; ver apunte).
 
 </div>
 
@@ -628,6 +660,7 @@ False = λx.λy.y
 Not   = λp.p False True
 And   = λp.λq.p q False
 Or    = λp.λq.p True q
+Xor   = λp.λq.p (q False True) q
 ```
 
 ---
@@ -667,15 +700,21 @@ Pred   = λn.λf.λx.n (λg.λh.h (g f)) (λu.x) (λu.u)
 Add    = λm.λn.λf.λx.m f (n f x)
 Sub    = λm.λn.n Pred m
 Mul    = λm.λn.λf.λx.m (n f) x
-Pow    = λm.λn.λf.λx.n m f x
-```
+Pow    = λm.λn.λf.λx.n m f x   // base m, exponente n; forma corta λm.λn.n m (ver apunte)
 
-```
 Fibo   = λn.n (λf.λa.λb.f b (Add a b))
-              (λx.λy.x) (λf.λx.x) (λf.λx.f x)
+              (λx.λy.x) (λf.λx.x) (λf.λx.f x)   // F(0)=0, F(1)=1, …
 
 IsZero = λn.n (λz.(λx.λy.y)) (λx.λy.x)
 ```
+
+*(Sub: convención del apunte es **m − n**.)*
+
+</div>
+
+<div class="mt-2 text-xs opacity-80">
+
+Definiciones alineadas con el **apunte** (incl. relaciones Lte, Gte, Eq, etc.).
 
 </div>
 
@@ -830,7 +869,7 @@ layout: default
 
 # Recursividad
 
-Se representa utilizando un combinador de punto fijo, en este caso utilizamos **Y**:
+Se representa utilizando un combinador de punto fijo, en este caso utilizamos **Y**. En el λ-cálculo **no tipado**, $Y$ cumple la ecuación de punto fijo habitual; en **call-by-value** “en crudo” hace falta una variante o un mecanismo del lenguaje (p. ej. `let rec`), como resume el apunte.
 
 ```
 Fact = Y (λf.λx.If (IsZero x) 1 (Mul x (f (Pred x))))
@@ -976,10 +1015,11 @@ layout: center
 
 - **Definición formal**: variables, abstracciones y aplicaciones
 - **Conversiones**: α (renombrar), β (aplicar), η (extensionalidad)
+- **Church–Rosser**: confluencia; forma normal **única si existe**; no toda reducción termina ($\Omega$)
 - **Estrategias de reducción**: call-by-name, orden normal, call-by-value, orden aplicativo
-- **Funciones lógicas**: True, False, If, Not, And, Or
+- **Funciones lógicas**: True, False, If, Not, And, Or, Xor
 - **Números de Church**: numerales y operaciones aritméticas
-- **Combinadores**: SKI y punto fijo (Y)
+- **Combinadores**: SKI y punto fijo (Y; en CBV, variante o `let rec`)
 - **Estructuras de datos**: pares ordenados y listas
 
 </div>

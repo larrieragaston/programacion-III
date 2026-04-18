@@ -5,6 +5,8 @@ pageClass: ejercicios-adicionales
 
 # Ejercicios adicionales
 
+Ejercicios de cálculo λ. Las definiciones formales y los nombres canónicos de operadores siguen el **apunte** (`apunte.md`); en enunciados con notación abreviada (p. ej. `plus`, `iscero`), interpretar según las macros del apunte.
+
 Enunciados
 
 1. ¿Cuáles de las siguientes expresiones-λ son correctas según la gramática vista en clase? ¿Cuáles no lo son? Justificar cada respuesta.
