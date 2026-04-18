@@ -12,9 +12,9 @@ Sitio estático con **apunte teórico**, **guía de ejercicios** y **ejercicios 
 | Página de inicio (hero + enlaces) | `docs/index.md` |
 | Tema y estilos | `docs/.vitepress/theme/` (`index.ts`, `custom.css`) |
 | Configuración VitePress | `docs/.vitepress/config.ts` |
-| PDFs generados (no suelen versionarse) | `docs/public/pdfs/*.pdf` |
+| PDFs generados (no versionados) | `docs/public/pdfs/*.pdf` y copia en `../lambda-calculus/public/pdfs/originales/` |
 
-Los PDFs en `public/pdfs/` están en `.gitignore`; se regeneran con `npm run docs:pdf` cuando haga falta.
+Esos PDF están en `.gitignore`; se regeneran con `npm run docs:pdf` (Playwright). En CI se generan antes del build de Slidev.
 
 ## Requisitos
 

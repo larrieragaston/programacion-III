@@ -1,9 +1,11 @@
 ---
 title: Apunte teórico — Cálculo λ
-description: Teoría de cálculo lambda (sintaxis, semántica, combinadores).
+description: Teoría de cálculo lambda (sintaxis, semántica, combinadores) — Programación III, origen del paradigma funcional.
 ---
 
 # Apunte teórico — Cálculo λ
+
+Este apunte acompaña **Programación III** en la carrera de **Informática** (INSPT — UTN). El objetivo no es convertir al lector en lógico matemático, sino mostrar el **origen histórico y formal** del paradigma de **programación funcional**: qué es una función cuando se la piensa como regla de cálculo sobre expresiones, cómo se **ejecuta** un programa sin máquina de Von Neumann explícita, y por qué lenguajes como Lisp, Scheme, Haskell o Clojure heredan ideas del **$\lambda$-cálculo** (hoy con tipos, módulos, entrada/salida, etc., que aquí se dejan de lado).
 
 ## Introducción
 
@@ -23,7 +25,7 @@ El inglés Alan Turing, el austríaco Kurt Gödel y el estadounidense Alonzo Chu
 
 2. **Gödel** definió las **funciones recursivas generales** como el menor conjunto de funciones parciales que contiene constantes y sucesor, y es cerrado bajo proyección, composición y recursión. Postuló que computable equivale a recursiva general.
 
-3. **Church** definió el **cálculo lambda** y postuló que computable equivale a expresable como término $\lambda$. Es el lenguaje más simple que es **Turing-completo**. Lisp, Scheme, Haskell, Clojure y Scala se apoyan en el $\lambda$-cálculo (con tipos, E/S, etc.). Las **máquinas de reducción** ejecutan programas en estos lenguajes.
+3. **Church** definió el **cálculo lambda** y postuló que computable equivale a expresable como término $\lambda$. Es un lenguaje **mínimo** y, a la vez, **Turing-completo**: con variables, abstracción y aplicación basta para expresar lo mismo que con una máquina de Turing (salvo detalles de codificación). Lisp, Scheme, Haskell, Clojure y Scala **no son** el $\lambda$-cálculo puro, pero su noción central de **función como valor**, el **currying** y la **evaluación por reducción** vienen de ahí. Las **máquinas abstractas** y los intérpretes de estos lenguajes pueden verse como estrategias de reducción (más reglas prácticas) sobre términos.
 
 ## 1. Programas como expresiones
 Un programa funcional consiste en una expresión E que representa tanto el algoritmo como los datos
@@ -35,8 +37,7 @@ de conversión dadas. En notación esquemática:
 E[P] → E[P’], siempre y cuando P → P’ esté de acuerdo con las reglas.
 
 Este proceso de reducción se repetirá hasta que la expresión resultante no tenga más partes que
-puedan convertirse. Esta denominada forma normal E* de la expresión E consiste en la salida del
-programa funcional dado.
+puedan convertirse (en este curso, sobre todo **$\beta$-redex**). Esa **forma normal** (cuando existe) se puede interpretar como la **salida** del programa funcional. Más adelante veremos que a veces interesa una noción más débil, la **forma normal de cabecera**, y que **no todo término** llega a una forma normal: eso modela también **bucles** o **recursión sin base** en lenguajes reales.
 
 Por ejemplo:
 (7 + 4) × (8 + 5 × 3)
@@ -91,6 +92,8 @@ La sintaxis de una expresión lambda (término $\lambda$) en **BNF** es:
 
 Es decir, un término puede ser: **(1)** una variable; **(2)** una abstracción (parámetro formal y cuerpo); **(3)** una aplicación (operador y operando).
 
+En la jerga de programación funcional, **$\lambda x.\,M$** es una **función anónima** con argumento formal $x$ y cuerpo $M$; **$M\,N$** es **aplicar** la función $M$ al argumento $N$ (como escribir `(M N)` en un lenguaje con prefijo). No hay números ni booleanos en la gramática: más adelante los **codificaremos** con puro $\lambda$.
+
 **Ejemplos:**
 
 - $x$
@@ -99,8 +102,7 @@ Es decir, un término puede ser: **(1)** una variable; **(2)** una abstracción 
 - $(\lambda x.\,(x\,y))\,((\lambda y.\,(y\,y))\,z)$
 - $((\lambda x.\,(x\,y))\,(\lambda y.\,(y\,y)))\,z$
 
-En http://www.biwascheme.org es posible evaluar en línea la siguiente aplicación escrita en
-Lisp / Scheme. Como se puede ver, la sintaxis de estos lenguajes (en especial el uso de los paréntesis)
+En [Biwascheme](https://www.biwascheme.org) es posible evaluar en línea la siguiente aplicación escrita en Lisp / Scheme. Como se puede ver, la sintaxis de estos lenguajes (en especial el uso de los paréntesis)
 es bastante similar a la sintaxis del cálculo lambda:
 
 ((lambda (x) (+ x 1)) 4)
@@ -130,6 +132,8 @@ múltiples abstracciones lambda:
 (λx y.y x) a b
 
 Se obtiene de esta forma una expresión lambda que es equivalente a la original.
+
+**Currying.** La convención $\lambda x\,y.\,M$ es azúcar para $\lambda x.\,\lambda y.\,M$: una función de **dos** argumentos es en realidad una función de un argumento que devuelve otra función. Así se hace en Haskell y en la API de colecciones de muchos lenguajes.
 
 ## 3. Variables libres y ligadas
 Sean x, y, z variables y M, N, P expresiones lambda cualesquiera:
@@ -169,6 +173,8 @@ x ligada, y ligada
 
 - (λz.z x y) (λx.x)     x libre (operador), x ligada (operando), y libre, z ligada
 
+Aquí conviene el vocabulario de **ocurrencias**: la misma letra puede tener una ocurrencia **libre** y otra **ligada** en el mismo término (son “cosas distintas” ligadas a contextos distintos). En implementaciones reales, los nombres internos no importan: lo que cuenta es la **estructura** del término salvo $\alpha$ (renombre de parámetros).
+
 ## 4. Reglas de conversión
 En el cálculo lambda existen tres reglas de conversión que permiten transformar una expresión en
 otra. Como resultado, ambas expresiones denotan lo mismo y son, por lo tanto, equivalentes.
@@ -183,27 +189,22 @@ Ejemplos:
 
 1) λx.x sustituyendo queda λy.y
 
-2) λx.y x no se puede aplicar la regla α porque se ligaría la variable y que es libre.
+2) En $\lambda x.\,y\,x$ **sí** se puede aplicar $\alpha$ renombrando el parámetro a un nombre fresco (p. ej. $\lambda z.\,y\,z$). Lo que **no** es válido es renombrar $x$ a $y$, porque $y$ es libre en el cuerpo y quedaría **capturada** por el nuevo ligador.
 
-Con cualquier otra variable que no ocurra libre en M, sí se podría usar la regla α: λz.y z
+Con cualquier variable $z$ que no ocurra libre en el cuerpo, se tiene $\lambda x.\,y\,x =_\alpha \lambda z.\,y\,z$.
 
-3) λx.z x (λu x.x u) v x sustituyendo queda λy.z y (λu x.x u) v y
+3) $\lambda x.\,z\,x\,(\lambda u.\lambda v.\,u\,v)\,v\,x$ sustituyendo $x$ por $y$ fresco queda $\lambda y.\,z\,y\,(\lambda u.\lambda v.\,u\,v)\,v\,y$
 
-4) λx y.x z y debe convertirse primero en:  λx u.x z u y luego en:   λy u.y z u
+4) Si se quiere renombrar el parámetro exterior de $\lambda x\,y.\,x\,z\,y$ a $y$, el $y$ interno **choca** con el nombre nuevo: primero se renombra el parámetro interno (p. ej. $\lambda x\,u.\,x\,z\,u$) y recién entonces el exterior ($\lambda y\,u.\,y\,z\,u$). Es el mismo problema que al compilar: evitar **sombreado** que confunda al lector o a la sustitución.
 
-5) De la expresión  x (λx.x y) (λy.z y) pueden obtenerse:
+5) **Convención de Barendregt** (higiene de nombres): en un mismo término conviene que ninguna variable aparezca a la vez libre y ligada, y que **distintos** ligadores no reutilicen el mismo nombre si eso presta a confusión. A partir de $x\,(\lambda x.\,x\,y)\,(\lambda y.\,z\,y)$ son válidos, entre otros:
 
-- x (λt.t y) (λu.z u)  Obs: Solo esta primera sigue la convención de Barendregt
+   - $x\,(\lambda t.\,t\,y)\,(\lambda u.\,z\,u)$ — todos los ligadores renombrados a nombres frescos;
+   - $x\,(\lambda t.\,t\,y)\,(\lambda y.\,z\,y)$ — el $y$ libre del primer cuerpo sigue siendo el del contexto exterior.
 
-- x (λt.t y) (λy.z y)   Convención de Barendregt:
+   También aparecen variantes como $x\,(\lambda u.\,u\,y)\,(\lambda u.\,z\,u)$ o $x\,(\lambda x.\,x\,y)\,(\lambda x.\,z\,x)$ cuando se documentan **reglas** de renombre (no siempre son la forma más legible).
 
-- x (λu.u y) (λu.z u)   1) En una expresión, ninguna variable debería aparecer libre y ligada a la vez.
-
-- x (λx.x y) (λx.z x)   2) En diferentes términos no debería haber variables ligadas homónimas.
-
-Pero no puede obtenerse:
-
-- z (λz.z y) (λy.z y)
+   **No** se puede llegar por $\alpha$ a algo como $z\,(\lambda z.\,z\,y)\,(\lambda y.\,z\,y)$: el $z$ más externo quedaría confundido con el parámetro $z$ (captura indebida del nombre).
 
 ### 4.2 Regla de conversión Beta (β)
 Consiste en realizar la reducción de una β-redex (expresión reducible β), que es una aplicación cuyo
@@ -226,7 +227,7 @@ Ninguna β-redex
 
 Una expresión lambda que no contiene ninguna β-redex está en forma normal. Mientras no se llegue
 a la forma normal, puede seguir aplicándose la regla de conversión Beta, que consiste en sustituir por
-N todas las ocurrencias libres de x en M:
+$N$ todas las ocurrencias **libres** de $x$ en $M$, obteniendo $M[N/x]$ (**sustitución capturando-evitante**): si alguna variable libre de $N$ quedaría ligada por un $\lambda$ de $M$, antes se renombra ese $\lambda$ con $\alpha$.
 
 (λx.M) N =β M[N/x]
 
@@ -267,6 +268,8 @@ Ejemplos:
 ## 5. Estrategias de reducción
 La reducción de una expresión lambda a su forma normal (si esta existe) puede realizarse de diversas
 maneras. A continuación se describen cuatro de las estrategias más conocidas.
+
+**Vínculo con lenguajes reales (idea general):** **call-by-name** y **orden normal** se parecen a la **evaluación perezosa** (no calcular un argumento hasta hacer falta; ej. Haskell en la práctica). **Call-by-value** y **orden aplicativo** se parecen a la **evaluación estricta** (evaluar argumentos antes de entrar al cuerpo; ej. la mayoría de los lenguajes de la familia ML, Scheme, etc.). La tabla del final resume **qué redex** se elige en cada paso; los ejemplos muestran que esa elección puede marcar la diferencia entre **terminar** o **diverger**.
 
 ### 5.1 Call-by-name
 Consiste en ir reduciendo siempre la β-redex más externa desde la izquierda y que no esté ubicada
@@ -393,13 +396,11 @@ Orden aplicativo
 
 Se produce un ciclo infinito
 
-Conclusiones: El orden normal es el más potente porque siempre encuentra la forma normal cuando
-esta existe. Call-by-value y el orden aplicativo son menos potentes, aunque a veces pueden ser más
-eficientes (por requerir menos pasos). Call-by-name solo llega a la forma normal de cabecera.
+Conclusiones: El **orden normal** (elegir siempre la $\beta$-redex **más externa** a la **izquierda**, aunque esté bajo un $\lambda$) tiene la propiedad clave: **si el término tiene forma normal**, esta estrategia **llega** a ella (no se “pierde” en un camino que solo diverge). Eso **no** dice que todo término termine: en el $\lambda$-cálculo no tipado hay términos **sin** forma normal. **Call-by-name** y **call-by-value** añaden restricciones que modelan implementaciones; **call-by-name** suele relacionarse con hallar **forma normal de cabecera** cuando corresponde, mientras que **call-by-value** puede **no** encontrar la forma normal aun existiendo. **Orden aplicativo** es el “hermano” interno de call-by-value (permite redex bajo $\lambda$) y comparte muchas de sus limitaciones. En la práctica, los lenguajes añaden **tipos**, **constantes** y reglas para que la evaluación sea predecible y eficiente.
 
 ## 6. Representación de valores de verdad · Funciones lógicas
 Mediante abstracciones es posible definir representaciones de los valores verdadero y falso,
-y funciones lógicas aplicables sobre ellos.
+y funciones lógicas aplicables sobre ellos. Es la idea de **codificación de datos como comportamiento**: un booleano no es un bit en memoria, sino una función que **elige** entre dos alternativas (como un `if` que recibe dos continuaciones).
 
 Una condición de la forma  si p entonces q; si no r  se representa en cálculo lambda de la siguiente
 manera:
@@ -414,6 +415,8 @@ adoptan las siguientes representaciones de los valores de verdad:
 True = λx.λy.x         (Selección del primero de dos operandos)
 
 False = λx.λy.y         (Selección del segundo de dos operandos)
+
+*(Estas son las codificaciones clásicas de **Church** para los booleanos.)*
 
 En efecto, la reducción de  If True b c  da  b,  y la de  If False b c  da  c:
 
@@ -434,16 +437,19 @@ La negación se representa mediante la siguiente abstracción:
 
 Not = λp.p False True
 
-Es sencillo verificar que  Not True  se reduce a  False  y  Not False  se reduce a  True:
+Es sencillo verificar que **Not True** se reduce a **False** y **Not False** a **True** (con True $= \lambda x.\lambda y.\,x$ y False $= \lambda x.\lambda y.\,y$):
 
-(λp.p (λx.λy.y) (λx.λy.x)) (λx.λy.x)
-=β (λx.λy.x) (λx.λy.y) (λx.λy.x)
-=β (λy.λx.λy.y) (λx.λy.x)
-=β λx.λy.y
-(λp.p (λx.λy.y) (λx.λy.x)) (λx.λy.y)
-=β (λx.λy.y) (λx.λy.y) (λx.λy.x)
-=β (λy.y) (λx.λy.x)
-=β λx.λy.x
+(λp.p False True) True
+=β True False True
+=β (λx.λy.x) False True
+=β (λy.False) True
+=β False
+
+(λp.p False True) False
+=β False False True
+=β (λx.λy.y) False True
+=β (λy.y) True
+=β True
 
 Las 16 posibles funciones lógicas diádicas (conectivos) se pueden definir mediante abstracciones.
 Por ejemplo, la conjunción, la disyunción y la disyunción exclusiva se definen así:
@@ -451,8 +457,12 @@ Por ejemplo, la conjunción, la disyunción y la disyunción exclusiva se define
 Conjunción:
 And = λp.λq.p q False
 
+(*Si $p$ es True, se devuelve $q$; si $p$ es False, se ignora $q$ y se devuelve False.*)
+
 Disyunción:
 Or = λp.λq.p True q
+
+(*Si $p$ es True, se devuelve True sin evaluar $q$ en esta codificación; si $p$ es False, se devuelve $q$.*)
 
 Disyunción exclusiva:
 Xor = λp.λq.p (q False True) q
@@ -460,6 +470,8 @@ Xor = λp.λq.p (q False True) q
 ## 7. Representación de números · Funciones numéricas y relacionales
 También mediante abstracciones se pueden definir numerales (representaciones de números) y
 funciones numéricas y relacionales aplicables sobre ellos.
+
+**Numerales de Church.** La idea es que el natural $n$ sea una función que **aplica** $f$ exactamente $n$ veces sobre $x$: así el “contenido” del número es **iteración**. No es una representación eficiente en una computadora real, pero es compacta para razonar y conecta con **fold** / `reduce` en lenguajes funcionales.
 
 El número  0  se representa así:
 
@@ -498,18 +510,20 @@ Predecesor de un número:
 Pred = λn.λf.λx.n (λg.λh.h (g f)) (λu.x) (λu.u)
 
 Suma de dos números:
- Add = λm.λn.λf.λx.m f (n f x)
+Add = λm.λn.λf.λx.m f (n f x)
 
-Resta de dos números:
+Resta de dos números (convención de este apunte: **$m - n$**, es decir, aplicar $\mathrm{Pred}$ $n$ veces a $m$):
  Sub = λm.λn.n Pred m
 
 Producto de dos números:
  Mul = λm.λn.λf.λx.m (n f) x
 
-Potencia de dos números (base y exponente):
+Potencia de dos números (base $m$, exponente $n$):
  Pow = λm.λn.λf.λx.n m f x
 
-Enésimo término de la sucesión de Fibonacci:
+(Nota: con numerales de Church suele escribirse también la forma corta **$\lambda m.\lambda n.\,n\,m$**; al aplicarla a numerales coincide con la versión que explicita $f$ y $x$.)
+
+Enésimo término de la sucesión de Fibonacci (con $F(0)=0$, $F(1)=1$, …; el término itera un paso sobre un par de valores acumulados):
 Fibo = λn.n (λf.λa.λb.f b (Add a b)) (λx.λy.x) (λf.λx.x) (λf.λx.f x)
 
 Las funciones relacionales que se pueden utilizar con los numerales son las siguientes:
@@ -542,7 +556,7 @@ En cambio, la reducción de  IsZero 0  da  True:
 
 Evaluar si un número es menor o igual que otro:
 
-Lte = λx.λy.Iszero (Sub x y)
+Lte = λx.λy.IsZero (Sub x y)
 
 Evaluar si un número es mayor o igual que otro:
 
@@ -620,7 +634,7 @@ Y = λf.(λx.f (x x)) (λx.f (x x))              Obs: Definido por Curry
 Las funciones recursivas se deben representar usando algún operador de punto fijo, como  Y  o  Θ.
 Por ejemplo, las funciones factorial y cociente se definirían así:
 
-Fact = Y (λf.λx.If (Iszero x) 1 (Mul x (f (Pred x))))
+Fact = Y (λf.λx.If (IsZero x) 1 (Mul x (f (Pred x))))
 
 Div = λn.(Y (λc.λn.λm.λf.λx.(λd.If (IsZero d) (0 f x)
        (f (c d m f x))) (Sub n m))) (Succ n)
@@ -669,7 +683,9 @@ La lista vacía se define así:
 
 Nil = Pair True True    Obs: Es más recomendable usar  Nil = λz.z
 
-La lista (a b c) se representa así:
+*(Con `Nil = Pair True True`, se tiene `First Nil = True`. Con `Cons`, la cabeza va en un par interno y la etiqueta externa es `False`, así `First (Cons …) = False`.)*
+
+La lista (a b c) se representa así (notación informal “estilo Lisp” para leer la anidación de pares):
 
 (False . (a . (False . (b . (False . (c . (λz.z)))))))
 
