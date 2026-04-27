@@ -48,6 +48,16 @@ jobs:
           cp -r docs/.vitepress/dist/* "${SITE_DIR}/lambda-calculus-docs/"
           cd "${GITHUB_WORKSPACE}"
 
+          echo "Building clojure-docs (VitePress + export PDF)..."
+          cd "${GITHUB_WORKSPACE}/clojure-docs"
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+          npm run docs:build
+          node scripts/print-pdfs.mjs
+          mkdir -p "${SITE_DIR}/clojure-docs"
+          cp -r docs/.vitepress/dist/* "${SITE_DIR}/clojure-docs/"
+          cd "${GITHUB_WORKSPACE}"
+
           for dir in */; do
             if [ -f "${dir}package.json" ] && grep -q "slidev" "${dir}package.json"; then
               echo "Building ${dir%/}..."
