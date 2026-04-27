@@ -1,0 +1,168 @@
+/* Mismo criterio que lambda-calculus-docs: pie visible con sidebar, impresión/PDF sin cromo. */
+.VPFooter.has-sidebar {
+  display: block !important;
+}
+
+/* Cuerpo del apunte: énfasis y expresiones (mismo criterio que λ) */
+
+.nav-p3-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.nav-p3-home svg {
+  flex-shrink: 0;
+  opacity: 0.92;
+}
+
+.vp-doc p,
+.vp-doc li {
+  line-height: 1.65;
+}
+
+.vp-doc strong {
+  color: var(--vp-c-text-1);
+}
+
+.vp-doc .shiki {
+  font-size: 0.92em;
+}
+
+.vp-doc :is(ul, ol) :is(ul, ol) {
+  margin-top: 0.35em;
+  margin-bottom: 0.45em;
+  padding-inline-start: 1.4em;
+}
+
+.vp-doc :is(ul, ol) :is(ul, ol) :is(ul, ol) {
+  padding-inline-start: 1.25em;
+}
+
+.vp-doc li > :is(ul, ol) {
+  margin-top: 0.35em;
+}
+
+/* Tabla comparación λ / Lisp / Clojure (intro): expresiones en una sola línea */
+.lambda-lisp-clojure-compare-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1rem 0;
+}
+
+.lambda-lisp-clojure-compare {
+  width: max-content;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+.lambda-lisp-clojure-compare th,
+.lambda-lisp-clojure-compare td {
+  white-space: nowrap;
+  padding: 0.65em 1rem;
+  border: 1px solid var(--vp-c-divider);
+  vertical-align: middle;
+  text-align: left;
+}
+
+.lambda-lisp-clojure-compare th {
+  font-weight: 600;
+}
+
+.lambda-lisp-clojure-compare td code {
+  white-space: nowrap;
+  font-size: 0.9em;
+}
+
+/* Diagrama de expresión (+ 3 4) */
+.expr-diagram-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.expr-diagram {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  color: var(--vp-c-text-1);
+}
+
+/* Guías con enunciados numerados y subítems a), b), c)… (misma idea que ejercicios-adicionales en λ) */
+.Layout.ejercicios .vp-doc ol > li,
+.Layout.ejercicios-iniciales .vp-doc ol > li {
+  counter-reset: ej-clj-sub;
+}
+
+.Layout.ejercicios .vp-doc ol > li > ul,
+.Layout.ejercicios-iniciales .vp-doc ol > li > ul {
+  list-style: none;
+  padding-inline-start: 0.25em;
+}
+
+.Layout.ejercicios .vp-doc ol > li > ul > li,
+.Layout.ejercicios-iniciales .vp-doc ol > li > ul > li {
+  counter-increment: ej-clj-sub;
+  position: relative;
+  padding-inline-start: 1.85em;
+}
+
+.Layout.ejercicios .vp-doc ol > li > ul > li::before,
+.Layout.ejercicios-iniciales .vp-doc ol > li > ul > li::before {
+  content: counter(ej-clj-sub, lower-alpha) ") ";
+  position: absolute;
+  left: 0;
+  width: 1.7em;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+}
+
+@media print {
+  .VPNav,
+  .VPSidebar,
+  .VPLocalNav,
+  .VPDocAside,
+  aside.aside,
+  .VPFooter,
+  .VPFooter.has-sidebar,
+  .VPDocFooter,
+  .pager,
+  .prev-next,
+  .edit-link,
+  .VPSkipLink,
+  .VPLocalNavOutlineDropdown,
+  .VPDocAsideOutline {
+    display: none !important;
+  }
+
+  .VPContent {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .VPDoc,
+  .vp-doc {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  .vp-doc > h1:first-of-type {
+    display: none !important;
+  }
+
+  .vp-doc hr {
+    display: none !important;
+  }
+
+  .vp-doc h2 {
+    border-top: none !important;
+  }
+
+  .lambda-lisp-clojure-compare-wrap {
+    overflow: visible !important;
+  }
+
+  body {
+    print-color-adjust: exact;
+  }
+}

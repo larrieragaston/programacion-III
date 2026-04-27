@@ -1,0 +1,21 @@
+{
+  "name": "programacion-III-clojure-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "playwright install chromium",
+    "docs:install-browsers": "playwright install chromium",
+    "docs:dev": "vitepress dev docs --port 5175",
+    "docs:build": "vitepress build docs",
+    "docs:pdf": "vitepress build docs && node scripts/print-pdfs.mjs",
+    "docs:preview": "vitepress preview docs",
+    "docs:import": "python3 scripts/import_pdfs_to_md.py"
+  },
+  "devDependencies": {
+    "markdown-it-mathjax3": "^4.3.2",
+    "playwright": "^1.49.1",
+    "serve-handler": "^6.1.6",
+    "vitepress": "^1.6.3",
+    "vue": "^3.5.13"
+  }
+}
