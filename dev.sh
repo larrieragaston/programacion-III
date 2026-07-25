@@ -7,8 +7,8 @@ set -euo pipefail
 INDEX_PORT=3030
 EXPORT_ON_DEV="${DISABLE_EXPORTS_ON_DEV:-0}"
 
-MODULES=("introduction" "lambda-calculus" "fp-backus" "clojure")
-PORTS=("3031" "3032" "3033" "3034")
+MODULES=("introduction" "lambda-calculus" "fp-backus" "clojure" "git-github")
+PORTS=("3031" "3032" "3033" "3034" "3035")
 
 function export_module_pdf() {
   local module="$1"
@@ -70,4 +70,4 @@ for i in "${!MODULES[@]}"; do
 done
 echo ""
 
-npx concurrently --names "$(IFS=,; echo "${NAMES[*]}")" --prefix-colors "blue,green,yellow,cyan,magenta" --kill-others "${COMMANDS[@]}"
+npx concurrently --names "$(IFS=,; echo "${NAMES[*]}")" --prefix-colors "blue,green,yellow,cyan,magenta,white" --kill-others "${COMMANDS[@]}"
