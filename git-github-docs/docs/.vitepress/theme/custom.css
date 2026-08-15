@@ -74,11 +74,11 @@
 }
 
 .card-grid-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .card-grid-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .info-card {
@@ -182,6 +182,28 @@
   transform: rotate(90deg);
 }
 
+/* Mini-práctica al final de un tema puntual (no reemplaza la guía de ejercicios) */
+.practice-box {
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  border-radius: 0 8px 8px 0;
+  padding: 0.9rem 1.15rem;
+  margin: 1.5rem 0;
+}
+
+.practice-box .practice-label {
+  font-weight: 600;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--vp-c-brand-1);
+  margin: 0 0 0.4rem;
+}
+
+.practice-box > :last-child {
+  margin-bottom: 0;
+}
+
 /* Diagramas de ramas (SVG) */
 .branch-diagram-wrap {
   display: flex;
@@ -259,15 +281,8 @@
   .flow-row,
   .branch-diagram-wrap,
   .info-card,
-  .vp-doc div[class*='language-'] {
+  .practice-box {
     break-inside: avoid;
-  }
-
-  .vp-doc h1,
-  .vp-doc h2,
-  .vp-doc h3,
-  .vp-doc h4 {
-    break-after: avoid;
   }
 
   body {
