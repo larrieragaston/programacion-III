@@ -255,16 +255,12 @@ Descarga oficial: <a href="https://git-scm.com/downloads" target="_blank" rel="n
 </div>
 
 ---
-layout: center
+layout: default
 ---
 
 # Modelo mental
 
----
-layout: default
----
-
-# Tres áreas de trabajo
+Tres áreas de trabajo
 
 <div class="flex items-center justify-center gap-2 mt-10 text-center">
 <div class="w-44 p-4 rounded-lg bg-gray-100">
