@@ -146,9 +146,7 @@ layout: default
 
 # Git
 
-<div class="flex items-center gap-4 mb-2">
-<img src="/logos/git.svg" alt="Git" class="h-14" />
-</div>
+<img src="/logos/git.svg" alt="Git" class="abs-tr mt-32 mr-20 h-20 opacity-90" />
 
 - Sistema de control de versiones **distribuido**
 - Guarda el historial como una serie de **fotos** (snapshots) del proyecto
