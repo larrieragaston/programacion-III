@@ -15,7 +15,7 @@ mdc: true
 
 Programación III
 
-<div class="flex gap-8 justify-center mt-6 items-center">
+<div class="flex gap-8 justify-end mr-16 mt-6 items-center">
 <img src="/logos/git.svg" alt="Git" class="h-16 opacity-90" />
 <img src="/logos/github.svg" alt="GitHub" class="h-14 opacity-90" />
 </div>
@@ -28,35 +28,7 @@ INSPT - UTN · Ciclo Lectivo 2026
 layout: default
 ---
 
-# Antes de arrancar
-
-Antes de escribir la primera línea de código de un proyecto en equipo, necesitamos poder:
-
-<v-click>
-
-- Guardar el historial de lo que vamos escribiendo
-- Volver atrás cuando algo se rompe
-- Trabajar en equipo sin pisarnos el código
-
-</v-click>
-
-<v-click>
-
-Eso lo resuelve un **sistema de control de versiones**.
-
-</v-click>
-
----
-layout: center
----
-
 # El problema sin versionar
-
----
-layout: default
----
-
-# ¿Les suena?
 
 ```
 proyecto_final/
@@ -73,6 +45,35 @@ Problemas:
 - No sabemos **qué** cambió entre una carpeta y la siguiente
 - No podemos combinar el trabajo de dos personas sobre el mismo archivo
 - "Volver atrás" es buscar a mano la carpeta correcta
+
+</v-click>
+
+---
+layout: default
+---
+
+# ¿Qué es un sistema de control de versiones?
+
+Una herramienta que registra los cambios en un conjunto de archivos a lo largo del tiempo.
+
+<v-click>
+
+Permite:
+
+- Guardar el historial completo — quién cambió qué, y cuándo
+- Volver a cualquier versión anterior del proyecto
+- Comparar qué cambió entre dos versiones
+- Trabajar en equipo sobre los mismos archivos sin pisarse
+
+</v-click>
+
+<v-click>
+
+<div class="mt-6 text-sm italic opacity-80">
+
+No es exclusivo del código — pero es imprescindible para programar en equipo.
+
+</div>
 
 </v-click>
 
@@ -143,23 +144,11 @@ layout: default
 layout: default
 ---
 
-# El origen de Git
-
-- 2005 — el kernel de Linux pierde la licencia gratuita de **BitKeeper**, el sistema centralizado que usaba
-- **Linus Torvalds** (creador de Linux) escribe Git en un par de semanas para reemplazarlo
-- Prioridades de diseño: velocidad, historial distribuido, integridad de los datos, soportar el trabajo no lineal de miles de colaboradores
-
-<div class="mt-6 text-sm italic opacity-80">
-
-El nombre es jerga británica informal para "persona molesta" — Torvalds bromeó con que, como ya había hecho con Linux, elegía nombrar sus proyectos en base a sí mismo.
-
-</div>
-
----
-layout: default
----
-
 # Git
+
+<div class="flex items-center gap-4 mb-2">
+<img src="/logos/git.svg" alt="Git" class="h-14" />
+</div>
 
 - Sistema de control de versiones **distribuido**
 - Guarda el historial como una serie de **fotos** (snapshots) del proyecto
@@ -176,61 +165,43 @@ No guarda "diferencias línea por línea" — guarda estados completos del proye
 layout: default
 ---
 
-# GitHub
+# El origen de Git
 
-- Servicio que **aloja** repositorios Git en la nube
-- Agrega colaboración: Pull Requests, revisión de código, issues
-- Git es la herramienta; GitHub es *un lugar* donde alojar un repositorio Git
+<div class="flex gap-6 items-start mt-2">
+<div class="flex-1">
 
-<div class="mt-6 text-xs opacity-70">
+- 2005 — el kernel de Linux pierde la licencia gratuita de **BitKeeper**, el sistema centralizado que usaba
+- **Linus Torvalds** (creador de Linux) escribe Git en un par de semanas para reemplazarlo
+- Prioridades de diseño: velocidad, historial distribuido, integridad de los datos, soportar el trabajo no lineal de miles de colaboradores
 
-<a href="https://github.com" target="_blank" rel="noopener">github.com</a>
+<div class="mt-6 text-sm italic opacity-80">
 
+El nombre es jerga británica informal para "persona molesta" — Torvalds bromeó con que, como ya había hecho con Linux, elegía nombrar sus proyectos en base a sí mismo.
+
+</div>
+
+</div>
+<div class="shrink-0 text-center">
+<img src="/people/linus-torvalds.jpg" alt="Linus Torvalds" class="w-36 rounded-lg shadow" />
+<div class="mt-1 text-xs opacity-50">Linus Torvalds, 2014</div>
+</div>
 </div>
 
 ---
 layout: default
 ---
 
-# GitHub y sus competidores
+# Características de Git
 
-GitHub es el más usado, pero no el único que aloja repositorios Git:
+<v-click>
 
-<div class="grid grid-cols-3 gap-4 mt-6 text-sm">
-<div class="p-4 rounded-lg bg-gray-100 text-center">
+- **Integridad**: cada commit se identifica con un hash que depende de su contenido — si algo cambia, el hash cambia
+- **Ramas livianas**: crear, cambiar y combinar ramas es rápido y casi no ocupa espacio
+- **Staging area**: se elige qué cambios entran en el próximo commit, no es todo o nada
+- **No lineal**: soporta miles de ramas y colaboradores trabajando en paralelo
+- **Gratuito, de código abierto y estándar de facto** de la industria
 
-**GitHub**
-
-Pull Requests · el más usado · de Microsoft
-
-<div class="mt-2 text-xs opacity-70"><a href="https://github.com" target="_blank" rel="noopener">github.com</a></div>
-
-</div>
-<div class="p-4 rounded-lg bg-gray-100 text-center">
-
-**GitLab**
-
-Merge Requests · fuerte en CI/CD · se puede auto-alojar
-
-<div class="mt-2 text-xs opacity-70"><a href="https://gitlab.com" target="_blank" rel="noopener">gitlab.com</a></div>
-
-</div>
-<div class="p-4 rounded-lg bg-gray-100 text-center">
-
-**Bitbucket**
-
-Pull Requests · integrado con Jira/Trello · de Atlassian
-
-<div class="mt-2 text-xs opacity-70"><a href="https://bitbucket.org" target="_blank" rel="noopener">bitbucket.org</a></div>
-
-</div>
-</div>
-
-<div class="mt-6 text-sm italic opacity-80">
-
-El concepto (Git) es el mismo en los tres — lo que cambia es la plataforma de colaboración alrededor.
-
-</div>
+</v-click>
 
 ---
 layout: default
@@ -280,22 +251,6 @@ git config --global user.email "tu@email.com"
 <div class="mt-4 text-xs opacity-70 text-center">
 
 Descarga oficial: <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">git-scm.com/downloads</a>
-
-</div>
-
----
-layout: default
----
-
-# Crear cuenta en GitHub
-
-1. Ir a <a href="https://github.com/join" target="_blank" rel="noopener">github.com/join</a>
-2. Elegir un nombre de usuario — va a aparecer en la URL de todos los repos (`github.com/tu-usuario`)
-3. Verificar el email
-
-<div class="mt-6 text-sm opacity-80">
-
-Con la cuenta creada ya se puede: crear repositorios, clonar los de otras personas, y participar de Pull Requests.
 
 </div>
 
@@ -596,6 +551,82 @@ layout: center
 ---
 
 # Trabajando con GitHub
+
+---
+layout: default
+---
+
+# GitHub
+
+- Servicio que **aloja** repositorios Git en la nube
+- Agrega colaboración: Pull Requests, revisión de código, issues
+- Git es la herramienta; GitHub es *un lugar* donde alojar un repositorio Git
+
+<div class="mt-6 text-xs opacity-70">
+
+<a href="https://github.com" target="_blank" rel="noopener">github.com</a>
+
+</div>
+
+---
+layout: default
+---
+
+# GitHub y sus competidores
+
+GitHub es el más usado, pero no el único que aloja repositorios Git:
+
+<div class="grid grid-cols-3 gap-4 mt-6 text-sm">
+<div class="p-4 rounded-lg bg-gray-100 text-center">
+
+**GitHub**
+
+Pull Requests · el más usado · de Microsoft
+
+<div class="mt-2 text-xs opacity-70"><a href="https://github.com" target="_blank" rel="noopener">github.com</a></div>
+
+</div>
+<div class="p-4 rounded-lg bg-gray-100 text-center">
+
+**GitLab**
+
+Merge Requests · fuerte en CI/CD · se puede auto-alojar
+
+<div class="mt-2 text-xs opacity-70"><a href="https://gitlab.com" target="_blank" rel="noopener">gitlab.com</a></div>
+
+</div>
+<div class="p-4 rounded-lg bg-gray-100 text-center">
+
+**Bitbucket**
+
+Pull Requests · integrado con Jira/Trello · de Atlassian
+
+<div class="mt-2 text-xs opacity-70"><a href="https://bitbucket.org" target="_blank" rel="noopener">bitbucket.org</a></div>
+
+</div>
+</div>
+
+<div class="mt-6 text-sm italic opacity-80">
+
+El concepto (Git) es el mismo en los tres — lo que cambia es la plataforma de colaboración alrededor.
+
+</div>
+
+---
+layout: default
+---
+
+# Crear cuenta en GitHub
+
+1. Ir a <a href="https://github.com/join" target="_blank" rel="noopener">github.com/join</a>
+2. Elegir un nombre de usuario — va a aparecer en la URL de todos los repos (`github.com/tu-usuario`)
+3. Verificar el email
+
+<div class="mt-6 text-sm opacity-80">
+
+Con la cuenta creada ya se puede: crear repositorios, clonar los de otras personas, y participar de Pull Requests.
+
+</div>
 
 ---
 layout: default
