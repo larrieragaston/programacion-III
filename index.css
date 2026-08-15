@@ -307,6 +307,12 @@ button.card-download {
   border: 1px solid #fca5a5;
 }
 
+.badge-optional {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #93c5fd;
+}
+
 .deprecated-card .card-main-link {
   opacity: 0.5;
   border-color: #fecaca;

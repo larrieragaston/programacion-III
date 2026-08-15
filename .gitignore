@@ -5,11 +5,16 @@ lambda-calculus-docs/docs/.vitepress/dist
 lambda-calculus-docs/docs/.vitepress/cache
 clojure-docs/docs/.vitepress/dist
 clojure-docs/docs/.vitepress/cache
+git-github-docs/docs/.vitepress/dist
+git-github-docs/docs/.vitepress/cache
 # Generated from Markdown (npm run docs:pdf)
 lambda-calculus-docs/docs/public/pdfs/*.pdf
 clojure-docs/docs/public/pdfs/*.pdf
+git-github-docs/docs/public/pdfs/*.pdf
 lambda-calculus/public/pdfs/originales/*.pdf
 lambda-calculus/pdfs/originales/*.pdf
 clojure/public/pdfs/originales/*.pdf
 clojure/pdfs/originales/*.pdf
+git-github/public/pdfs/originales/*.pdf
+git-github/pdfs/originales/*.pdf
 **/pdfs/exports/*.pdf
