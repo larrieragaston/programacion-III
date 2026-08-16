@@ -2,50 +2,41 @@
 
 ## Paradigmas de programación
 
-<div class="branch-diagram-wrap">
-<svg viewBox="0 0 760 250" class="branch-diagram" role="img" aria-label="Árbol de paradigmas: imperativos (procedimental, orientado a objetos) y declarativos (funcional, lógica)">
-  <rect x="290" y="6" width="180" height="34" rx="8" fill="#e5e7eb" stroke="#111827" stroke-width="1.5" />
-  <text x="380" y="28" text-anchor="middle" style="font-family:monospace;font-size:15px;fill:#111827">Paradigmas</text>
-
-  <line x1="380" y1="40" x2="380" y2="58" stroke="#9ca3af" stroke-width="2" />
-  <line x1="150" y1="58" x2="610" y2="58" stroke="#9ca3af" stroke-width="2" />
-  <line x1="150" y1="58" x2="150" y2="76" stroke="#9ca3af" stroke-width="2" />
-  <line x1="610" y1="58" x2="610" y2="76" stroke="#9ca3af" stroke-width="2" />
-
-  <rect x="60" y="76" width="180" height="34" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5" />
-  <text x="150" y="98" text-anchor="middle" style="font-family:monospace;font-size:14px;fill:#1e3a8a">Imperativos</text>
-  <text x="150" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">énfasis en la ejecución</text>
-
-  <rect x="520" y="76" width="180" height="34" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5" />
-  <text x="610" y="98" text-anchor="middle" style="font-family:monospace;font-size:14px;fill:#78350f">Declarativos</text>
-  <text x="610" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">énfasis en la evaluación</text>
-
-  <line x1="150" y1="132" x2="150" y2="150" stroke="#9ca3af" stroke-width="2" />
-  <line x1="75" y1="150" x2="225" y2="150" stroke="#9ca3af" stroke-width="2" />
-  <line x1="75" y1="150" x2="75" y2="166" stroke="#9ca3af" stroke-width="2" />
-  <line x1="225" y1="150" x2="225" y2="166" stroke="#9ca3af" stroke-width="2" />
-
-  <rect x="20" y="166" width="110" height="30" rx="6" fill="#f3f4f6" stroke="#9ca3af" />
-  <text x="75" y="186" text-anchor="middle" style="font-family:monospace;font-size:12px;fill:#374151">Procedimental</text>
-  <text x="75" y="212" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">Pascal, C</text>
-
-  <rect x="170" y="166" width="110" height="30" rx="6" fill="#f3f4f6" stroke="#9ca3af" />
-  <text x="225" y="186" text-anchor="middle" style="font-family:monospace;font-size:12px;fill:#374151">Orientado a objetos</text>
-  <text x="225" y="212" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">Java, Smalltalk</text>
-
-  <line x1="610" y1="132" x2="610" y2="150" stroke="#9ca3af" stroke-width="2" />
-  <line x1="535" y1="150" x2="685" y2="150" stroke="#9ca3af" stroke-width="2" />
-  <line x1="535" y1="150" x2="535" y2="166" stroke="#9ca3af" stroke-width="2" />
-  <line x1="685" y1="150" x2="685" y2="166" stroke="#9ca3af" stroke-width="2" />
-
-  <rect x="480" y="166" width="110" height="30" rx="6" fill="#facc15" stroke="#111827" stroke-width="1.5" />
-  <text x="535" y="186" text-anchor="middle" style="font-family:monospace;font-size:12px;font-weight:bold;fill:#111827">Funcional</text>
-  <text x="535" y="212" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">Haskell, Clojure, JS*</text>
-
-  <rect x="630" y="166" width="110" height="30" rx="6" fill="#f3f4f6" stroke="#9ca3af" />
-  <text x="685" y="186" text-anchor="middle" style="font-family:monospace;font-size:12px;fill:#374151">Lógica</text>
-  <text x="685" y="212" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">Prolog</text>
-</svg>
+<div class="paradigm-tree">
+<div class="paradigm-branch tone-blue">
+<h4>Imperativos</h4>
+<div class="paradigm-branch-sub">énfasis en la ejecución — cómo hacerlo, paso a paso</div>
+<div class="paradigm-leaves">
+<div class="paradigm-leaf">
+<strong>Estructurado</strong>
+<div>Basic, Pascal</div>
+</div>
+<div class="paradigm-leaf">
+<strong>Procedimental</strong>
+<div class="paradigm-leaf-imgs"><img src="/logos/c.svg" alt="C" /></div>
+</div>
+<div class="paradigm-leaf">
+<strong>Orientado a objetos</strong>
+<div class="paradigm-leaf-imgs"><img src="/logos/cplusplus.svg" alt="C++" /><img src="/logos/python.svg" alt="Python" /></div>
+<div>Java, C++, Python</div>
+</div>
+</div>
+</div>
+<div class="paradigm-branch tone-yellow">
+<h4>Declarativos</h4>
+<div class="paradigm-branch-sub">énfasis en la evaluación — qué se quiere obtener</div>
+<div class="paradigm-leaves">
+<div class="paradigm-leaf highlight">
+<strong>Funcional</strong>
+<div class="paradigm-leaf-imgs"><img src="/logos/haskell.svg" alt="Haskell" /><img src="/logos/clojure.svg" alt="Clojure" /><img src="/logos/javascript.svg" alt="JS" /></div>
+<div>Haskell, Clojure, JS*</div>
+</div>
+<div class="paradigm-leaf">
+<strong>Lógico</strong>
+<div>Prolog</div>
+</div>
+</div>
+</div>
 </div>
 
 *JS no nace funcional — es multiparadigma, y permite ese estilo. Los lenguajes más usados hoy en día lo son: cada quien elige el estilo más adecuado para cada tarea.
@@ -78,54 +69,120 @@ const names = products
 
 La programación funcional es un estilo **declarativo**: se describe el resultado que se quiere, no la secuencia de pasos para construirlo.
 
-### Breve cronología
+## ¿Qué es la programación funcional?
 
-<div class="branch-diagram-wrap">
-<svg viewBox="0 0 780 200" class="branch-diagram" role="img" aria-label="Cronología de lenguajes, con los de linaje funcional destacados">
-  <line x1="30" y1="100" x2="750" y2="100" stroke="#9ca3af" stroke-width="2" />
+Se puede definir casi tanto por lo que **evita** como por lo que hace:
 
-  <circle cx="60" cy="100" r="6" fill="#22c55e" />
-  <text x="60" y="80" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#15803d">Lisp</text>
-  <text x="60" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1958</text>
+- Evaluación de **funciones matemáticas** — dado el mismo input, siempre el mismo output.
+- ~~Cambios de estado~~
+- ~~Mutaciones de datos~~
+- Se rige por **principios**, no por una secuencia de instrucciones a ejecutar paso a paso.
 
-  <circle cx="200" cy="100" r="6" fill="#9ca3af" />
-  <text x="200" y="132" text-anchor="middle" style="font-family:monospace;font-size:11px;fill:#374151">C</text>
-  <text x="200" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1972</text>
+```js
+const area = r => r ** 2 * Math.PI
+```
 
-  <circle cx="270" cy="100" r="6" fill="#22c55e" />
-  <text x="270" y="80" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#15803d">ML</text>
-  <text x="270" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1973</text>
+Este ejemplo ya muestra la idea completa: `area` no modifica nada externo, no depende de nada externo, y devuelve un valor calculado a partir de su entrada — igual que una función matemática en el sentido estricto. El resto del apunte desarrolla, uno por uno, los principios que hacen falta para escribir código así de manera consistente.
 
-  <circle cx="340" cy="100" r="6" fill="#22c55e" />
-  <text x="340" y="132" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#15803d">Scheme</text>
-  <text x="340" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1975</text>
+## Breve cronología
 
-  <circle cx="420" cy="100" r="6" fill="#9ca3af" />
-  <text x="420" y="80" text-anchor="middle" style="font-family:monospace;font-size:11px;fill:#374151">C++</text>
-  <text x="420" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1983</text>
+<div class="timeline-wrap">
+<div class="timeline-line"></div>
 
-  <circle cx="490" cy="100" r="6" fill="#22c55e" />
-  <text x="490" y="132" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#15803d">Haskell</text>
-  <text x="490" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1990</text>
-
-  <circle cx="570" cy="100" r="6" fill="#9ca3af" />
-  <text x="570" y="80" text-anchor="middle" style="font-family:monospace;font-size:11px;fill:#374151">Java</text>
-  <text x="570" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1995</text>
-
-  <circle cx="660" cy="100" r="6" fill="#22c55e" />
-  <text x="660" y="132" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#15803d">Clojure</text>
-  <text x="660" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">2007</text>
-
-  <circle cx="730" cy="100" r="6" fill="#facc15" stroke="#111827" />
-  <text x="700" y="80" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#78350f">JS (ES6)</text>
-  <text x="730" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">2015</text>
-</svg>
+<div class="timeline-node" style="left:2.0%">
+<div class="timeline-label" style="color:#7c3aed">λ-calc</div>
+<div class="timeline-dot" style="background:#7c3aed"></div>
+<div class="timeline-year">1936</div>
 </div>
+
+<div class="timeline-node" style="left:13.6%">
+<div class="timeline-label" style="color:#15803d">Lisp</div>
+<div class="timeline-dot" style="background:#22c55e"></div>
+<div class="timeline-year">1958</div>
+</div>
+
+<div class="timeline-node" style="left:21.0%">
+<div class="timeline-label"><img src="/logos/c.svg" alt="C" /></div>
+<div class="timeline-dot" style="background:#9ca3af"></div>
+<div class="timeline-year">1972</div>
+</div>
+
+<div class="timeline-node" style="left:27.8%">
+<div class="timeline-label" style="color:#15803d">ML</div>
+<div class="timeline-dot" style="background:#22c55e"></div>
+<div class="timeline-year">1973</div>
+</div>
+
+<div class="timeline-node" style="left:34.7%">
+<div class="timeline-label" style="color:#15803d">Scheme</div>
+<div class="timeline-dot" style="background:#22c55e"></div>
+<div class="timeline-year">1975</div>
+</div>
+
+<div class="timeline-node" style="left:41.6%">
+<div class="timeline-label">Smalltalk</div>
+<div class="timeline-dot" style="background:#9ca3af"></div>
+<div class="timeline-year">1980</div>
+</div>
+
+<div class="timeline-node" style="left:48.4%">
+<div class="timeline-label"><img src="/logos/cplusplus.svg" alt="C++" /></div>
+<div class="timeline-dot" style="background:#9ca3af"></div>
+<div class="timeline-year">1983</div>
+</div>
+
+<div class="timeline-node" style="left:55.3%">
+<div class="timeline-label"><img src="/logos/erlang.svg" alt="Erlang" /></div>
+<div class="timeline-dot" style="background:#22c55e"></div>
+<div class="timeline-year">1986</div>
+</div>
+
+<div class="timeline-node" style="left:62.1%">
+<div class="timeline-label"><img src="/logos/haskell.svg" alt="Haskell" /></div>
+<div class="timeline-dot" style="background:#22c55e"></div>
+<div class="timeline-year">1990</div>
+</div>
+
+<div class="timeline-node" style="left:69.0%">
+<div class="timeline-label"><img src="/logos/python.svg" alt="Python" /></div>
+<div class="timeline-dot" style="background:#9ca3af"></div>
+<div class="timeline-year">1991</div>
+</div>
+
+<div class="timeline-node" style="left:75.8%">
+<div class="timeline-label"><img src="/logos/javascript.svg" alt="JS" /></div>
+<div class="timeline-dot" style="background:#facc15"></div>
+<div class="timeline-year">JS nace<br>1995</div>
+</div>
+
+<div class="timeline-node" style="left:82.7%">
+<div class="timeline-label">Java</div>
+<div class="timeline-dot" style="background:#9ca3af"></div>
+<div class="timeline-year">1995</div>
+</div>
+
+<div class="timeline-node" style="left:91.1%">
+<div class="timeline-label"><img src="/logos/clojure.svg" alt="Clojure" /></div>
+<div class="timeline-dot" style="background:#22c55e"></div>
+<div class="timeline-year">2007</div>
+</div>
+
+<div class="timeline-node" style="left:98.0%">
+<div class="timeline-label"><img src="/logos/javascript.svg" alt="JS ES6" /></div>
+<div class="timeline-dot" style="background:#facc15;border-color:#111827"></div>
+<div class="timeline-year">ES6<br>2015</div>
+</div>
+
+</div>
+
 <div class="diagram-legend">
+<span><span class="dot" style="background:#7c3aed"></span>sistema formal, no un lenguaje</span>
 <span><span class="dot" style="background:#22c55e"></span>linaje funcional</span>
 <span><span class="dot" style="background:#9ca3af"></span>imperativo / POO</span>
-<span><span class="dot" style="background:#facc15"></span>JS gana arrow functions, <code>const</code>, spread…</span>
+<span><span class="dot" style="background:#facc15"></span>JS</span>
 </div>
+
+JS nace en 1995 — recién 20 años después, con **ES6 (2015)**, incorpora herramientas de estilo funcional: arrow functions, `const`, spread… Notar además que el Cálculo Lambda, que sirve de base teórica a todo este tema, es anterior en casi 20 años al primer lenguaje de programación de la lista — es un sistema matemático, no una herramienta pensada para ejecutarse en una computadora.
 
 ## De Cálculo Lambda y Clojure a JavaScript
 
@@ -141,7 +198,7 @@ Ahora vemos el mismo paradigma en **JavaScript**. La pregunta que guía todo est
 
 El origen formal: todo es una función. Sin estado, sin mutación — solo sustitución.
 
-<div class="card-note">Notación: <code>λx. x + 1</code></div>
+<div class="card-note">Notación: <code>λx. Add x 1</code></div>
 </div>
 <div class="info-card">
 <h4>Clojure</h4>
@@ -171,7 +228,177 @@ Multiparadigma (funcional, POO, imperativo). Mutable por defecto — la inmutabi
 
 Los conceptos que aprendimos con Cálculo Lambda y Clojure siguen siendo válidos en JS — lo que cambia es que acá nada obliga a usarlos. Programar "funcional" en JavaScript es una elección de estilo y disciplina, no una imposición del lenguaje.
 
-### ¿Por qué JS?
+## Los orígenes
+
+<div class="card-grid card-grid-2">
+<div class="info-card">
+<h4>λ Cálculo Lambda</h4>
+
+<div class="card-note">Alonzo Church — 1936</div>
+
+Sistema formal para expresar cómputo usando solo funciones — la base matemática de todo lo que sigue. Es anterior a la existencia de las computadoras: no es un lenguaje de programación, es lógica pura.
+</div>
+<div class="info-card">
+<h4>Lisp</h4>
+
+<div class="card-note">John McCarthy — 1958</div>
+
+El primer lenguaje con funciones de primera clase — trata el código mismo como datos (listas). Sigue en uso hoy, casi 70 años después.
+</div>
+<div class="info-card">
+<h4>ML</h4>
+
+<div class="card-note">Robin Milner — 1973</div>
+
+Primer lenguaje con inferencia de tipos automática (el tipo se deduce solo, sin anotarlo) — influencia directa en Haskell, OCaml y F#.
+</div>
+<div class="info-card">
+<h4>Scheme</h4>
+
+<div class="card-note">Guy Steele y Gerald Sussman — 1975</div>
+
+Dialecto minimalista de Lisp que formaliza el *closure* léxico — el mismo mecanismo que vamos a usar más adelante en JS.
+</div>
+</div>
+
+## La familia funcional moderna
+
+<div class="card-grid card-grid-3">
+<div class="info-card" style="text-align:center">
+<img src="/logos/erlang.svg" alt="Erlang" style="height:1.5rem;margin:0 auto 0.4rem" />
+<h4>Erlang</h4>
+
+<div class="card-note">Joe Armstrong (Ericsson) — 1986</div>
+
+Concurrencia y tolerancia a fallos, pensado para centrales telefónicas.
+</div>
+<div class="info-card" style="text-align:center">
+<img src="/logos/haskell.svg" alt="Haskell" style="height:1.5rem;margin:0 auto 0.4rem" />
+<h4>Haskell</h4>
+
+<div class="card-note">Comité (Simon Peyton Jones y otros) — 1990</div>
+
+Puramente funcional, con evaluación perezosa por defecto.
+</div>
+<div class="info-card" style="text-align:center">
+<img src="/logos/scala.svg" alt="Scala" style="height:1.5rem;margin:0 auto 0.4rem" />
+<h4>Scala</h4>
+
+<div class="card-note">Martin Odersky — 2003</div>
+
+Funcional y orientado a objetos, corre sobre la JVM.
+</div>
+<div class="info-card" style="text-align:center">
+<img src="/logos/fsharp.svg" alt="F#" style="height:1.5rem;margin:0 auto 0.4rem" />
+<h4>F#</h4>
+
+<div class="card-note">Don Syme (Microsoft Research) — 2005</div>
+
+Un ML moderno para la plataforma .NET.
+</div>
+<div class="info-card" style="text-align:center">
+<img src="/logos/clojure.svg" alt="Clojure" style="height:1.5rem;margin:0 auto 0.4rem" />
+<h4>Clojure</h4>
+
+<div class="card-note">Rich Hickey — 2007</div>
+
+Un Lisp moderno sobre la JVM, con inmutabilidad persistente.
+</div>
+<div class="info-card" style="text-align:center">
+<img src="/logos/elixir.svg" alt="Elixir" style="height:1.5rem;margin:0 auto 0.4rem" />
+<h4>Elixir</h4>
+
+<div class="card-note">José Valim — 2011</div>
+
+Sintaxis moderna sobre la BEAM, la máquina virtual de Erlang.
+</div>
+</div>
+
+De Church y McCarthy en adelante, la idea se repite en distintos lenguajes — cada uno la adapta a su época y su comunidad.
+
+## ¿Por qué surgió la programación funcional?
+
+El código se **lee** muchas más veces de las que se **escribe**. Esa asimetría es uno de los argumentos centrales detrás de la programación funcional:
+
+<div class="card-grid" style="grid-template-columns: 1fr;">
+<div class="info-card">
+
+| | Lectura | Escritura |
+|---|---|---|
+| Tiempo original | 80% | 20% |
+| Si se reduce a la mitad el tiempo de **escritura** | 80% | 10% |
+| Si se reduce a la mitad el tiempo de **lectura** | 40% | 20% |
+| **Reducción total del proyecto** | **-40%** | **-10%** |
+
+</div>
+</div>
+
+Optimizar para que el código sea más fácil de **leer** reduce el costo total de un proyecto mucho más que optimizar para escribirlo rápido. Las funciones puras — sin estado oculto, sin efectos secundarios — son más fáciles de leer, porque no hay nada escondido que rastrear: alcanza con mirar los parámetros y el `return`. Por eso importan.
+
+## De lo imperativo a lo funcional: un ejemplo
+
+Un caso real y chico ayuda a ver la diferencia en la práctica: evitar que un botón dispare una acción dos veces si alguien hace doble clic.
+
+```html
+<button id="btn" onclick="billTheUser(some, sales, data)">Cobrar</button>
+```
+
+```js
+function billTheUser(some, sales, data) {
+  window.alert('Cobrando...')
+  // acá se cobra de verdad
+}
+```
+
+La primera reacción suele ser resolverlo con **estado mutable compartido** — una variable global, el propio DOM, o la función reasignándose a sí misma:
+
+```js
+// Flag global
+let clicked = false
+function billTheUser(...) {
+  if (!clicked) {
+    clicked = true
+    // cobrar
+  }
+}
+
+// Deshabilitar el botón
+function billTheUser(...) {
+  document
+    .getElementById('btn')
+    .disabled = true
+  // cobrar
+}
+
+// Redefinir el handler
+function billTheUser(...) {
+  billTheUser = function () {}
+  // cobrar
+}
+```
+
+Los tres funcionan, pero cada uno depende de algo mutable y externo a la función — frágil y difícil de razonar cuando el código crece. La alternativa funcional **encapsula** el estado en vez de compartirlo:
+
+```js
+const billTheUser = (clicked => {
+  return (some, sales, data) => {
+    if (!clicked) {
+      clicked = true
+      // cobrar
+    }
+  }
+})(false)
+```
+
+El flag `clicked` ya no es global ni vive en el DOM — vive **encerrado** dentro de la función, inaccesible desde afuera. Esto se llama *closure*, y se explica en detalle en la sección de funciones de orden superior, un poco más abajo.
+
+<div class="practice-box">
+<p class="practice-label">Practicá</p>
+
+Elegí otro problema típico de UI que hoy resolverías con una variable global (por ejemplo, contar cuántas veces se abrió un modal, o recordar si un formulario ya se envió) y reescribilo usando el mismo patrón de closure que `billTheUser`.
+</div>
+
+## ¿Por qué JS?
 
 - Es el único lenguaje que corre nativamente en el navegador.
 - Con Node.js corre también en el servidor — mismo lenguaje en todo el stack (esto se aprovecha en el resto de la unidad: React, Node + Express).
@@ -248,8 +475,13 @@ function repeat(n, action) {
   for (let i = 0; i < n; i++) action(i)
 }
 repeat(3, i => console.log(`Vuelta ${i}`))
+```
 
-// devuelve una función nueva
+Ya usamos varias HOFs sin nombrarlas: cada vez que le pasamos una función a `map`, `filter` o un `addEventListener`, esa función que recibe es de orden superior.
+
+Una HOF también puede **devolver** una función nueva — una **fábrica de funciones**:
+
+```js
 function multiplier(factor) {
   return number => number * factor
 }
@@ -257,7 +489,7 @@ const double = multiplier(2)
 double(5) // => 10
 ```
 
-`multiplier` es una **fábrica de funciones**: cada llamada crea una función nueva que "recuerda" el valor de `factor` que tenía en ese momento. Esto se llama *closure* (clausura) — la función devuelta mantiene acceso al entorno donde fue creada, aunque `multiplier` ya haya terminado de ejecutarse.
+Cada llamada a `multiplier` crea una función nueva que "recuerda" el valor de `factor` que tenía en ese momento. Esto se llama *closure* (clausura) — la función devuelta mantiene acceso al entorno donde fue creada, aunque `multiplier` ya haya terminado de ejecutarse. Es exactamente el mecanismo que resolvió el problema del doble clic unas secciones atrás: el flag `clicked` quedaba "recordado" dentro de la función devuelta.
 
 En Cálculo Lambda, una función de orden superior que aplica otra función dos veces:
 
@@ -270,6 +502,12 @@ Y en Clojure:
 ```clojure
 (defn twice [f] (fn [x] (f (f x))))
 ```
+
+<div class="practice-box">
+<p class="practice-label">Practicá</p>
+
+Escribí una función `logAndRun(fn)` que devuelva una nueva función: al llamarla, primero imprime `"Ejecutando..."` por consola y después ejecuta `fn` con los argumentos recibidos, devolviendo su resultado. Probala envolviendo alguna función simple, como una que sume dos números.
+</div>
 
 ## Pureza e inmutabilidad
 
@@ -305,6 +543,12 @@ Mismo input, mismo output, siempre. Sin efectos secundarios.
 
 Una función pura es fácil de testear, de leer y de reutilizar — su resultado no depende de "cuándo" ni "cuántas veces" se la llame, ni de qué pasó antes en el programa.
 
+<div class="practice-box">
+<p class="practice-label">Practicá</p>
+
+De las siguientes funciones, identificá cuáles son puras y cuáles no, y reescribí las impuras como puras: `function addTax(price) { return price * 1.21 }`, `function logAndDouble(x) { console.log(x); return x * 2 }`, `function getRandomDiscount() { return Math.random() * 0.3 }`.
+</div>
+
 ### Transparencia referencial
 
 Una expresión es **referencialmente transparente** si se puede reemplazar por su resultado sin cambiar el comportamiento del programa.
@@ -320,7 +564,7 @@ const b = 10 + 10   // reemplazando double(5) por su resultado
 // a === b siempre, porque double es pura
 ```
 
-Este es el mismo principio detrás de la **beta-reducción** en Cálculo Lambda: `(λx. x + x) 5` se puede sustituir directamente por `5 + 5` — funciona precisamente porque no hay estado escondido. Con una función impura esto no vale: `addToTotal(100) + addToTotal(100)` no es lo mismo que calcular una vez y duplicar, porque cada llamada cambia `total`.
+Este es el mismo principio detrás de la **beta-reducción** en Cálculo Lambda: `(λx. Add x x) 5` se puede sustituir directamente por `Add 5 5` — funciona precisamente porque no hay estado escondido. Con una función impura esto no vale: `addToTotal(100) + addToTotal(100)` no es lo mismo que calcular una vez y duplicar, porque cada llamada cambia `total`.
 
 ### Inmutabilidad
 
@@ -363,7 +607,13 @@ config.currency = 'USD'   // falla en silencio (o TypeError en modo estricto)
 
 `Object.freeze` es superficial (*shallow*): si un valor interno es a su vez otro objeto, ese objeto interno se puede seguir mutando sin problema. Y `const` tampoco alcanza por sí solo — evita **reasignar** la variable, no evita mutar el valor que contiene.
 
-## `map`, `filter`, `reduce`
+<div class="practice-box">
+<p class="practice-label">Practicá</p>
+
+Tomá la función `addItem` mutable de más arriba y escribí un test manual: guardá el array original en una variable aparte antes de llamarla, llamala, y confirmá con `console.log` que el original cambió. Repetí el mismo test con la versión inmutable y confirmá que esta vez no cambió.
+</div>
+
+## Transformando colecciones
 
 ### El caso: catálogo de una tienda online
 
@@ -392,6 +642,12 @@ const withDiscount = products.map(p => ({ ...p, price: p.price * 0.9 }))
 
 Equivalente a `(map (fn [p] (:name p)) products)` en Clojure — y, en el fondo, a aplicar `λp. (name p)` a cada elemento de la lista.
 
+<div class="practice-box">
+<p class="practice-label">Practicá</p>
+
+A partir de <code>products</code>, generá un array <code>pricesWithTax</code> con el precio de cada producto incrementado un 21%, sin modificar el catálogo original.
+</div>
+
 ### `filter`
 
 Se queda con los elementos que cumplen una condición — el array resultante puede ser más chico que el original (o del mismo tamaño, o vacío).
@@ -403,7 +659,7 @@ const inStock = products.filter(p => p.stock > 0)
 const accessories = products.filter(p => p.category === 'accesorios')
 ```
 
-Equivalente a `(filter (fn [p] (pos? (:stock p))) products)` en Clojure — la condición es un predicado, `λp. stock(p) > 0`, igual que en Cálculo Lambda.
+Equivalente a `(filter (fn [p] (pos? (:stock p))) products)` en Clojure — la condición es un predicado, `λp. Gt (stock p) 0`, igual que en Cálculo Lambda.
 
 ### `reduce`
 
@@ -428,6 +684,12 @@ const byCategory = products.reduce((groups, p) => {
 ```
 
 Equivalente a `(reduce + 0 (map ...))` en Clojure — el acumulador es explícito en ambos casos, algo que en Cálculo Lambda puro se modela con recursión (no existe un `reduce` nativo).
+
+<div class="practice-box">
+<p class="practice-label">Practicá</p>
+
+Usando <code>reduce</code>, calculá <code>mostExpensiveProduct</code>: el producto con el <code>price</code> más alto del catálogo, sin ordenar el array primero.
+</div>
 
 ### Encadenando: un pipeline real
 
@@ -473,7 +735,13 @@ finalPrice(45000)   // descuento, después impuesto, después redondeo
 <div class="flow-box tone-green"><code>round</code></div>
 </div>
 
-`pipe` va de izquierda a derecha; `compose` va de derecha a izquierda — es el `(comp f g)` de Clojure, y formalmente `λf. λg. λx. f (g x)` de Cálculo Lambda. Notar que `finalPrice` nunca menciona su argumento — eso se llama estilo **point-free** (o *tacit programming*).
+`pipe` va de izquierda a derecha; `compose` va de derecha a izquierda — es el `(comp f g)` de Clojure, y formalmente `λf.λg.λx. f (g x)` de Cálculo Lambda. Notar que `finalPrice` nunca menciona su argumento — eso se llama estilo **point-free** (o *tacit programming*).
+
+<div class="practice-box">
+<p class="practice-label">Practicá</p>
+
+Escribí las funciones puras <code>applyDiscount(rate)</code> (que devuelve una función que aplica ese descuento a un precio), <code>addTax(price)</code> y <code>roundPrice(price)</code>, y usá <code>pipe</code> para construir un <code>finalPrice</code> propio que aplique un 15% de descuento, después impuesto, y después redondeo.
+</div>
 
 ## Currying y aplicación parcial
 
@@ -488,7 +756,7 @@ function add(a, b) {
 }
 add(2, 3)   // => 5
 
-// currificada
+// currificada — exactamente una cadena de funciones de un solo argumento
 const addCurried = a => b => a + b
 addCurried(2)(3)   // => 5
 
@@ -497,7 +765,25 @@ add2(3)                      // => 5
 add2(10)                     // => 12
 ```
 
-Es exactamente `λa. λb. a + b` de Cálculo Lambda, escrito con la sintaxis de arrow functions de JavaScript. Aplicar un argumento a la vez es la razón por la que en Cálculo Lambda una función "de dos argumentos" en realidad no existe — siempre es una función de un argumento que devuelve otra función.
+Es exactamente `λa.λb. Add a b` de Cálculo Lambda, escrito con la sintaxis de arrow functions de JavaScript. Aplicar un argumento a la vez es la razón por la que en Cálculo Lambda una función "de dos argumentos" en realidad no existe — siempre es una función de un argumento que devuelve otra función.
+
+### Currying con más argumentos
+
+Con más argumentos, el patrón es el mismo: una función devuelve otra función, que devuelve otra, hasta que no queda ningún argumento pendiente.
+
+```js
+function sum3(a, b, c) {
+  return a + b + c
+}
+
+// currificada a mano, sin ningún helper — exactamente una cadena de tres funciones
+const sum3Curried = a => b => c => a + b + c
+sum3Curried(1)(2)(3)   // => 6
+
+const sum3WithFirstTwo = sum3Curried(1)(2)   // "espera" el tercer argumento
+sum3WithFirstTwo(3)                          // => 6
+sum3WithFirstTwo(10)                         // => 13
+```
 
 ### Currying genérico
 
@@ -537,7 +823,13 @@ const applyBlackFridayDiscount = partial(applyDiscount, 0.3)
 applyBlackFridayDiscount(45000)   // => 31500
 ```
 
-JavaScript también trae esto nativo: `fn.bind(null, ...fixedArgs)` hace lo mismo que el `partial` casero de arriba. Es la misma idea que aplicar un solo argumento a una función currificada en Cálculo Lambda: `(λa. λb. a - b) 0.3` deja pendiente `λb. 0.3 - b`.
+JavaScript también trae esto nativo: `fn.bind(null, ...fixedArgs)` hace lo mismo que el `partial` casero de arriba. Es la misma idea que aplicar un solo argumento a una función currificada en Cálculo Lambda: `(λa.λb. Sub a b) 1` deja pendiente `λb. Sub 1 b`.
+
+<div class="practice-box">
+<p class="practice-label">Practicá</p>
+
+Currificá a mano <code>applyDiscount(rate, price)</code> como <code>applyDiscountCurried = rate => price => ...</code>, y a partir de esa versión creá <code>applyBlackFridayDiscount</code> (30% fijo) y <code>applyClearanceDiscount</code> (50% fijo) sin repetir la lógica del descuento. Repetí el mismo resultado partiendo de la versión sin currificar, usando <code>fn.bind(null, ...)</code>.
+</div>
 
 ## Recursividad en JS
 
@@ -575,15 +867,21 @@ fact(5)   // => 120
 
 `Y` recibe una función anónima y le "presta" la forma de llamarse a sí misma — así es como Cálculo Lambda resuelve la recursión sin `function factorial()` ni `recur`.
 
+<div class="practice-box">
+<p class="practice-label">Practicá</p>
+
+Escribí una función recursiva <code>sumStock(products)</code> que sume el <code>stock</code> de todos los productos del catálogo sin usar <code>reduce</code> ni ningún bucle. Probala con un array de más de 10.000 elementos generado en un <code>for</code> simple — si aparece <code>RangeError: Maximum call stack size exceeded</code>, anotá aproximadamente a partir de qué tamaño ocurre en tu entorno, y reescribí la misma función con <code>reduce</code> para comparar.
+</div>
+
 ## Esto ya lo sabías
 
 | Cálculo Lambda | Clojure | JavaScript |
 |---|---|---|
-| `λx. x + 1` | `(map inc coll)` | `coll.map(x => x + 1)` |
-| predicado `λx. par(x)` | `(filter even? coll)` | `coll.filter(x => x % 2 === 0)` |
+| `λx. Add x 1` | `(map inc coll)` | `coll.map(x => x + 1)` |
+| predicado `λx. Par x` | `(filter even? coll)` | `coll.filter(x => x % 2 === 0)` |
 | recursión (combinador Y) | `(reduce + coll)` | `coll.reduce((a, b) => a + b, 0)` |
 | `λf. λg. λx. f (g x)` | `(comp f g)` | `compose(f, g)` (casero, o de una librería) |
-| `(λa. λb. a - b) 1` | `(partial f a)` | `partial(f, a)` o `f.bind(null, a)` |
+| `(λa. λb. Sub a b) 1` | `(partial f a)` | `partial(f, a)` o `f.bind(null, a)` |
 | solo vía combinador Y | `recur` | función que se llama a sí misma (sin TCO garantizado) |
 | sustitución, sin estado | inmutabilidad por defecto | inmutabilidad **a elección** (spread, `Object.freeze`) |
 

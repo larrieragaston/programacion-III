@@ -182,6 +182,162 @@
   transform: rotate(90deg);
 }
 
+/* Mini-práctica al final de un tema puntual (no reemplaza la guía de ejercicios) */
+.practice-box {
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  border-radius: 0 8px 8px 0;
+  padding: 0.9rem 1.15rem;
+  margin: 1.5rem 0;
+}
+
+.practice-box .practice-label {
+  font-weight: 600;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--vp-c-brand-1);
+  margin: 0 0 0.4rem;
+}
+
+.practice-box > :last-child {
+  margin-bottom: 0;
+}
+
+/* Árbol de paradigmas: dos columnas con sub-tarjetas */
+.paradigm-tree {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.paradigm-branch {
+  border-radius: 10px;
+  padding: 0.9rem;
+  border: 1px solid var(--vp-c-divider);
+}
+
+.paradigm-branch.tone-blue {
+  background: var(--vp-c-brand-soft);
+  border-color: var(--vp-c-brand-1);
+}
+
+.paradigm-branch.tone-yellow {
+  background: var(--vp-c-yellow-soft);
+  border-color: #fcd34d;
+}
+
+.paradigm-branch h4 {
+  text-align: center;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+.paradigm-branch .paradigm-branch-sub {
+  text-align: center;
+  font-size: 0.8em;
+  opacity: 0.7;
+  margin-bottom: 0.75rem;
+}
+
+.paradigm-leaves {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.85em;
+}
+
+.paradigm-branch.tone-blue .paradigm-leaves {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.paradigm-branch.tone-yellow .paradigm-leaves {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.paradigm-leaf {
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.paradigm-leaf.highlight {
+  border-width: 2px;
+  border-color: #fbbf24;
+}
+
+.paradigm-leaf img {
+  height: 1.1rem;
+  margin: 0 auto 0.3rem;
+  display: inline-block;
+}
+
+.paradigm-leaf .paradigm-leaf-imgs {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Cronología horizontal con posiciones proporcionales a los años */
+.timeline-wrap {
+  position: relative;
+  margin: 3rem 0 1.5rem;
+  height: 6.5rem;
+}
+
+.timeline-wrap .timeline-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2rem;
+  border-top: 2px solid var(--vp-c-divider);
+}
+
+.timeline-node {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 2.3rem;
+}
+
+.timeline-node .timeline-label {
+  height: 1.25rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.62em;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.timeline-node .timeline-label img {
+  height: 1rem;
+}
+
+.timeline-node .timeline-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  border: 2px solid var(--vp-c-bg);
+  margin-top: 0.4rem;
+}
+
+.timeline-node .timeline-year {
+  font-size: 0.7em;
+  opacity: 0.6;
+  margin-top: 0.4rem;
+  line-height: 1.2;
+}
+
 /* Diagramas de ramas (SVG) */
 .branch-diagram-wrap {
   display: flex;
@@ -259,6 +415,9 @@
   .flow-row,
   .branch-diagram-wrap,
   .info-card,
+  .practice-box,
+  .paradigm-tree,
+  .timeline-wrap,
   .vp-doc div[class*='language-'] {
     break-inside: avoid;
   }
