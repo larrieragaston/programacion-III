@@ -25,53 +25,59 @@ layout: default
 
 # Paradigmas de programación
 
-<div class="flex flex-col items-center mt-4">
-<svg viewBox="0 0 760 250" class="w-full max-w-4xl" role="img" aria-label="Árbol de paradigmas: imperativos (procedimental, orientado a objetos) y declarativos (funcional, lógica)">
-  <rect x="290" y="6" width="180" height="34" rx="8" fill="#e5e7eb" stroke="#111827" stroke-width="1.5" />
-  <text x="380" y="28" text-anchor="middle" style="font-family:monospace;font-size:15px;fill:#111827">Paradigmas</text>
+<div class="grid grid-cols-2 gap-5 mt-6">
+<div class="p-3 rounded-lg bg-blue-50 border border-blue-300">
 
-  <line x1="380" y1="40" x2="380" y2="58" stroke="#9ca3af" stroke-width="2" />
-  <line x1="150" y1="58" x2="610" y2="58" stroke="#9ca3af" stroke-width="2" />
-  <line x1="150" y1="58" x2="150" y2="76" stroke="#9ca3af" stroke-width="2" />
-  <line x1="610" y1="58" x2="610" y2="76" stroke="#9ca3af" stroke-width="2" />
+<div class="text-center font-bold text-blue-900">Imperativos</div>
+<div class="text-center text-xs opacity-70 mb-3">énfasis en la ejecución — cómo hacerlo, paso a paso</div>
 
-  <rect x="60" y="76" width="180" height="34" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5" />
-  <text x="150" y="98" text-anchor="middle" style="font-family:monospace;font-size:14px;fill:#1e3a8a">Imperativos</text>
-  <text x="150" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">énfasis en la ejecución</text>
+<div class="grid grid-cols-3 gap-2 text-center text-xs">
+<div class="p-2 bg-white rounded border border-gray-300">
 
-  <rect x="520" y="76" width="180" height="34" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5" />
-  <text x="610" y="98" text-anchor="middle" style="font-family:monospace;font-size:14px;fill:#78350f">Declarativos</text>
-  <text x="610" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">énfasis en la evaluación</text>
+**Estructurado**
 
-  <line x1="150" y1="132" x2="150" y2="150" stroke="#9ca3af" stroke-width="2" />
-  <line x1="75" y1="150" x2="225" y2="150" stroke="#9ca3af" stroke-width="2" />
-  <line x1="75" y1="150" x2="75" y2="166" stroke="#9ca3af" stroke-width="2" />
-  <line x1="225" y1="150" x2="225" y2="166" stroke="#9ca3af" stroke-width="2" />
+<div class="mt-1 opacity-70">Basic, Pascal</div>
+</div>
+<div class="p-2 bg-white rounded border border-gray-300">
 
-  <rect x="20" y="166" width="110" height="30" rx="6" fill="#f3f4f6" stroke="#9ca3af" />
-  <text x="75" y="186" text-anchor="middle" style="font-family:monospace;font-size:12px;fill:#374151">Procedimental</text>
-  <text x="75" y="212" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">Pascal, C</text>
+**Procedimental**
 
-  <rect x="170" y="166" width="110" height="30" rx="6" fill="#f3f4f6" stroke="#9ca3af" />
-  <text x="225" y="186" text-anchor="middle" style="font-family:monospace;font-size:12px;fill:#374151">Orientado a objetos</text>
-  <text x="225" y="212" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">Java, Smalltalk</text>
+<img src="/logos/c.svg" class="h-5 mx-auto mt-1" alt="C" />
+</div>
+<div class="p-2 bg-white rounded border border-gray-300">
 
-  <line x1="610" y1="132" x2="610" y2="150" stroke="#9ca3af" stroke-width="2" />
-  <line x1="535" y1="150" x2="685" y2="150" stroke="#9ca3af" stroke-width="2" />
-  <line x1="535" y1="150" x2="535" y2="166" stroke="#9ca3af" stroke-width="2" />
-  <line x1="685" y1="150" x2="685" y2="166" stroke="#9ca3af" stroke-width="2" />
+**Orientado a objetos**
 
-  <rect x="480" y="166" width="110" height="30" rx="6" fill="#facc15" stroke="#111827" stroke-width="1.5" />
-  <text x="535" y="186" text-anchor="middle" style="font-family:monospace;font-size:12px;font-weight:bold;fill:#111827">Funcional</text>
-  <text x="535" y="212" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">Haskell, Clojure, JS*</text>
-
-  <rect x="630" y="166" width="110" height="30" rx="6" fill="#f3f4f6" stroke="#9ca3af" />
-  <text x="685" y="186" text-anchor="middle" style="font-family:monospace;font-size:12px;fill:#374151">Lógica</text>
-  <text x="685" y="212" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">Prolog</text>
-</svg>
+<div class="flex justify-center gap-1 mt-1"><img src="/logos/cplusplus.svg" class="h-5" alt="C++" /><img src="/logos/python.svg" class="h-5" alt="Python" /></div>
+<div class="mt-1 opacity-70">Java, C++, Python</div>
+</div>
+</div>
 </div>
 
-<div class="mt-2 text-xs italic opacity-70 text-center">
+<div class="p-3 rounded-lg bg-yellow-50 border border-yellow-400">
+
+<div class="text-center font-bold text-yellow-900">Declarativos</div>
+<div class="text-center text-xs opacity-70 mb-3">énfasis en la evaluación — qué se quiere obtener</div>
+
+<div class="grid grid-cols-2 gap-2 text-center text-xs">
+<div class="p-2 bg-white rounded border-2 border-yellow-400">
+
+**Funcional**
+
+<div class="flex justify-center gap-1 mt-1"><img src="/logos/haskell.svg" class="h-5" alt="Haskell" /><img src="/logos/clojure.svg" class="h-5" alt="Clojure" /><img src="/logos/javascript.svg" class="h-5" alt="JavaScript" /></div>
+<div class="mt-1 opacity-70">Haskell, Clojure, JS*</div>
+</div>
+<div class="p-2 bg-white rounded border border-gray-300">
+
+**Lógico**
+
+<div class="mt-1 opacity-70">Prolog</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-4 text-xs italic opacity-70 text-center">
 
 *JS no nace funcional — es multiparadigma, y permite ese estilo. Los lenguajes más usados hoy en día lo son: cada quien elige el estilo más adecuado para cada tarea.
 
@@ -121,52 +127,140 @@ La programación funcional es un estilo **declarativo**: se describe el resultad
 layout: default
 ---
 
+# ¿Qué es la programación funcional?
+
+<div class="grid grid-cols-2 gap-8 mt-8 items-center">
+<div class="text-sm">
+
+- Evaluación de **funciones matemáticas**
+- ~~Cambios de estado~~
+- ~~Mutaciones de datos~~
+- Se rige por **principios**, no por una secuencia de instrucciones
+
+</div>
+<div class="p-4 rounded-lg bg-gray-100 text-sm">
+
+```js
+const area = r => r ** 2 * Math.PI
+```
+
+</div>
+</div>
+
+<div class="mt-8 text-sm italic opacity-80">
+
+Se define casi tanto por lo que **evita** (estado, mutación) como por lo que hace.
+
+</div>
+
+---
+layout: default
+---
+
 # Breve cronología
 
-<svg viewBox="0 0 780 200" class="w-full max-w-4xl mx-auto mt-4" role="img" aria-label="Cronología de lenguajes, con los de linaje funcional destacados">
-  <line x1="30" y1="100" x2="750" y2="100" stroke="#9ca3af" stroke-width="2" />
+<div class="relative mt-16 mx-2">
+<div class="absolute left-0 right-0 border-t-2 border-gray-300" style="top: 42px"></div>
+<div class="relative flex justify-between items-start">
 
-  <circle cx="60" cy="100" r="6" fill="#22c55e" />
-  <text x="60" y="80" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#15803d">Lisp</text>
-  <text x="60" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1958</text>
+<div class="flex flex-col items-center text-center" style="width:52px">
+<div class="text-[9px] font-mono font-bold leading-tight text-violet-700">λ-calc</div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#7c3aed"></div>
+<div class="text-[9px] opacity-60 mt-1">1936</div>
+</div>
 
-  <circle cx="200" cy="100" r="6" fill="#9ca3af" />
-  <text x="200" y="132" text-anchor="middle" style="font-family:monospace;font-size:11px;fill:#374151">C</text>
-  <text x="200" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1972</text>
+<div class="flex flex-col items-center text-center" style="width:52px">
+<div class="text-[9px] font-mono font-bold leading-tight text-green-700">Lisp</div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1">1958</div>
+</div>
 
-  <circle cx="270" cy="100" r="6" fill="#22c55e" />
-  <text x="270" y="80" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#15803d">ML</text>
-  <text x="270" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1973</text>
+<div class="flex flex-col items-center text-center" style="width:52px">
+<img src="/logos/c.svg" class="h-4" alt="C" />
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#9ca3af"></div>
+<div class="text-[9px] opacity-60 mt-1">1972</div>
+</div>
 
-  <circle cx="340" cy="100" r="6" fill="#22c55e" />
-  <text x="340" y="132" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#15803d">Scheme</text>
-  <text x="340" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1975</text>
+<div class="flex flex-col items-center text-center" style="width:52px">
+<div class="text-[9px] font-mono font-bold leading-tight text-green-700">ML</div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1">1973</div>
+</div>
 
-  <circle cx="420" cy="100" r="6" fill="#9ca3af" />
-  <text x="420" y="80" text-anchor="middle" style="font-family:monospace;font-size:11px;fill:#374151">C++</text>
-  <text x="420" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1983</text>
+<div class="flex flex-col items-center text-center" style="width:52px">
+<div class="text-[9px] font-mono font-bold leading-tight text-green-700">Scheme</div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1">1975</div>
+</div>
 
-  <circle cx="490" cy="100" r="6" fill="#22c55e" />
-  <text x="490" y="132" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#15803d">Haskell</text>
-  <text x="490" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1990</text>
+<div class="flex flex-col items-center text-center" style="width:52px">
+<div class="text-[9px] font-mono font-bold leading-tight">Smalltalk</div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#9ca3af"></div>
+<div class="text-[9px] opacity-60 mt-1">1980</div>
+</div>
 
-  <circle cx="570" cy="100" r="6" fill="#9ca3af" />
-  <text x="570" y="80" text-anchor="middle" style="font-family:monospace;font-size:11px;fill:#374151">Java</text>
-  <text x="570" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">1995</text>
+<div class="flex flex-col items-center text-center" style="width:52px">
+<img src="/logos/cplusplus.svg" class="h-4" alt="C++" />
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#9ca3af"></div>
+<div class="text-[9px] opacity-60 mt-1">1983</div>
+</div>
 
-  <circle cx="660" cy="100" r="6" fill="#22c55e" />
-  <text x="660" y="132" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#15803d">Clojure</text>
-  <text x="660" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">2007</text>
+<div class="flex flex-col items-center text-center" style="width:52px">
+<img src="/logos/erlang.svg" class="h-4" alt="Erlang" />
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1">1986</div>
+</div>
 
-  <circle cx="730" cy="100" r="6" fill="#facc15" stroke="#111827" />
-  <text x="700" y="80" text-anchor="middle" style="font-family:monospace;font-size:11px;font-weight:bold;fill:#78350f">JS (ES6)</text>
-  <text x="730" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:10px;fill:#6b7280">2015</text>
-</svg>
+<div class="flex flex-col items-center text-center" style="width:52px">
+<img src="/logos/haskell.svg" class="h-4" alt="Haskell" />
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1">1990</div>
+</div>
 
-<div class="flex justify-center gap-6 mt-1 text-xs">
+<div class="flex flex-col items-center text-center" style="width:52px">
+<img src="/logos/python.svg" class="h-4" alt="Python" />
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#9ca3af"></div>
+<div class="text-[9px] opacity-60 mt-1">1991</div>
+</div>
+
+<div class="flex flex-col items-center text-center" style="width:56px">
+<img src="/logos/javascript.svg" class="h-4" alt="JS" />
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#facc15"></div>
+<div class="text-[9px] opacity-60 mt-1">JS nace<br>1995</div>
+</div>
+
+<div class="flex flex-col items-center text-center" style="width:52px">
+<div class="text-[9px] font-mono font-bold leading-tight">Java</div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#9ca3af"></div>
+<div class="text-[9px] opacity-60 mt-1">1995</div>
+</div>
+
+<div class="flex flex-col items-center text-center" style="width:52px">
+<img src="/logos/clojure.svg" class="h-4" alt="Clojure" />
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1">2007</div>
+</div>
+
+<div class="flex flex-col items-center text-center" style="width:56px">
+<img src="/logos/javascript.svg" class="h-4" alt="JS ES6" />
+<div class="w-3 h-3 rounded-full border-2 border-black mt-1" style="background:#facc15"></div>
+<div class="text-[9px] opacity-60 mt-1">ES6<br>2015</div>
+</div>
+
+</div>
+</div>
+
+<div class="flex justify-center gap-5 mt-6 text-xs flex-wrap">
+<div class="flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-full" style="background:#7c3aed"></span> sistema formal, no un lenguaje</div>
 <div class="flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-full" style="background:#22c55e"></span> linaje funcional</div>
 <div class="flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-full" style="background:#9ca3af"></span> imperativo / POO</div>
-<div class="flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-full border" style="background:#facc15"></span> JS gana arrow functions, <code>const</code>, spread…</div>
+<div class="flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-full border border-black" style="background:#facc15"></span> JS</div>
+</div>
+
+<div class="mt-3 text-xs italic opacity-70 text-center">
+
+JS nace en 1995 — recién 20 años después, con **ES6 (2015)**, incorpora herramientas de estilo funcional: arrow functions, `const`, spread…
+
 </div>
 
 ---
@@ -182,7 +276,7 @@ layout: default
 
 - El origen formal: todo es una función
 - Sin estado, sin mutación — solo sustitución
-- Notación: `λx.x + 1`
+- Notación: `λx. Add x 1`
 
 </div>
 <div class="p-4 rounded-lg bg-gray-100">
@@ -208,7 +302,7 @@ layout: default
 <div class="mt-4 text-xs">
 
 ```text
-(λx. x + 1) aplicada a cada elemento de la lista
+(λx. Add x 1) aplicada a cada elemento de la lista
 ```
 
 ```clojure
@@ -224,6 +318,175 @@ layout: default
 <div class="mt-2 text-xs italic opacity-80">
 
 Los conceptos siguen siendo válidos — en JS nada obliga a usarlos.
+
+</div>
+
+---
+layout: center
+---
+
+# El porqué y el origen
+
+---
+layout: default
+---
+
+# Surgimientos
+
+<div class="text-sm mt-4">
+
+- **Alonzo Church** — 1936 — Cálculo Lambda
+- **John McCarthy** — 1958 — Lisp
+
+</div>
+
+<div class="flex flex-wrap gap-6 items-center justify-center mt-10">
+<div class="text-4xl font-serif">λ</div>
+<img src="/logos/haskell.svg" class="h-8" alt="Haskell" />
+<img src="/logos/erlang.svg" class="h-8" alt="Erlang" />
+<img src="/logos/clojure.svg" class="h-8" alt="Clojure" />
+<img src="/logos/scala.svg" class="h-8" alt="Scala" />
+<img src="/logos/fsharp.svg" class="h-8" alt="F#" />
+<div class="text-sm font-mono font-bold px-2 py-1 rounded bg-gray-100">ML</div>
+</div>
+
+<div class="mt-8 text-sm italic opacity-80 text-center">
+
+De Church y McCarthy en adelante, la idea se repite en distintos lenguajes — cada uno la adapta a su época y su comunidad.
+
+</div>
+
+---
+layout: default
+---
+
+# ¿Por qué surgió la programación funcional?
+
+El código se **lee** muchas más veces de las que se **escribe**.
+
+<div class="mt-4 text-sm">
+
+| | Lectura | Escritura |
+|---|---|---|
+| Tiempo original | 80% | 20% |
+| Si se reduce a la mitad el tiempo de **escritura** | 80% | 10% |
+| Si se reduce a la mitad el tiempo de **lectura** | 40% | 20% |
+| **Reducción total del proyecto** | **-40%** | **-10%** |
+
+</div>
+
+<div class="mt-4 text-sm italic opacity-80">
+
+Optimizar para que el código sea más fácil de **leer** reduce el costo total mucho más que optimizar para escribirlo rápido. Las funciones puras — sin estado oculto, sin efectos secundarios — son más fáciles de leer, porque no hay nada escondido que rastrear. Por eso importan.
+
+</div>
+
+---
+layout: center
+---
+
+# De lo imperativo a lo funcional: un ejemplo
+
+---
+layout: default
+---
+
+# El problema: evitar un doble clic
+
+```html
+<button id="btn" onclick="billTheUser(some, sales, data)">Cobrar</button>
+```
+
+```js
+function billTheUser(some, sales, data) {
+  window.alert('Cobrando...')
+  // acá se cobra de verdad
+}
+```
+
+<div class="mt-4 text-sm opacity-80">
+
+Si alguien hace doble clic, se cobra dos veces. ¿Cómo lo evitamos?
+
+</div>
+
+---
+layout: default
+---
+
+# Intentos con estado mutable
+
+<div class="grid grid-cols-3 gap-3 mt-6 text-xs">
+<div class="p-3 rounded-lg bg-red-50 border border-red-200">
+
+**Flag global**
+
+```js
+let clicked = false
+
+function billTheUser(...) {
+  if (!clicked) {
+    clicked = true
+    // cobrar
+  }
+}
+```
+
+</div>
+<div class="p-3 rounded-lg bg-red-50 border border-red-200">
+
+**Deshabilitar el botón**
+
+```js
+function billTheUser(...) {
+  document
+    .getElementById('btn')
+    .disabled = true
+  // cobrar
+}
+```
+
+</div>
+<div class="p-3 rounded-lg bg-red-50 border border-red-200">
+
+**Redefinir el handler**
+
+```js
+function billTheUser(...) {
+  billTheUser = function () {}
+  // cobrar
+}
+```
+
+</div>
+</div>
+
+<div class="mt-6 text-sm italic opacity-80">
+
+Funcionan, pero cada uno depende de **estado mutable compartido** — una variable global, el DOM, o la propia función reasignada — frágil y difícil de razonar.
+
+</div>
+
+---
+layout: default
+---
+
+# La solución: encapsular el estado
+
+```js
+const billTheUser = (clicked => {
+  return (some, sales, data) => {
+    if (!clicked) {
+      clicked = true
+      // cobrar
+    }
+  }
+})(false)
+```
+
+<div class="mt-4 text-sm opacity-80">
+
+El flag <code>clicked</code> ya no es global ni vive en el DOM — vive **encerrado** dentro de la función, inaccesible desde afuera. Esto se llama *closure*, y vamos a entender exactamente cómo funciona en la próxima sección.
 
 </div>
 
@@ -358,8 +621,23 @@ function repeat(n, action) {
   for (let i = 0; i < n; i++) action(i)
 }
 repeat(3, i => console.log(`Vuelta ${i}`))
+```
 
-// devuelve una función nueva
+<div class="mt-4 text-sm opacity-80">
+
+Ya usamos varias sin nombrarlas: cada vez que le pasamos una función a <code>map</code>, <code>filter</code> o un <code>addEventListener</code>, esa función que recibe es de orden superior.
+
+</div>
+
+---
+layout: default
+---
+
+# Fábrica de funciones
+
+Una HOF también puede **devolver** una función nueva:
+
+```js
 function multiplier(factor) {
   return number => number * factor
 }
@@ -367,21 +645,23 @@ const double = multiplier(2)
 double(5) // => 10
 ```
 
+<div class="mt-3 text-sm opacity-80">
+
+`multiplier` es una **fábrica de funciones**: cada llamada crea una función nueva que "recuerda" `factor` — esto es un *closure*, lo mismo que resolvió el problema del doble clic hace unos slides: el flag <code>clicked</code> quedaba "recordado" dentro de la función devuelta.
+
+</div>
+
 <v-click>
 
 <div class="mt-3 text-sm opacity-80">
 
-`multiplier` es una **fábrica de funciones**: cada llamada crea una función nueva que "recuerda" `factor` — esto es un *closure*. En Cálculo Lambda, una función que aplica otra dos veces:
+En Cálculo Lambda, una función que aplica otra dos veces:
 
 </div>
 
 ```text
 twice ≡ λf.λx. f (f x)
 ```
-
-</v-click>
-
-<v-click>
 
 ```clojure
 (defn twice [f] (fn [x] (f (f x))))
@@ -476,7 +756,7 @@ Con una función impura esto no vale: `addToTotal(100) + addToTotal(100)` no es 
 
 <div class="mt-2 text-sm italic opacity-80">
 
-Este es el mismo principio detrás de la **beta-reducción** en Cálculo Lambda: `(λx.x+x) 5` se puede sustituir directamente por `5+5` — funciona porque no hay estado escondido.
+Este es el mismo principio detrás de la **beta-reducción** en Cálculo Lambda: `(λx. Add x x) 5` se puede sustituir directamente por `Add 5 5` — funciona porque no hay estado escondido.
 
 </div>
 
@@ -545,7 +825,7 @@ config.currency = 'USD'   // falla en silencio (o TypeError en modo estricto)
 layout: center
 ---
 
-# `map`, `filter`, `reduce`
+# Transformando colecciones
 
 ---
 layout: default
@@ -744,7 +1024,7 @@ function add(a, b) {
 }
 add(2, 3)   // => 5
 
-// currificada
+// currificada — exactamente una cadena de funciones de un solo argumento
 const addCurried = a => b => a + b
 addCurried(2)(3)   // => 5
 
@@ -757,11 +1037,33 @@ add2(10)                     // => 12
 
 <div class="mt-4 text-sm opacity-80">
 
-Es exactamente `λa.λb.a+b` de Cálculo Lambda, escrito con la sintaxis de arrow functions de JS.
+Es exactamente `λa.λb. Add a b` de Cálculo Lambda, escrito con la sintaxis de arrow functions de JS.
 
 </div>
 
 </v-click>
+
+---
+layout: default
+---
+
+# Currying con más argumentos
+
+Con más argumentos, el patrón es el mismo: una función devuelve otra función, que devuelve otra, hasta que no queda ningún argumento pendiente.
+
+```js
+function sum3(a, b, c) {
+  return a + b + c
+}
+
+// currificada a mano, sin ningún helper — exactamente una cadena de tres funciones
+const sum3Curried = a => b => c => a + b + c
+sum3Curried(1)(2)(3)   // => 6
+
+const sum3WithFirstTwo = sum3Curried(1)(2)   // "espera" el tercer argumento
+sum3WithFirstTwo(3)                          // => 6
+sum3WithFirstTwo(10)                         // => 13
+```
 
 ---
 layout: default
@@ -817,7 +1119,7 @@ applyBlackFridayDiscount(45000)   // => 31500
 
 <div class="mt-4 text-sm opacity-80">
 
-JS también trae esto nativo: <code>fn.bind(null, ...fixedArgs)</code> hace lo mismo que nuestro <code>partial</code>. Es la misma idea que aplicar un solo argumento a una función curried en Cálculo Lambda: `(λa.λb. a - b) 0.3` deja pendiente `λb. 0.3 - b`.
+JS también trae esto nativo: <code>fn.bind(null, ...fixedArgs)</code> hace lo mismo que nuestro <code>partial</code>. Es la misma idea que aplicar un solo argumento a una función curried en Cálculo Lambda: `(λa.λb. Sub a b) 1` deja pendiente `λb. Sub 1 b`.
 
 </div>
 
@@ -898,11 +1200,11 @@ layout: default
 
 | Cálculo Lambda | Clojure | JavaScript |
 |---|---|---|
-| `λx. x + 1` | `(map inc coll)` | `coll.map(x => x + 1)` |
+| `λx. Add x 1` | `(map inc coll)` | `coll.map(x => x + 1)` |
 | — (predicado `λx. par(x)`) | `(filter even? coll)` | `coll.filter(x => x % 2 === 0)` |
 | recursión (Y-combinador) | `(reduce + coll)` | `coll.reduce((a, b) => a + b, 0)` |
 | `λf.λg.λx. f (g x)` | `(comp f g)` | `compose(f, g)` (casero, o de una librería) |
-| `(λa.λb. a-b) 1` | `(partial f a)` | `partial(f, a)` o `f.bind(null, a)` |
+| `(λa.λb. Sub a b) 1` | `(partial f a)` | `partial(f, a)` o `f.bind(null, a)` |
 | solo vía combinador Y | `recur` | función que se llama a sí misma (sin TCO garantizado) |
 | sustitución, sin estado | inmutabilidad por defecto | inmutabilidad **a elección** (spread, `Object.freeze`) |
 
