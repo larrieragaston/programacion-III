@@ -159,95 +159,93 @@ layout: default
 
 # Breve cronología
 
-<div class="relative mt-16 mx-2">
-<div class="absolute left-0 right-0 border-t-2 border-gray-300" style="top: 42px"></div>
-<div class="relative flex justify-between items-start">
+<div class="relative mt-12 mx-2" style="height:100px">
+<div class="absolute left-0 right-0 border-t-2 border-gray-300" style="top: 32px"></div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<div class="text-[9px] font-mono font-bold leading-tight text-violet-700">λ-calc</div>
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#7c3aed"></div>
-<div class="text-[9px] opacity-60 mt-1">1936</div>
+<div class="absolute flex flex-col items-center text-center" style="left:2.0%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><div class="text-[8px] font-mono font-bold leading-none text-violet-700">λ-calc</div></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#7c3aed"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1936</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<div class="text-[9px] font-mono font-bold leading-tight text-green-700">Lisp</div>
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
-<div class="text-[9px] opacity-60 mt-1">1958</div>
+<div class="absolute flex flex-col items-center text-center" style="left:18.1%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><div class="text-[8px] font-mono font-bold leading-none text-green-700">Lisp</div></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1958</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<img src="/logos/c.svg" class="h-4" alt="C" />
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#9ca3af"></div>
-<div class="text-[9px] opacity-60 mt-1">1972</div>
+<div class="absolute flex flex-col items-center text-center" style="left:28.4%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><img src="/logos/c.svg" class="h-4" alt="C" /></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#9ca3af"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1972</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<div class="text-[9px] font-mono font-bold leading-tight text-green-700">ML</div>
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
-<div class="text-[9px] opacity-60 mt-1">1973</div>
+<div class="absolute flex flex-col items-center text-center" style="left:34.2%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><div class="text-[8px] font-mono font-bold leading-none text-green-700">ML</div></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1973</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<div class="text-[9px] font-mono font-bold leading-tight text-green-700">Scheme</div>
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
-<div class="text-[9px] opacity-60 mt-1">1975</div>
+<div class="absolute flex flex-col items-center text-center" style="left:40.1%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><div class="text-[8px] font-mono font-bold leading-none text-green-700">Scheme</div></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1975</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<div class="text-[9px] font-mono font-bold leading-tight">Smalltalk</div>
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#9ca3af"></div>
-<div class="text-[9px] opacity-60 mt-1">1980</div>
+<div class="absolute flex flex-col items-center text-center" style="left:46.0%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><div class="text-[8px] font-mono font-bold leading-none">Smalltalk</div></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#9ca3af"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1980</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<img src="/logos/cplusplus.svg" class="h-4" alt="C++" />
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#9ca3af"></div>
-<div class="text-[9px] opacity-60 mt-1">1983</div>
+<div class="absolute flex flex-col items-center text-center" style="left:51.8%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><img src="/logos/cplusplus.svg" class="h-4" alt="C++" /></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#9ca3af"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1983</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<img src="/logos/erlang.svg" class="h-4" alt="Erlang" />
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
-<div class="text-[9px] opacity-60 mt-1">1986</div>
+<div class="absolute flex flex-col items-center text-center" style="left:57.7%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><img src="/logos/erlang.svg" class="h-4" alt="Erlang" /></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1986</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<img src="/logos/haskell.svg" class="h-4" alt="Haskell" />
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
-<div class="text-[9px] opacity-60 mt-1">1990</div>
+<div class="absolute flex flex-col items-center text-center" style="left:63.5%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><img src="/logos/haskell.svg" class="h-4" alt="Haskell" /></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1990</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<img src="/logos/python.svg" class="h-4" alt="Python" />
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#9ca3af"></div>
-<div class="text-[9px] opacity-60 mt-1">1991</div>
+<div class="absolute flex flex-col items-center text-center" style="left:69.4%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><img src="/logos/python.svg" class="h-4" alt="Python" /></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#9ca3af"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1991</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:56px">
-<img src="/logos/javascript.svg" class="h-4" alt="JS" />
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#facc15"></div>
-<div class="text-[9px] opacity-60 mt-1">JS nace<br>1995</div>
+<div class="absolute flex flex-col items-center text-center" style="left:75.3%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><img src="/logos/javascript.svg" class="h-4" alt="JS" /></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#facc15"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">JS nace<br>1995</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<div class="text-[9px] font-mono font-bold leading-tight">Java</div>
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#9ca3af"></div>
-<div class="text-[9px] opacity-60 mt-1">1995</div>
+<div class="absolute flex flex-col items-center text-center" style="left:81.8%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><div class="text-[8px] font-mono font-bold leading-none">Java</div></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#9ca3af"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">1995</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:52px">
-<img src="/logos/clojure.svg" class="h-4" alt="Clojure" />
-<div class="w-3 h-3 rounded-full border-2 border-white mt-1" style="background:#22c55e"></div>
-<div class="text-[9px] opacity-60 mt-1">2007</div>
+<div class="absolute flex flex-col items-center text-center" style="left:91.4%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><img src="/logos/clojure.svg" class="h-4" alt="Clojure" /></div>
+<div class="w-3 h-3 rounded-full border-2 border-white mt-1.5" style="background:#22c55e"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">2007</div>
 </div>
 
-<div class="flex flex-col items-center text-center" style="width:56px">
-<img src="/logos/javascript.svg" class="h-4" alt="JS ES6" />
-<div class="w-3 h-3 rounded-full border-2 border-black mt-1" style="background:#facc15"></div>
-<div class="text-[9px] opacity-60 mt-1">ES6<br>2015</div>
+<div class="absolute flex flex-col items-center text-center" style="left:98.0%; transform:translateX(-50%); width:44px">
+<div class="h-5 flex items-end justify-center"><img src="/logos/javascript.svg" class="h-4" alt="JS ES6" /></div>
+<div class="w-3 h-3 rounded-full border-2 border-black mt-1.5" style="background:#facc15"></div>
+<div class="text-[9px] opacity-60 mt-1.5 leading-tight">ES6<br>2015</div>
 </div>
 
-</div>
 </div>
 
 <div class="flex justify-center gap-5 mt-6 text-xs flex-wrap">
@@ -322,35 +320,90 @@ Los conceptos siguen siendo válidos — en JS nada obliga a usarlos.
 </div>
 
 ---
-layout: center
+layout: default
 ---
 
-# El porqué y el origen
+# Los orígenes
+
+<div class="grid grid-cols-2 gap-4 mt-6 text-xs">
+<div class="p-3 rounded-lg bg-gray-50 border border-gray-200">
+
+<div class="flex items-center gap-2 font-bold text-sm"><span class="text-2xl font-serif leading-none">λ</span> Cálculo Lambda</div>
+<div class="opacity-70 mt-1">Alonzo Church — 1936</div>
+<div class="mt-1">Sistema formal para expresar cómputo usando solo funciones — la base matemática de todo lo que sigue. Es anterior a la existencia de las computadoras: no es un lenguaje de programación, es lógica pura.</div>
+</div>
+<div class="p-3 rounded-lg bg-gray-50 border border-gray-200">
+
+<div class="font-bold text-sm">Lisp</div>
+<div class="opacity-70 mt-1">John McCarthy — 1958</div>
+<div class="mt-1">El primer lenguaje con funciones de primera clase — trata el código mismo como datos (listas). Sigue en uso hoy, casi 70 años después.</div>
+</div>
+<div class="p-3 rounded-lg bg-gray-50 border border-gray-200">
+
+<div class="font-bold text-sm">ML</div>
+<div class="opacity-70 mt-1">Robin Milner — 1973</div>
+<div class="mt-1">Primer lenguaje con inferencia de tipos automática (el tipo se deduce solo, sin anotarlo) — influencia directa en Haskell, OCaml y F#.</div>
+</div>
+<div class="p-3 rounded-lg bg-gray-50 border border-gray-200">
+
+<div class="font-bold text-sm">Scheme</div>
+<div class="opacity-70 mt-1">Guy Steele y Gerald Sussman — 1975</div>
+<div class="mt-1">Dialecto minimalista de Lisp que formaliza el <em>closure</em> léxico — el mismo mecanismo que vamos a usar más adelante en JS.</div>
+</div>
+</div>
 
 ---
 layout: default
 ---
 
-# Surgimientos
+# La familia funcional moderna
 
-<div class="text-sm mt-4">
+<div class="grid grid-cols-3 gap-3 mt-4 text-xs">
+<div class="p-2 rounded-lg bg-gray-50 border border-gray-200 text-center">
 
-- **Alonzo Church** — 1936 — Cálculo Lambda
-- **John McCarthy** — 1958 — Lisp
+<img src="/logos/erlang.svg" class="h-6 mx-auto mb-1" alt="Erlang" />
+<div class="font-bold">Erlang</div>
+<div class="opacity-70">Joe Armstrong (Ericsson) — 1986</div>
+<div class="mt-1">Concurrencia y tolerancia a fallos, pensado para centrales telefónicas</div>
+</div>
+<div class="p-2 rounded-lg bg-gray-50 border border-gray-200 text-center">
 
+<img src="/logos/haskell.svg" class="h-6 mx-auto mb-1" alt="Haskell" />
+<div class="font-bold">Haskell</div>
+<div class="opacity-70">Comité (Simon Peyton Jones y otros) — 1990</div>
+<div class="mt-1">Puramente funcional, con evaluación perezosa por defecto</div>
+</div>
+<div class="p-2 rounded-lg bg-gray-50 border border-gray-200 text-center">
+
+<img src="/logos/scala.svg" class="h-6 mx-auto mb-1" alt="Scala" />
+<div class="font-bold">Scala</div>
+<div class="opacity-70">Martin Odersky — 2003</div>
+<div class="mt-1">Funcional y orientado a objetos, corre sobre la JVM</div>
+</div>
+<div class="p-2 rounded-lg bg-gray-50 border border-gray-200 text-center">
+
+<img src="/logos/fsharp.svg" class="h-6 mx-auto mb-1" alt="F#" />
+<div class="font-bold">F#</div>
+<div class="opacity-70">Don Syme (Microsoft Research) — 2005</div>
+<div class="mt-1">Un ML moderno para la plataforma .NET</div>
+</div>
+<div class="p-2 rounded-lg bg-gray-50 border border-gray-200 text-center">
+
+<img src="/logos/clojure.svg" class="h-6 mx-auto mb-1" alt="Clojure" />
+<div class="font-bold">Clojure</div>
+<div class="opacity-70">Rich Hickey — 2007</div>
+<div class="mt-1">Un Lisp moderno sobre la JVM, con inmutabilidad persistente</div>
+</div>
+<div class="p-2 rounded-lg bg-gray-50 border border-gray-200 text-center">
+
+<img src="/logos/elixir.svg" class="h-6 mx-auto mb-1" alt="Elixir" />
+<div class="font-bold">Elixir</div>
+<div class="opacity-70">José Valim — 2011</div>
+<div class="mt-1">Sintaxis moderna sobre la BEAM, la máquina virtual de Erlang</div>
+</div>
 </div>
 
-<div class="flex flex-wrap gap-6 items-center justify-center mt-10">
-<div class="text-4xl font-serif">λ</div>
-<img src="/logos/haskell.svg" class="h-8" alt="Haskell" />
-<img src="/logos/erlang.svg" class="h-8" alt="Erlang" />
-<img src="/logos/clojure.svg" class="h-8" alt="Clojure" />
-<img src="/logos/scala.svg" class="h-8" alt="Scala" />
-<img src="/logos/fsharp.svg" class="h-8" alt="F#" />
-<div class="text-sm font-mono font-bold px-2 py-1 rounded bg-gray-100">ML</div>
-</div>
-
-<div class="mt-8 text-sm italic opacity-80 text-center">
+<div class="mt-4 text-sm italic opacity-80 text-center">
 
 De Church y McCarthy en adelante, la idea se repite en distintos lenguajes — cada uno la adapta a su época y su comunidad.
 
