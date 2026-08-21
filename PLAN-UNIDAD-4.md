@@ -5,7 +5,7 @@
 ## 0. Cómo usar este documento
 
 1. Leer completo antes de escribir una sola línea.
-2. Leer también `README.md` y `.cursor/rules/pdf-to-slidev.mdc` en la raíz de este repo (`programacion-III/`) — ahí están las convenciones técnicas exactas (templates de `package.json`, proceso de conversión, etc.) que este documento asume y no repite en detalle.
+2. Leer también `AGENTS.md`, `README.md` y `.cursor/rules/pdf-to-slidev.mdc` en la raíz de este repo (`programacion-III/`) — ahí están las convenciones técnicas exactas (templates de `package.json`, estructura de la landing, proceso de conversión, bugs conocidos, etc.) que este documento asume y no repite en detalle. `AGENTS.md` es la referencia más completa y actualizada de convenciones generales del repo; este documento se enfoca en el contenido específico de Unidad 4.
 3. Correr `git log --oneline -20` y `git status` al empezar: es posible que este trabajo se desarrolle en varias sesiones y ya haya avances parciales del deck en curso.
 4. Construir **un deck a la vez**, en el orden de la sección 5. Para cada deck: escribir, probar localmente (`slidev dev`), y recién ahí pasar al siguiente. No adelantar contenido de varios decks en paralelo.
 5. **Nunca hacer `git push` a `main` sin permiso explícito del usuario.** El repo tiene un GitHub Action (`.github/workflows/deploy.yml`) que despliega automáticamente a GitHub Pages (sitio público que ven los estudiantes) en cada push a `main`. Un commit/push prematuro publica material sin terminar o sin revisar. Se puede (y conviene) hacer commits locales para ir guardando progreso, pero el push queda a criterio y pedido explícito del usuario.
@@ -65,8 +65,8 @@ Repo: `programacion-III` (GitHub Pages, deploy automático). Sitio publicado: ht
 - Cada presentación Slidev es un proyecto standalone con su propio `package.json` (ver template exacto en `.cursor/rules/pdf-to-slidev.mdc`).
 
 **Archivos clave a entender antes de tocar nada**:
-- `index.html` — landing page con tarjetas (`card-item`) agrupadas por `section` (`section-title`). Cada tarjeta tiene un link principal y, si corresponde, un botón de descarga simple (`card-download`) o un menú desplegable de descargas (`card-download-menu`, usado cuando hay apunte + varias guías de ejercicios — ver el bloque de `lambda-calculus-docs` en `index.html` como plantilla exacta a copiar).
-- `index.css` — estilos, incluye `.badge` y `.badge-deprecated` (usado en la sección de `fp-backus`). Para los decks opcionales de este plan hay que crear una clase de badge nueva (ej. `.badge-optional`) con estilo distinto (no debería leerse como "deprecado", sino como "avanzado/opcional").
+- `index.html` — **(actualizado tras el restyling de la sección 5.3bis, ya completado)** landing page como grid de cards filtrable, no la lista por secciones que describía este documento originalmente. Cada `<div class="card">` lleva `data-category="unidad|proximamente|extra|deprecado"` (y `data-pending="true"` si todavía no tiene contenido real, ver 5.3bis) y contiene: título, descripción, pills de vista (`class="view-link"`, una por recurso navegable — Presentación / Material teórico, con `data-dev-port`/`data-dev-path`) y un único menú `card-download-menu` con **todos** los PDFs de esa unidad. Ver AGENTS.md para el detalle completo de esta estructura y cómo "activar" una card placeholder.
+- `index.css` — estilos del grid/cards. `.badge-optional` (azul, mismos tokens que "Extra") y `.badge-proximamente` (gris) ya existen — no hace falta crear clases nuevas para marcar contenido no-núcleo o no construido.
 - `dev.sh` — **ojo**: a pesar de lo que sugiere el README ("puertos asignados automáticamente"), el script en realidad tiene **arrays hardcodeados** `MODULES=(...)` y `PORTS=(...)`. Cada deck Slidev nuevo que se agregue **tiene que sumarse manualmter a esos dos arrays** en `dev.sh`, si no, no levanta con `npm run dev` desde la raíz.
 - `.github/workflows/deploy.yml` — build CI. Tiene bloques hardcodeados por cada sitio VitePress (`lambda-calculus-docs`, `clojure-docs`) antes del loop genérico que busca cualquier carpeta con Slidev en su `package.json`. **Si se crea un sitio VitePress nuevo para Unidad 4 (ver sección 6), hay que agregarle un bloque análogo a este workflow**, siguiendo exactamente el patrón ya usado para los dos existentes (build con `npm ci --ignore-scripts` + `playwright install` + `docs:build` + `print-pdfs.mjs` + copiar `dist` a `_site/<carpeta>/`).
 - `.cursor/rules/pdf-to-slidev.mdc` — workflow paso a paso ya documentado para crear un deck Slidev nuevo (slug, `package.json` template, convenciones de `slides.md`, cómo bajar íconos/logos, cómo probar localmente, cuándo commitear). **Seguir este workflow al pie de la letra para cada uno de los 9 decks del núcleo.**
@@ -119,7 +119,7 @@ Estos PDFs son de 2021, de otro docente (Carlos E. Cimino) que también dicta la
   ```
 - **Slug de carpeta**: minúsculas, guiones, en inglés (ver lista de slugs en sección 5).
 - **Apertura de cada deck**: retomar explícitamente el deck anterior (mismo recurso narrativo que ya usa `clojure/slides.md` al abrir mencionando Cálculo Lambda) — reforzar que es una progresión continua, no temas sueltos. Los puentes explícitos ya están anotados en cada sección de la 5.
-- **Núcleo vs. opcional**: los decks opcionales llevan badge distinto a "Deprecated" (crear `.badge-optional` en `index.css`, texto sugerido: "Opcional" o "Avanzado") en la sección correspondiente de `index.html`.
+- **Núcleo vs. opcional**: los decks opcionales van en `data-category="extra"` con el badge `.badge-optional` (ya existe en `index.css`, azul, texto "Extra") — no reusar `.badge-deprecated`.
 - **Cada deck del núcleo tiene, además del Slidev, un apunte teórico y una guía de ejercicios** — ver arquitectura en sección 6 (es un requisito explícito del docente, no opcional para el núcleo).
 - **Ejemplos de código**: preferir ejemplos ejecutables y progresivos (mismo ítem se retoma y se le agrega complejidad) por sobre ejemplos aislados. Cuando sea posible, conectar un ejemplo con el deck anterior (ej.: el mismo array de datos usado en JS Funcional reaparece tipado en TypeScript, y de nuevo persistido en MongoDB).
 
@@ -164,6 +164,8 @@ Estos PDFs son de 2021, de otro docente (Carlos E. Cimino) que también dicta la
 **Referencias web**: https://developer.mozilla.org/es/docs/Web/JavaScript · https://es.javascript.info/ (excelente, ya en español) · https://github.com/tc39/proposals (para contexto de evolución del lenguaje, opcional).
 
 ### 5.3bis Restyling de la landing page (paso intermedio — no es un deck)
+
+**✅ Completado** (PR #6, mergeado a `main`). Lo que sigue queda como registro de la decisión de diseño; para la estructura real resultante ver AGENTS.md y `index.html` directamente. La sección 6 más abajo ya está actualizada para reflejar cómo se agrega un tema nuevo a esta landing (activar la card placeholder, no copiar bloques viejos de sección/tarjeta).
 
 **Cuándo**: acá exactamente en la secuencia — después de terminar y commitear JS Contemporáneo (5.3), antes de arrancar Asincronismo (5.4). Es un paso único, no se repite por cada deck nuevo (aunque cada deck que se agregue después sí va a necesitar su entrada nueva en el grid resultante, siguiendo el patrón que este restyling deja establecido).
 
@@ -299,30 +301,35 @@ Para no repetir 9 veces la configuración de CI que esto implicaría, `.github/w
 - `ejercicios.md`: guía de ejercicios progresiva (de más simple a más complejo), en español, alineada 1 a 1 con los objetivos de la sección 5 del tema correspondiente.
 - `scripts/print-pdfs.mjs` de cada `<slug>-docs/` copia los PDF generados **al `<slug>/` del deck Slidev hermano** (`<slug>/pdfs/originales/` y `<slug>/public/pdfs/originales/`), no se sirven desde el propio `<slug>-docs/`. Es el mismo patrón que ya usa `clojure-docs` (`copyPdfToClojureSlidevPublic`) — así el build de Slidev empaqueta el PDF en su propio `dist` y el link de descarga en `index.html` apunta a `./<slug>/pdfs/originales/<slug>-apunte.pdf`, no a `./<slug>-docs/...`.
 
-**Puertos a reservar por tema** (para no chocar entre sí ni con lo ya existente — `lambda-calculus-docs` usa 5173/4173, `clojure-docs` usa 5175/4174):
+**Puertos ya usados / a reservar por tema** (`docs:dev` sube de a 2, `PRINT_PORT` sube de a 1 — verificado contra los `package.json`/`scripts/print-pdfs.mjs` reales, no asumido):
 
-| Tema | `docs:dev` port | `PRINT_PORT` |
-|---|---|---|
-| git-github-docs | 5177 | 4175 |
-| js-funcional-docs | 5179 | 4177 |
-| js-contemporaneo-docs | 5181 | 4179 |
-| asincronismo-docs | 5183 | 4181 |
-| typescript-docs | 5185 | 4183 |
-| react-docs | 5187 | 4185 |
-| node-express-docs | 5189 | 4187 |
-| mongodb-docs | 5191 | 4189 |
-| testing-docs | 5193 | 4191 |
+| Tema | `docs:dev` port | `PRINT_PORT` | Estado |
+|---|---|---|---|
+| lambda-calculus-docs | 5173 | 4173 | ✅ construido |
+| clojure-docs | 5175 | 4174 | ✅ construido |
+| git-github-docs | 5177 | 4175 | ✅ construido |
+| js-funcional-docs | 5179 | 4176 | ✅ construido |
+| js-contemporaneo-docs | 5181 | 4177 | ✅ construido |
+| asincronismo-docs | 5183 | 4178 | pendiente |
+| typescript-docs | 5185 | 4179 | pendiente |
+| react-docs | 5187 | 4180 | pendiente |
+| node-express-docs | 5189 | 4181 | pendiente |
+| mongodb-docs | 5191 | 4182 | pendiente |
+| testing-docs | 5193 | 4183 | pendiente |
+
+El deck Slidev hermano (`<slug>/`) usa el siguiente puerto libre en la secuencia `dev.sh` (3031, 3032, ... — ver array `PORTS` en `dev.sh`, hoy llega a `3037` con `js-contemporaneo`; el próximo tema del núcleo usa `3038`).
 
 **Cambios necesarios en el resto del repo por cada tema nuevo** (no olvidar):
-- `index.html`: agregar dos tarjetas en la sección "Unidad 4" — una para la presentación (`./<slug>/`, patrón `card-download` simple) y una para el material teórico (`./<slug>-docs/`, patrón `card-download-menu` con Apunte + Ejercicios apuntando a `./<slug>/pdfs/originales/...pdf`) — copiar el bloque de `git-github`/`git-github-docs` como plantilla.
-- `dev.sh`: agregar `<slug>` (el deck Slidev) a los arrays `MODULES`/`PORTS` y sumar un color a `--prefix-colors` si hace falta. Los sitios `-docs` (VitePress) **no** se agregan a `dev.sh` — se levantan a mano con `npm run docs:dev` desde su carpeta, igual que hoy `lambda-calculus-docs`/`clojure-docs`.
+- `index.html`: **no se agregan tarjetas nuevas** para los 6 temas restantes del núcleo (5.4 a 5.9) — ya existe una card placeholder `data-category="proximamente" data-pending="true"` para cada uno. Hay que **activarla**: sacarle `data-pending`, cambiar `data-category` a `"unidad"`, sacar el `<span class="badge ...">`, y agregar el bloque `.card-actions` real (pills `.view-link` a `./<slug>/` y `./<slug>-docs/` + el `.card-download-menu` con los PDFs) — copiar la estructura completa de una card de unidad ya activada (ej. la de "JS Contemporáneo") como plantilla exacta, cambiando slug/puertos/textos. Para un tema fuera del núcleo (sección 7) que no tenía placeholder reservado, agregar una card nueva con `data-category="extra"` al final del bloque de Extras. Ver AGENTS.md para el detalle completo de esta estructura.
+- `dev.sh`: agregar `<slug>` (el deck Slidev) a los arrays `MODULES`/`PORTS` y sumar un color a `--prefix-colors` si hace falta. Los sitios `-docs` (VitePress) **no** se agregan a `dev.sh` — se levantan a mano con `npm run docs:dev` desde su carpeta.
+- `.gitignore`: agregar las 4 líneas del patrón ya usado para cada `<slug>`/`<slug>-docs` existente (dist/cache de VitePress + PDFs generados en `originales/`) — fácil de olvidar porque no rompe nada visiblemente hasta que alguien commitea un PDF grande sin querer.
 - `.github/workflows/deploy.yml`: **no hace falta tocarlo** para los `-docs` nuevos (loop genérico, ver arriba) ni para los decks Slidev nuevos (loop genérico ya existente que detecta `"slidev"` en `package.json`).
 
 ---
 
 ## 7. Opcionales / Avanzado
 
-Se presentan después del núcleo, marcados con badge de "Opcional"/"Avanzado" en `index.html` (clase CSS nueva, no reusar `.badge-deprecated`). Pensados para estudiantes que terminan el integrador con tiempo, o como referencia a futuro. **No llevan apunte/guía de ejercicios obligatorios** salvo que el usuario pida lo contrario — son extensión, no núcleo evaluable.
+Se presentan después del núcleo, marcados con `data-category="extra"` (badge `.badge-optional`, ya existe en `index.css`) en `index.html`. Pensados para estudiantes que terminan el integrador con tiempo, o como referencia a futuro. **No llevan apunte/guía de ejercicios obligatorios** salvo que el usuario pida lo contrario — son extensión, no núcleo evaluable. Los 4 ya tienen su card placeholder (`data-pending="true"`) en la landing — ver 5.3bis.
 
 ### Next.js
 **Slug**: `nextjs`. Extensión directa de React: ruteo basado en archivos, renderizado en servidor (SSR/SSG), API routes. Requiere React sólido antes de tocarlo. Referencia: https://nextjs.org/docs
@@ -362,7 +369,7 @@ Antes de dar un deck por terminado y pasar al siguiente:
 - [ ] Corre localmente sin errores (`cd <slug> && ulimit -n 10240 && npx slidev --port <puerto>`), todos los slides renderizan, sin imágenes rotas.
 - [ ] `package.json` sigue el template de `.cursor/rules/pdf-to-slidev.mdc`, con `build --base /programacion-III/<slug>/` correcto.
 - [ ] Apunte teórico y guía de ejercicios escritos en `<slug>-docs/docs/` (apunte.md + ejercicios.md), siguiendo la plantilla de `git-github-docs/`.
-- [ ] `index.html` actualizado: tarjeta nueva en la sección correspondiente, con link y (si aplica) menú de descarga.
+- [ ] `index.html` actualizado: card placeholder correspondiente activada (`data-category="unidad"`, sin `data-pending`, sin badge, con pills de vista y menú de descarga reales) — ver sección 6.
 - [ ] `dev.sh` actualizado si se quiere levantar el deck en el entorno de desarrollo local junto a los demás.
 - [ ] Nada commiteado a `main` sin pedido explícito del usuario; si se commitea localmente, mensaje de commit claro y en español o inglés consistente con el resto del historial del repo (ver `git log` para el tono ya usado).
 

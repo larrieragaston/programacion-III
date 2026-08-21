@@ -1,36 +1,37 @@
-# Programacion III - Material
+# Programación III - Material
 
-Course slides for Programacion III at [INSPT - UTN](https://www.inspt.utn.edu.ar/).  
-Built with [Slidev](https://sli.dev/) — a markdown-based presentation tool for developers.
-
-## Author
-
-**Gaston A. Larriera**  
-gaston.larriera@inspt.utn.edu.ar
-
-## About
-
-This repository contains all the class presentations for Programacion III (Functional Programming / Full Stack JS).  
-Each presentation is a standalone [Slidev](https://sli.dev/) project inside its own folder, managed as a monorepo.
-
-Presentations are automatically deployed to GitHub Pages on every push to `main`.
+Course material for **Programación III** at [INSPT - UTN](https://www.inspt.utn.edu.ar/) (Tecnicatura Superior en Informática Aplicada, Turno Noche).
+Each topic is a [Slidev](https://sli.dev/) presentation, most paired with a [VitePress](https://vitepress.dev/) site (apunte teórico + guía de ejercicios), both exportable to PDF.
 
 **Live site:** https://larrieragaston.github.io/programacion-III/
 
-## Presentations
+## Author
 
-| # | Folder | Topic |
-|---|--------|-------|
-| 1 | `introduction/` | Course overview, grading policy, contact info |
+**Gastón A. Larriera**
+gaston.larriera@inspt.utn.edu.ar
+
+## For agents / contributors
+
+**Read [`AGENTS.md`](AGENTS.md) first.** It has the full picture: repo architecture, dev workflow, the landing page's card-grid structure, content conventions, known bug patterns, and the git workflow this repo expects. This README stays intentionally short and human-facing; `AGENTS.md` is the deep reference, and [`PLAN-UNIDAD-4.md`](PLAN-UNIDAD-4.md) has the detailed content spec for the topics still being built.
+
+## What's here
+
+The landing page (`index.html`) is a filterable card grid — **Unidades** (built), **Próximamente** (planned, not built yet), **Extra** (optional/advanced, outside the core program), **Deprecado** (superseded). That grid is the source of truth for what currently exists; broadly:
+
+- **Built**: Introducción, Cálculo λ, Clojure, Git & GitHub, JS Funcional, JS Contemporáneo.
+- **Deprecated**: FP — John Backus (superseded by the Cálculo λ / Clojure / JS Funcional sequence).
+- **Planned**: Asincronismo, TypeScript, React, Node + Express, MongoDB, Pruebas (Testing) — see [`PLAN-UNIDAD-4.md`](PLAN-UNIDAD-4.md) for the full spec of each.
+- **Optional / extra**: Next.js, Tailwind CSS, NestJS, React Native con Expo.
 
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) >= 18
 - npm (comes with Node.js)
+- On macOS, raise the open-file limit before installing a new deck's dependencies: `ulimit -n 10240`
 
-For the OCR utility (optional):
-- [Tesseract](https://github.com/tesseract-ocr/tesseract) with Spanish language data
-- Python 3 with `pytesseract` and `pdf2image`
+For the PDF/OCR migration utilities (optional, only needed to convert old source PDFs into new decks):
+- [Tesseract](https://github.com/tesseract-ocr/tesseract) with Spanish language data, [Poppler](https://poppler.freedesktop.org/) (`pdftoppm`, `pdftotext`)
+- Python 3 with the packages in [`requirements-docs.txt`](requirements-docs.txt)
 
 ## Quick start
 
@@ -38,157 +39,101 @@ For the OCR utility (optional):
 # Install root dependencies (first time only)
 npm install
 
-# Install presentation dependencies (first time, for each folder)
+# Install a presentation's own dependencies (first time, per folder)
 cd introduction && npm install && cd ..
 
-# Start everything: index page + all presentations
+# Start the index page + every Slidev deck
 npm run dev
 ```
 
-This launches:
-- **Index** at `http://localhost:3030` with links to all presentations
-- **Each presentation** on sequential ports starting from `3031`
+This runs `dev.sh`, which starts:
+- **Index** at `http://localhost:3030`
+- **Each Slidev deck** on its own fixed port (`3031`, `3032`, ... — see the `MODULES`/`PORTS` arrays in `dev.sh`)
 
-Links on the index page automatically detect localhost and point to the correct dev port.
+Links on the index page detect `localhost` and rewrite themselves to the right dev port automatically (`index.js`).
 
-### Cálculo λ — material escrito (VitePress)
-
-The folder [`lambda-calculus-docs/`](lambda-calculus-docs/) is a [VitePress](https://vitepress.dev/) site: **Apunte**, **Guía de ejercicios** (`ejercicios.md`), and **Ejercicios adicionales**. Local dev uses VitePress `base` `/` so URLs like `http://localhost:5173/pdfs/...` work; GitHub Actions sets `CI=true` so production builds use `/programacion-III/lambda-calculus-docs/` (override with `VP_BASE=...` if the site root changes). The Pages workflow builds this site, runs PDF export, and copies `dist` to `_site/lambda-calculus-docs/`; the same export refreshes the PDF linked from the main index under `lambda-calculus/pdfs/originales/`.
+`dev.sh` does **not** start the VitePress (`-docs/`) sites — those are run manually, one at a time, from their own folder:
 
 ```bash
-cd lambda-calculus-docs && npm install   # runs postinstall: playwright install chromium
-npm run docs:install-browsers            # if docs:pdf fails with “Executable doesn't exist”
-npm run docs:dev                         # http://localhost:5173
-npm run docs:build                       # static site only → docs/.vitepress/dist
-npm run docs:pdf                         # build + export PDFs (Playwright print of the built HTML)
+cd git-github-docs && npm install   # first time only (runs postinstall: playwright install chromium)
+npm run docs:dev                    # http://localhost:5177
 ```
 
-Serve the repo root (e.g. `npx serve . -l 3030`) and open the cards for Unidad 1; they point to port `5173` with `data-dev-path` (see root `index.html`). Run `npm run docs:pdf` after clone if you need working PDF links under `docs/public/pdfs/` (those files are gitignored).
+See `AGENTS.md` for the full port table across every `-docs/` site.
 
-**Migrating from PDF again:** use [`pdf_to_md.py`](pdf_to_md.py) against `lambda-calculus-docs/source-pdfs/`, then run [`lambda-calculus-docs/scripts/restructure_docs.py`](lambda-calculus-docs/scripts/restructure_docs.py) to strip headers/CC text, promote section titles, and split the **guía de ejercicios** into `ejercicios.md`. Edit the Markdown by hand afterward.
+### Regenerating PDFs
 
-**PDF export** matches the site: `docs:pdf` builds the site and prints `apunte.html`, `ejercicios.html`, and `ejercicios-adicionales.html` to `docs/public/pdfs/*.pdf` via Playwright (not `md-to-pdf`).
-
-## Adding a new presentation
-
-1. Create the folder:
+Exported PDFs (deck slides and `-docs/` apuntes/ejercicios) are gitignored and not committed — clone a fresh copy of this repo and every "Descargar" link on the landing will be broken until you generate them:
 
 ```bash
-mkdir my-new-topic
-cd my-new-topic
+# Slides PDF for one deck
+cd git-github && npm run export
+
+# Apunte + ejercicios PDF for one -docs/ site (also copies them into the sibling deck's pdfs/originales/)
+cd git-github-docs && npm run docs:pdf
 ```
 
-2. Create `package.json` (replace `my-new-topic` with your folder name):
+`npm run dev` (root) does this automatically for every Slidev deck on startup unless you run `npm run dev:no-export` — but `-docs/` sites still need `docs:pdf` run manually.
 
-```json
-{
-  "name": "programacion-III-my-new-topic",
-  "private": true,
-  "scripts": {
-    "dev": "slidev",
-    "build": "slidev build --base /programacion-III/my-new-topic/",
-    "export": "slidev export"
-  },
-  "dependencies": {
-    "@slidev/cli": "^52.14.1",
-    "@slidev/theme-default": "^0.25.0"
-  }
-}
-```
+## Adding new content
 
-3. Create `slides.md` with the slide content (see `introduction/slides.md` as a reference).
+Two documents cover this in detail — read both before starting:
 
-4. Install dependencies:
+1. **[`.cursor/rules/pdf-to-slidev.mdc`](.cursor/rules/pdf-to-slidev.mdc)** — step-by-step recipe for creating a new Slidev deck (folder layout, `package.json` template, `slides.md` conventions, icons, updating `index.html`/`dev.sh`).
+2. **[`PLAN-UNIDAD-4.md`](PLAN-UNIDAD-4.md)** — the content spec for every topic still pending in the core program (objectives, suggested content, references), plus the exact `<slug>-docs/` folder structure and port table.
 
-```bash
-npm install
-```
-
-5. Add a link in the root `index.html` following the existing pattern:
-
-```html
-<li>
-  <a href="./my-new-topic/" data-dev-port="3032">
-    <div class="card-number">2</div>
-    <div class="card-content">
-      <strong>My new topic</strong>
-      <span>Brief description of the content</span>
-    </div>
-  </a>
-</li>
-```
-
-The `data-dev-port` should be the next sequential port (`3032`, `3033`, ...).  
-The port is assigned automatically by `dev.sh` in alphabetical folder order.
-
-6. Push to `main` — deploy is automatic.
+Short version: each topic is a `<slug>/` (Slidev) + `<slug>-docs/` (VitePress) pair, built one at a time, tested locally, then wired into the landing page grid by activating its existing "Próximamente" placeholder card (see `AGENTS.md`).
 
 ## Project structure
 
 ```
 programacion-III/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          # GitHub Actions: builds all presentations and deploys to Pages
-├── .gitignore                  # Ignores node_modules, dist, .slidev
-├── index.html                  # Landing page with links to all presentations
-├── package.json                # Root package with dev script
-├── package-lock.json
-├── dev.sh                      # Auto-discovers and starts all Slidev servers + index
-├── ocr_extract.py              # Utility: extracts text from PDF slides via OCR (Tesseract)
+├── AGENTS.md                   # Full repo conventions — read this first
+├── PLAN-UNIDAD-4.md            # Content spec for topics still being built
 ├── README.md
-└── introduction/               # Each presentation is a self-contained Slidev project
-    ├── package.json            #   Build config with --base path for GitHub Pages
-    ├── package-lock.json
-    ├── slides.md               #   Slide content in Markdown
-    └── public/                 #   Static assets (images, etc.)
+├── .github/workflows/deploy.yml  # Builds every deck + docs site, deploys to GitHub Pages
+├── .cursor/rules/pdf-to-slidev.mdc  # Step-by-step: new deck from a source PDF
+├── index.html / index.css / index.js  # Landing page: filterable card grid
+├── dev.sh                      # Starts the index + every Slidev deck (hardcoded MODULES/PORTS arrays)
+├── landing-redesign/           # Design handoff used to build the current landing (historical reference)
+├── introduction/                    # Slidev only (no -docs/ site)
+├── lambda-calculus/  + lambda-calculus-docs/   # Slidev + VitePress pair
+├── clojure/           + clojure-docs/
+├── git-github/        + git-github-docs/
+├── js-funcional/      + js-funcional-docs/
+├── js-contemporaneo/  + js-contemporaneo-docs/
+└── fp-backus/                   # Slidev only — deprecated, kept for reference
 ```
 
-### File descriptions
-
-| File | Purpose |
-|------|---------|
-| `deploy.yml` | CI/CD workflow that builds every Slidev project and deploys the result to GitHub Pages |
-| `index.html` | Landing page shown at the root URL; lists all presentations with links |
-| `dev.sh` | Shell script that finds all Slidev folders and starts them concurrently with the index server |
-| `ocr_extract.py` | Python script to extract text from image-based PDFs using Tesseract OCR; useful for migrating old slides |
-| `slides.md` | Markdown file with all the slides for a presentation; uses Slidev syntax |
+Every `<slug>-docs/` follows the same internal layout (`docs/apunte.md`, `docs/ejercicios.md`, `docs/.vitepress/`, `scripts/print-pdfs.mjs`) — see `AGENTS.md` for the exact tree.
 
 ## Deploy
 
-Automatic via GitHub Actions on every push to `main`.
+Automatic via GitHub Actions (`.github/workflows/deploy.yml`) on every push to `main`. The workflow:
 
-The workflow:
-1. Copies the site index (`index.html`, `index.css`, `index.js`, assets) into `_site/`
-2. Builds **lambda-calculus-docs** (VitePress), runs **Playwright** (`scripts/print-pdfs.mjs`) to regenerate the three PDF en `lambda-calculus/public/pdfs/originales/`, and copies the VitePress `dist` to `_site/lambda-calculus-docs/`
-3. Finds every subfolder with Slidev in `package.json`, runs `npm run export` (PDF diapositivas) and `npm run build`, copies each `dist` into `_site/{folder}/` (el build de `lambda-calculus` incluye los PDF del paso 2 vía `public/`)
-4. Uploads `_site` to GitHub Pages
+1. Copies the landing page files (`index.html`, `index.css`, `index.js`, favicon, logo) into `_site/`.
+2. Builds `lambda-calculus-docs` and `clojure-docs` (own hardcoded steps), then loops over every other folder whose `package.json` mentions `"vitepress"` and builds it the same way — `docs:build` + `scripts/print-pdfs.mjs` + copy `dist` into `_site/<folder>/`. **A new `<slug>-docs/` site does not need a workflow change** as long as it follows the established pattern.
+3. Loops over every folder whose `package.json` mentions `"slidev"`, exports its PDF, builds it, and copies the result into `_site/<folder>/`. Same auto-discovery — **no workflow change needed** for a new deck either.
+4. Uploads `_site` to GitHub Pages.
 
 Published URLs:
 - **Index:** https://larrieragaston.github.io/programacion-III/
-- **Presentations:** `https://larrieragaston.github.io/programacion-III/{folder-name}/`
+- **Deck:** `https://larrieragaston.github.io/programacion-III/{slug}/`
+- **Docs site:** `https://larrieragaston.github.io/programacion-III/{slug}-docs/`
+
+**Never push to `main` without the instructor's explicit go-ahead** — every push publishes immediately to the live site students use. Local commits are fine; the push is a separate, deliberate step. See `AGENTS.md`.
 
 ### GitHub repository name
 
-The repository on GitHub should be named **`programacion-III`** (misma forma en la URL de Pages: `/programacion-III/`). El `slidev build --base` debe coincidir con ese primer segmento. Si renombrás o forkeás el repo, actualizá cada `--base` en los `*/package.json` y volvé a desplegar.
-
-Tras renombrar en GitHub, los clones viejos suelen seguir funcionando por redirección; podés actualizar el remoto con `git remote set-url origin https://github.com/<usuario>/programacion-III.git`.
-
-## Useful commands
-
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start index + all presentations (from root) |
-| `cd {folder} && npm run dev` | Start a single presentation |
-| `cd {folder} && npm run build` | Generate static SPA in `dist/` |
-| `cd {folder} && npm run export` | Export to PDF |
+The repo must stay named **`programacion-III`** — every deck's `slidev build --base /programacion-III/<slug>/` and every VitePress `base` config hardcode that first path segment. Renaming the repo means updating every one of those.
 
 ## Tech stack
 
-- [Slidev](https://sli.dev/) — Markdown to interactive slides
-- [GitHub Actions](https://docs.github.com/en/actions) — CI/CD
-- [GitHub Pages](https://pages.github.com/) — Hosting
-- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) — PDF text extraction (utility)
+- [Slidev](https://sli.dev/) — Markdown to interactive slides (`theme: bricks`)
+- [VitePress](https://vitepress.dev/) — apuntes teóricos y guías de ejercicios
+- [Playwright](https://playwright.dev/) — PDF export (slides and VitePress pages alike)
+- [GitHub Actions](https://docs.github.com/en/actions) + [GitHub Pages](https://pages.github.com/) — CI/CD and hosting
+- Tesseract OCR + Poppler — one-off utilities for migrating old source PDFs into new decks
 
 ## License
 
