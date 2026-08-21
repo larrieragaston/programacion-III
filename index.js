@@ -51,19 +51,28 @@
     if (e.key === 'Escape') closeAllDownloadMenus()
   })
 
-  if (location.protocol === 'http:' || location.protocol === 'https:') {
-    document.querySelectorAll('a.card-download').forEach(function (link) {
-      fetch(link.href, { method: 'HEAD', cache: 'no-cache' })
-        .then(function (response) {
-          if (!response.ok) {
-            link.classList.add('is-disabled')
-            link.textContent = 'No disponible'
-            link.removeAttribute('download')
-          }
-        })
-        .catch(function () {})
-    })
+  var filters = document.querySelectorAll('.filter')
+  var cards = document.querySelectorAll('.grid .card')
 
+  filters.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      filters.forEach(function (c) {
+        c.classList.remove('active')
+      })
+      chip.classList.add('active')
+
+      var filter = chip.dataset.filter
+      cards.forEach(function (card) {
+        var matches =
+          filter === 'todas' ||
+          card.dataset.category === filter ||
+          (filter === 'proximamente' && card.dataset.pending === 'true')
+        card.hidden = !matches
+      })
+    })
+  })
+
+  if (location.protocol === 'http:' || location.protocol === 'https:') {
     document.querySelectorAll('.card-download-menu').forEach(function (root) {
       var links = Array.prototype.slice.call(
         root.querySelectorAll('.card-download-menu-panel a[href]'),
