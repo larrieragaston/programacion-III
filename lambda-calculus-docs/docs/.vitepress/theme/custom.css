@@ -101,6 +101,11 @@
     max-width: none !important;
   }
 
+  /* Sin esto, un marcador de ol de 2+ dígitos (10., 11., ...) queda cortado por el padding:0 de arriba. */
+  .vp-doc ol {
+    padding-inline-start: 1.85em;
+  }
+
   /* Evita duplicar el título que ya va en el encabezado del PDF (Playwright). */
   .vp-doc > h1:first-of-type {
     display: none !important;

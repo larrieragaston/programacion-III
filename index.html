@@ -23,325 +23,283 @@
   </header>
 
   <main>
+    <nav class="filters" aria-label="Filtrar por categoría">
+      <button type="button" class="filter active" data-filter="todas">Todas (17)</button>
+      <button type="button" class="filter" data-filter="unidad">Unidades</button>
+      <button type="button" class="filter" data-filter="proximamente">Próximamente</button>
+      <button type="button" class="filter" data-filter="extra">Extra</button>
+      <button type="button" class="filter" data-filter="deprecado">Deprecado</button>
+    </nav>
 
-    <div class="section">
-      <h2 class="section-title">Introducción</h2>
-      <ul class="card-list">
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./introduction/" data-dev-port="3031">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>Presentación de la materia</strong>
-                <span>Condiciones de cursada, contenidos, vías de comunicación y contacto</span>
-              </div>
-            </a>
-            <a class="card-download" href="./introduction/pdfs/exports/introduction-slides-export.pdf" download>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-              Descargar
-            </a>
-          </div>
-        </li>
-      </ul>
-    </div>
+    <div class="grid">
 
-    <div class="section">
-      <h2 class="section-title">Cálculo Lambda</h2>
-      <ul class="card-list">
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./lambda-calculus/" data-dev-port="3032">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>Presentación</strong>
-                <span>Fundamentos, reglas de conversión, estrategias de reducción, funciones lógicas y numéricas</span>
-              </div>
-            </a>
-            <a class="card-download" href="./lambda-calculus/pdfs/exports/lambda-calculus-slides-export.pdf" download>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-              Descargar
-            </a>
-          </div>
-        </li>
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./lambda-calculus-docs/" data-dev-port="5173" data-dev-path="/">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><path d="M14 2v6h6" /><path d="M10 13h4" /><path d="M10 17h8" /><path d="M10 9h2" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>Material teórico</strong>
-                <span>Apunte, guía de ejercicios y ejercicios adicionales</span>
-              </div>
-            </a>
-            <div class="card-download-menu">
-              <button
-                type="button"
-                class="card-download card-download-menu-trigger"
-                aria-expanded="false"
-                aria-haspopup="true"
-                aria-controls="menu-pdf-lambda"
-                id="menu-pdf-lambda-btn"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-                <span class="card-download-menu-label">Descargar</span>
-                <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
-              </button>
-              <div class="card-download-menu-panel" id="menu-pdf-lambda" hidden>
-                <a href="./lambda-calculus/pdfs/originales/calculo-lambda-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
-                <a href="./lambda-calculus/pdfs/originales/calculo-lambda-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
-                <a href="./lambda-calculus/pdfs/originales/calculo-lambda-ejercicios-adicionales.pdf" download target="_blank" rel="noopener noreferrer">Ejercicios adicionales</a>
-              </div>
+      <!-- Unidades -->
+
+      <div class="card" data-category="unidad">
+        <div class="card-title">Introducción</div>
+        <div class="card-desc">Condiciones de cursada, contenidos, vías de comunicación y contacto</div>
+        <div class="card-actions">
+          <a class="view-link" href="./introduction/" data-dev-port="3031">Presentación</a>
+          <div class="card-download-menu">
+            <button
+              type="button"
+              class="card-download-menu-trigger"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls="menu-pdf-introduction"
+              id="menu-pdf-introduction-btn"
+            >
+              <span class="card-download-menu-label">Descargar</span>
+              <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="card-download-menu-panel" id="menu-pdf-introduction" hidden>
+              <a href="./introduction/pdfs/exports/introduction-slides-export.pdf" download target="_blank" rel="noopener noreferrer">Presentación (PDF)</a>
             </div>
           </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </div>
 
-    <div class="section">
-      <h2 class="section-title">Clojure</h2>
-      <ul class="card-list">
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./clojure/" data-dev-port="3034">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>Presentación</strong>
-                <span>Fundamentos, datos, colecciones, evaluación de expresiones, formas especiales</span>
-              </div>
-            </a>
-            <a class="card-download" href="./clojure/pdfs/exports/clojure-slides-export.pdf" download>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-              Descargar
-            </a>
-          </div>
-        </li>
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./clojure-docs/" data-dev-port="5175" data-dev-path="/">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><path d="M14 2v6h6" /><path d="M10 13h4" /><path d="M10 17h8" /><path d="M10 9h2" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>Material teórico</strong>
-                <span>Apunte, ejercicios iniciales y guía de ejercicios</span>
-              </div>
-            </a>
-            <div class="card-download-menu">
-              <button
-                type="button"
-                class="card-download card-download-menu-trigger"
-                aria-expanded="false"
-                aria-haspopup="true"
-                aria-controls="menu-pdf-clojure-docs"
-                id="menu-pdf-clojure-docs-btn"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-                <span class="card-download-menu-label">Descargar</span>
-                <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
-              </button>
-              <div class="card-download-menu-panel" id="menu-pdf-clojure-docs" hidden>
-                <a href="./clojure/pdfs/originales/clojure-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
-                <a href="./clojure/pdfs/originales/clojure-ejercicios-iniciales.pdf" download target="_blank" rel="noopener noreferrer">Ejercicios iniciales</a>
-                <a href="./clojure/pdfs/originales/clojure-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
-              </div>
+      <div class="card" data-category="unidad">
+        <div class="card-title">Cálculo Lambda</div>
+        <div class="card-desc">Fundamentos, reglas de conversión, estrategias de reducción, funciones lógicas y numéricas</div>
+        <div class="card-actions">
+          <a class="view-link" href="./lambda-calculus/" data-dev-port="3032">Presentación</a>
+          <a class="view-link" href="./lambda-calculus-docs/" data-dev-port="5173" data-dev-path="/">Material teórico</a>
+          <div class="card-download-menu">
+            <button
+              type="button"
+              class="card-download-menu-trigger"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls="menu-pdf-lambda"
+              id="menu-pdf-lambda-btn"
+            >
+              <span class="card-download-menu-label">Descargar</span>
+              <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="card-download-menu-panel" id="menu-pdf-lambda" hidden>
+              <a href="./lambda-calculus/pdfs/exports/lambda-calculus-slides-export.pdf" download target="_blank" rel="noopener noreferrer">Presentación (PDF)</a>
+              <a href="./lambda-calculus/pdfs/originales/calculo-lambda-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
+              <a href="./lambda-calculus/pdfs/originales/calculo-lambda-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
+              <a href="./lambda-calculus/pdfs/originales/calculo-lambda-ejercicios-adicionales.pdf" download target="_blank" rel="noopener noreferrer">Ejercicios adicionales</a>
             </div>
           </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </div>
 
-    <div class="section">
-      <h2 class="section-title">Git &amp; GitHub</h2>
-      <ul class="card-list">
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./git-github/" data-dev-port="3035">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>Git &amp; GitHub — Presentación</strong>
-                <span>Control de versiones, flujo básico, ramas, GitHub y Pull Requests</span>
-              </div>
-            </a>
-            <a class="card-download" href="./git-github/pdfs/exports/git-github-slides-export.pdf" download>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-              Descargar
-            </a>
-          </div>
-        </li>
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./git-github-docs/" data-dev-port="5177" data-dev-path="/">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><path d="M14 2v6h6" /><path d="M10 13h4" /><path d="M10 17h8" /><path d="M10 9h2" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>Git &amp; GitHub — Material teórico</strong>
-                <span>Apunte teórico y guía de ejercicios</span>
-              </div>
-            </a>
-            <div class="card-download-menu">
-              <button
-                type="button"
-                class="card-download card-download-menu-trigger"
-                aria-expanded="false"
-                aria-haspopup="true"
-                aria-controls="menu-pdf-git-github"
-                id="menu-pdf-git-github-btn"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-                <span class="card-download-menu-label">Descargar</span>
-                <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
-              </button>
-              <div class="card-download-menu-panel" id="menu-pdf-git-github" hidden>
-                <a href="./git-github/pdfs/originales/git-github-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
-                <a href="./git-github/pdfs/originales/git-github-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
-              </div>
+      <div class="card" data-category="unidad">
+        <div class="card-title">Clojure</div>
+        <div class="card-desc">Fundamentos, datos, colecciones, evaluación de expresiones, formas especiales</div>
+        <div class="card-actions">
+          <a class="view-link" href="./clojure/" data-dev-port="3034">Presentación</a>
+          <a class="view-link" href="./clojure-docs/" data-dev-port="5175" data-dev-path="/">Material teórico</a>
+          <div class="card-download-menu">
+            <button
+              type="button"
+              class="card-download-menu-trigger"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls="menu-pdf-clojure"
+              id="menu-pdf-clojure-btn"
+            >
+              <span class="card-download-menu-label">Descargar</span>
+              <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="card-download-menu-panel" id="menu-pdf-clojure" hidden>
+              <a href="./clojure/pdfs/exports/clojure-slides-export.pdf" download target="_blank" rel="noopener noreferrer">Presentación (PDF)</a>
+              <a href="./clojure/pdfs/originales/clojure-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
+              <a href="./clojure/pdfs/originales/clojure-ejercicios-iniciales.pdf" download target="_blank" rel="noopener noreferrer">Ejercicios iniciales</a>
+              <a href="./clojure/pdfs/originales/clojure-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
             </div>
           </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </div>
 
-    <div class="section">
-      <h2 class="section-title">JS Funcional</h2>
-      <ul class="card-list">
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./js-funcional/" data-dev-port="3036">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>JS Funcional — Presentación</strong>
-                <span>De Cálculo Lambda y Clojure a JavaScript: funciones puras, inmutabilidad, map/filter/reduce, composición y currying</span>
-              </div>
-            </a>
-            <a class="card-download" href="./js-funcional/pdfs/exports/js-funcional-slides-export.pdf" download>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-              Descargar
-            </a>
-          </div>
-        </li>
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./js-funcional-docs/" data-dev-port="5179" data-dev-path="/">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><path d="M14 2v6h6" /><path d="M10 13h4" /><path d="M10 17h8" /><path d="M10 9h2" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>JS Funcional — Material teórico</strong>
-                <span>Apunte teórico y guía de ejercicios</span>
-              </div>
-            </a>
-            <div class="card-download-menu">
-              <button
-                type="button"
-                class="card-download card-download-menu-trigger"
-                aria-expanded="false"
-                aria-haspopup="true"
-                aria-controls="menu-pdf-js-funcional"
-                id="menu-pdf-js-funcional-btn"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-                <span class="card-download-menu-label">Descargar</span>
-                <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
-              </button>
-              <div class="card-download-menu-panel" id="menu-pdf-js-funcional" hidden>
-                <a href="./js-funcional/pdfs/originales/js-funcional-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
-                <a href="./js-funcional/pdfs/originales/js-funcional-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
-              </div>
+      <div class="card" data-category="unidad">
+        <div class="card-title">Git &amp; GitHub</div>
+        <div class="card-desc">Control de versiones, flujo básico, ramas, GitHub y Pull Requests</div>
+        <div class="card-actions">
+          <a class="view-link" href="./git-github/" data-dev-port="3035">Presentación</a>
+          <a class="view-link" href="./git-github-docs/" data-dev-port="5177" data-dev-path="/">Material teórico</a>
+          <div class="card-download-menu">
+            <button
+              type="button"
+              class="card-download-menu-trigger"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls="menu-pdf-git-github"
+              id="menu-pdf-git-github-btn"
+            >
+              <span class="card-download-menu-label">Descargar</span>
+              <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="card-download-menu-panel" id="menu-pdf-git-github" hidden>
+              <a href="./git-github/pdfs/exports/git-github-slides-export.pdf" download target="_blank" rel="noopener noreferrer">Presentación (PDF)</a>
+              <a href="./git-github/pdfs/originales/git-github-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
+              <a href="./git-github/pdfs/originales/git-github-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
             </div>
           </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </div>
 
-    <div class="section">
-      <h2 class="section-title">JS Contemporáneo</h2>
-      <ul class="card-list">
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./js-contemporaneo/" data-dev-port="3037">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>JS Contemporáneo — Presentación</strong>
-                <span>Historia de JavaScript, sintaxis ES6+, arrays, módulos y ecosistema Node/npm</span>
-              </div>
-            </a>
-            <a class="card-download" href="./js-contemporaneo/pdfs/exports/js-contemporaneo-slides-export.pdf" download>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-              Descargar
-            </a>
-          </div>
-        </li>
-        <li>
-          <div class="card-item">
-            <a class="card-main-link" href="./js-contemporaneo-docs/" data-dev-port="5181" data-dev-path="/">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><path d="M14 2v6h6" /><path d="M10 13h4" /><path d="M10 17h8" /><path d="M10 9h2" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>JS Contemporáneo — Material teórico</strong>
-                <span>Apunte teórico y guía de ejercicios</span>
-              </div>
-            </a>
-            <div class="card-download-menu">
-              <button
-                type="button"
-                class="card-download card-download-menu-trigger"
-                aria-expanded="false"
-                aria-haspopup="true"
-                aria-controls="menu-pdf-js-contemporaneo"
-                id="menu-pdf-js-contemporaneo-btn"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-                <span class="card-download-menu-label">Descargar</span>
-                <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
-              </button>
-              <div class="card-download-menu-panel" id="menu-pdf-js-contemporaneo" hidden>
-                <a href="./js-contemporaneo/pdfs/originales/js-contemporaneo-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
-                <a href="./js-contemporaneo/pdfs/originales/js-contemporaneo-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
-              </div>
+      <div class="card" data-category="unidad">
+        <div class="card-title">JS Funcional</div>
+        <div class="card-desc">De Cálculo Lambda y Clojure a JavaScript: funciones puras, inmutabilidad, map/filter/reduce, composición y currying</div>
+        <div class="card-actions">
+          <a class="view-link" href="./js-funcional/" data-dev-port="3036">Presentación</a>
+          <a class="view-link" href="./js-funcional-docs/" data-dev-port="5179" data-dev-path="/">Material teórico</a>
+          <div class="card-download-menu">
+            <button
+              type="button"
+              class="card-download-menu-trigger"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls="menu-pdf-js-funcional"
+              id="menu-pdf-js-funcional-btn"
+            >
+              <span class="card-download-menu-label">Descargar</span>
+              <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="card-download-menu-panel" id="menu-pdf-js-funcional" hidden>
+              <a href="./js-funcional/pdfs/exports/js-funcional-slides-export.pdf" download target="_blank" rel="noopener noreferrer">Presentación (PDF)</a>
+              <a href="./js-funcional/pdfs/originales/js-funcional-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
+              <a href="./js-funcional/pdfs/originales/js-funcional-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
             </div>
           </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </div>
 
-    <div class="section">
-      <h2 class="section-title">FP — John Backus <span class="badge badge-deprecated">Deprecated</span></h2>
-      <ul class="card-list">
-        <li class="deprecated-card">
-          <div class="card-item">
-            <a class="card-main-link" href="./fp-backus/" data-dev-port="3033">
-              <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8" /><path d="M12 17v4" /><path d="m10 9 5 3-5 3V9z" /></svg>
-              </div>
-              <div class="card-content">
-                <strong>Presentación</strong>
-                <span>Lenguaje FP de John Backus: objetos, funciones, formas funcionales y definiciones</span>
-              </div>
-            </a>
-            <a class="card-download" href="./fp-backus/pdfs/exports/fp-backus-slides-export.pdf" download>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
-              Descargar
-            </a>
+      <div class="card" data-category="unidad">
+        <div class="card-title">JS Contemporáneo</div>
+        <div class="card-desc">Historia de JavaScript, sintaxis ES6+, arrays, módulos y ecosistema Node/npm</div>
+        <div class="card-actions">
+          <a class="view-link" href="./js-contemporaneo/" data-dev-port="3037">Presentación</a>
+          <a class="view-link" href="./js-contemporaneo-docs/" data-dev-port="5181" data-dev-path="/">Material teórico</a>
+          <div class="card-download-menu">
+            <button
+              type="button"
+              class="card-download-menu-trigger"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls="menu-pdf-js-contemporaneo"
+              id="menu-pdf-js-contemporaneo-btn"
+            >
+              <span class="card-download-menu-label">Descargar</span>
+              <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="card-download-menu-panel" id="menu-pdf-js-contemporaneo" hidden>
+              <a href="./js-contemporaneo/pdfs/exports/js-contemporaneo-slides-export.pdf" download target="_blank" rel="noopener noreferrer">Presentación (PDF)</a>
+              <a href="./js-contemporaneo/pdfs/originales/js-contemporaneo-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
+              <a href="./js-contemporaneo/pdfs/originales/js-contemporaneo-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
+            </div>
           </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </div>
 
+      <!-- Próximamente -->
+
+      <div class="card" data-category="proximamente" data-pending="true">
+        <span class="badge badge-proximamente">Próximamente</span>
+        <div class="card-title">Asincronismo</div>
+        <div class="card-desc">Event loop, callbacks, Promises y async/await</div>
+      </div>
+
+      <div class="card" data-category="proximamente" data-pending="true">
+        <span class="badge badge-proximamente">Próximamente</span>
+        <div class="card-title">TypeScript</div>
+        <div class="card-desc">Tipado estático sobre JS: interfaces, genéricos y proyecto TS</div>
+      </div>
+
+      <div class="card" data-category="proximamente" data-pending="true">
+        <span class="badge badge-proximamente">Próximamente</span>
+        <div class="card-title">React</div>
+        <div class="card-desc">Componentes, estado, props y hooks</div>
+      </div>
+
+      <div class="card" data-category="proximamente" data-pending="true">
+        <span class="badge badge-proximamente">Próximamente</span>
+        <div class="card-title">Node + Express</div>
+        <div class="card-desc">Servidor HTTP con Express: rutas, middlewares y JSON</div>
+      </div>
+
+      <div class="card" data-category="proximamente" data-pending="true">
+        <span class="badge badge-proximamente">Próximamente</span>
+        <div class="card-title">MongoDB</div>
+        <div class="card-desc">Base de datos NoSQL: CRUD con MongoDB y Mongoose</div>
+      </div>
+
+      <div class="card" data-category="proximamente" data-pending="true">
+        <span class="badge badge-proximamente">Próximamente</span>
+        <div class="card-title">Pruebas (Testing)</div>
+        <div class="card-desc">Testing unitario y de integración en JavaScript</div>
+      </div>
+
+      <!-- Extra -->
+
+      <div class="card" data-category="extra" data-pending="true">
+        <div class="badge-row">
+          <span class="badge badge-optional">Extra</span>
+          <span class="badge badge-proximamente">Próximamente</span>
+        </div>
+        <div class="card-title">Next.js</div>
+        <div class="card-desc">Ruteo por archivos, SSR/SSG y API routes sobre React</div>
+      </div>
+
+      <div class="card" data-category="extra" data-pending="true">
+        <div class="badge-row">
+          <span class="badge badge-optional">Extra</span>
+          <span class="badge badge-proximamente">Próximamente</span>
+        </div>
+        <div class="card-title">Tailwind CSS</div>
+        <div class="card-desc">CSS utility-first, integrado a un proyecto React</div>
+      </div>
+
+      <div class="card" data-category="extra" data-pending="true">
+        <div class="badge-row">
+          <span class="badge badge-optional">Extra</span>
+          <span class="badge badge-proximamente">Próximamente</span>
+        </div>
+        <div class="card-title">NestJS</div>
+        <div class="card-desc">Backend Node con TypeScript, decoradores e inyección de dependencias</div>
+      </div>
+
+      <div class="card" data-category="extra" data-pending="true">
+        <div class="badge-row">
+          <span class="badge badge-optional">Extra</span>
+          <span class="badge badge-proximamente">Próximamente</span>
+        </div>
+        <div class="card-title">React Native con Expo</div>
+        <div class="card-desc">Apps móviles multiplataforma reusando React</div>
+      </div>
+
+      <!-- Deprecado -->
+
+      <div class="card card-deprecated" data-category="deprecado">
+        <span class="badge badge-deprecated">Deprecated</span>
+        <div class="card-title">FP — John Backus</div>
+        <div class="card-desc">Objetos, funciones, formas funcionales y definiciones</div>
+        <div class="card-actions">
+          <a class="view-link" href="./fp-backus/" data-dev-port="3033">Presentación</a>
+          <div class="card-download-menu">
+            <button
+              type="button"
+              class="card-download-menu-trigger"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls="menu-pdf-fp-backus"
+              id="menu-pdf-fp-backus-btn"
+            >
+              <span class="card-download-menu-label">Descargar</span>
+              <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="card-download-menu-panel" id="menu-pdf-fp-backus" hidden>
+              <a href="./fp-backus/pdfs/exports/fp-backus-slides-export.pdf" download target="_blank" rel="noopener noreferrer">Presentación (PDF)</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </main>
 
   <footer>
