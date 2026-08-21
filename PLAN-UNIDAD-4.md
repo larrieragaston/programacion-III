@@ -127,7 +127,7 @@ Estos PDFs son de 2021, de otro docente (Carlos E. Cimino) que también dicta la
 
 ## 5. Orden del núcleo y contenido por deck
 
-**Orden final acordado**: Git & GitHub → JS Funcional → JavaScript Contemporáneo → Asincronismo → TypeScript → React → Node + Express → MongoDB → Pruebas (Testing) → Proyecto integrador (fuera de alcance de este documento, ver sección 8).
+**Orden final acordado**: Git & GitHub → JS Funcional → JavaScript Contemporáneo → **restyling de la landing page (paso intermedio, no es un deck — ver sección 5.3bis)** → Asincronismo → TypeScript → React → Node + Express → MongoDB → Pruebas (Testing) → Proyecto integrador (fuera de alcance de este documento, ver sección 8).
 
 ### 5.1 Git & GitHub
 **Slug**: `git-github`
@@ -162,6 +162,41 @@ Estos PDFs son de 2021, de otro docente (Carlos E. Cimino) que también dicta la
 
 **Referencia local**: `10 - JavaScript Contemporáneo - Carlos E. Cimino.pdf`, `09 - Arrays en JavaScript - Carlos E. Cimino.pdf`.
 **Referencias web**: https://developer.mozilla.org/es/docs/Web/JavaScript · https://es.javascript.info/ (excelente, ya en español) · https://github.com/tc39/proposals (para contexto de evolución del lenguaje, opcional).
+
+### 5.3bis Restyling de la landing page (paso intermedio — no es un deck)
+
+**Cuándo**: acá exactamente en la secuencia — después de terminar y commitear JS Contemporáneo (5.3), antes de arrancar Asincronismo (5.4). Es un paso único, no se repite por cada deck nuevo (aunque cada deck que se agregue después sí va a necesitar su entrada nueva en el grid resultante, siguiendo el patrón que este restyling deja establecido).
+
+**Qué es**: rediseño de la landing page del repo — los tres archivos en la raíz `index.html` / `index.css` / `index.js` — mismo propósito que tiene hoy (linkear el Slidev y el sitio VitePress de cada tema), reorganizado como un grid de tarjetas filtrable en vez de la lista apilada por secciones actual.
+
+**Origen y ubicación del handoff**: mockup de alta fidelidad armado por el usuario con Claude (Claude design/artifacts). El paquete completo ya está copiado dentro de este repo en `landing-redesign/` (a partir de `Website UI mockups.zip` en Downloads, que puede no seguir estando disponible más adelante — por eso quedó copiado acá):
+- `landing-redesign/README.md` — spec de diseño completo y detallado: colores, spacing y tipografía exactos (tomados del `index.css` actual, salvo los estados nuevos de dropdown/badge que son valores nuevos), estructura de cada sección, interacciones. **Leer completo antes de implementar.**
+- `landing-redesign/reference.html` — referencia estática en HTML/CSS plano del layout. No es código de producción para copiar tal cual: hay que recrear el layout dentro de los `index.html`/`index.css`/`index.js` existentes del repo, no reemplazarlos por este archivo.
+- `landing-redesign/logo-inspt.png` — logo INSPT/UTN usado en el header, copia del que ya está en la raíz del repo.
+
+**Resumen del cambio** (detalle completo, con valores exactos de spacing/color, en `landing-redesign/README.md`):
+- Header con gradiente (`#1e3a5f → #2563eb`), logo a la izquierda, título "Programación III" centrado, y 3 pills de link a la derecha (Campus Virtual, Mail al docente, Web INSPT).
+- Fila de chips de filtro: "Todas (N)", "Unidades", "Próximamente", "Extra", "Deprecado" — en el mockup el filtrado es solo visual, en la implementación real hay que cablear el show/hide por categoría.
+- Grid de cards, 3 columnas en desktop / 1 en mobile (mismo breakpoint ~640px que ya usa `index.css`). Orden fijo de categorías: Unidades → Próximamente → Extra → Deprecado (siempre última). Sin número de unidad en la card (se sacó a propósito respecto de la iteración anterior).
+- Badge de categoría arriba a la izquierda (solo en Próximamente/Extra/Deprecado, cada una con su color); las cards de Deprecado además llevan `opacity:.5` en toda la card.
+- La descarga deja de ser un link único por archivo: pasa a ser un trigger "Descargar ▾" que abre un dropdown listando todos los archivos descargables de esa unidad (slides, apunte, guía de ejercicios, ejercicios adicionales — los que apliquen en cada caso).
+
+**Restricciones técnicas explícitas del handoff — no romper al implementar**:
+- Mantener la lógica de redirección a puerto de dev que ya tiene `index.js` (atributos `data-dev-port` / `data-dev-path` en el link principal de cada card).
+- Mantener el chequeo de disponibilidad de PDF (HEAD request que deshabilita y marca "No disponible" los links de descarga rotos).
+- El toggle de dropdown (abrir con click, cerrar con click afuera o Escape, un solo panel abierto a la vez) ya existe hoy para `.card-download-menu` — adaptarlo al nuevo diseño, no reescribirlo de cero.
+
+**Alcance**: solo los 3 archivos raíz (`index.html`, `index.css`, `index.js`). No toca ningún deck Slidev ni ningún sitio `-docs/`. Contenido real a usar en el grid: los decks ya construidos y commiteados hasta ese punto (Introducción, Cálculo Lambda, Clojure, Git & GitHub, JS Funcional, JS Contemporáneo), con sus datos reales.
+
+**Mapear los módulos futuros como "Próximamente"**: además de las cards con contenido real, agregar una card placeholder (sin links funcionales, sin `data-dev-port`, con el badge "Próximamente") por cada módulo del núcleo que todavía no está construido a esa altura, para que el grid quede completo desde el primer día del restyling y cada deck nuevo después solo tenga que "activar" su card en vez de crearla de cero. Lista completa a esa fecha (ver seccion 5 para el detalle de cada uno):
+- Asincronismo (5.4)
+- TypeScript (5.5)
+- React (5.6)
+- Node + Express (5.7)
+- MongoDB (5.8)
+- Pruebas / Testing (5.9)
+
+Los opcionales de la sección 7 (Next.js, Tailwind CSS, NestJS, React Native con Expo) van en la categoría "Extra" con el mismo criterio de placeholder — están confirmados como fuera del núcleo pero mapeados igual, así quedan visibles como contenido adicional planeado. Cuando se construya cada deck real, su card pasa de "Próximamente"/"Extra" a la categoría "Unidades" con sus links reales.
 
 ### 5.4 Asincronismo
 **Slug**: `asincronismo`

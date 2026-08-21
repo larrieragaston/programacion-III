@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Landing page redesign — reference (option 3a)</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,sans-serif; color:#1e293b; background:#f8fafc; }
+  .header { display:flex; align-items:center; justify-content:space-between; padding:1.8rem 2.5rem; background:linear-gradient(135deg,#1e3a5f,#2563eb); color:white; gap:20px; }
+  .header img { height:52px; width:auto; object-fit:contain; flex-shrink:0; }
+  .header-center { flex:1; text-align:center; }
+  .header-center h1 { font-size:1.8rem; font-weight:700; line-height:1.2; }
+  .header-center p { font-size:.95rem; opacity:.85; margin-top:.15rem; }
+  .header-center .subtitle { font-size:.8rem; opacity:.65; }
+  .header-buttons { display:flex; flex-direction:column; gap:.4rem; flex-shrink:0; }
+  .header-buttons a { padding:.35rem .75rem; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:.4rem; color:white; text-decoration:none; font-size:.75rem; font-weight:500; }
+  .filters { padding:26px 36px 0; display:flex; gap:10px; }
+  .filter { padding:8px 16px; border-radius:20px; font-size:12.5px; font-weight:600; }
+  .filter.active { background:#2563eb; color:white; }
+  .filter:not(.active) { border:1px solid #e2e8f0; color:#334155; }
+  .grid { padding:22px 36px 32px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .card { border:1px solid #e2e8f0; border-radius:.75rem; padding:18px; display:flex; flex-direction:column; gap:12px; background:white; position:relative; }
+  .card.deprecated { opacity:.5; }
+  .badge { align-self:flex-start; font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; padding:3px 7px; border-radius:5px; border:1px solid; }
+  .badge.proximamente { background:#f1f5f9; color:#64748b; border-color:#e2e8f0; }
+  .badge.extra { background:#eff6ff; color:#2563eb; border-color:#93c5fd; }
+  .badge.deprecated { background:#fef2f2; color:#dc2626; border-color:#fca5a5; }
+  .card-title { font-size:14.5px; font-weight:700; margin-bottom:3px; }
+  .card-desc { font-size:11.5px; line-height:1.4; color:#64748b; }
+  .card-actions { display:flex; gap:6px; flex-wrap:wrap; margin-top:auto; }
+  .view-link, .dl-trigger { padding:6px 10px; border-radius:8px; background:#eff6ff; border:1px solid #bfdbfe; font-size:11px; font-weight:600; color:#1d4ed8; text-decoration:none; display:inline-flex; align-items:center; gap:5px; cursor:pointer; }
+  .dl-menu { position:relative; }
+  .dl-panel { position:absolute; top:calc(100% + 6px); left:0; z-index:20; min-width:12rem; padding:.35rem; background:white; border:1px solid #e2e8f0; border-radius:.65rem; box-shadow:0 4px 6px -1px rgba(0,0,0,.08),0 10px 20px -4px rgba(0,0,0,.12); }
+  .dl-panel[hidden] { display:none; }
+  .dl-panel a { display:block; padding:.5rem .65rem; border-radius:.45rem; font-size:.78rem; font-weight:500; color:#1e293b; text-decoration:none; }
+  .dl-panel a:hover { background:#eff6ff; color:#1d4ed8; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <img src="./logo-inspt.png" alt="INSPT">
+  <div class="header-center">
+    <h1>Programación III</h1>
+    <p>Turno Noche</p>
+    <div class="subtitle">Material de clase · Ciclo Lectivo 2026</div>
+  </div>
+  <nav class="header-buttons">
+    <a href="#">🎓 Campus Virtual</a>
+    <a href="#">✉️ Mail al docente</a>
+    <a href="#">🏢 Web INSPT</a>
+  </nav>
+</header>
+
+<div class="filters">
+  <div class="filter active">Todas (9)</div>
+  <div class="filter">Unidades</div>
+  <div class="filter">Próximamente</div>
+  <div class="filter">Extra</div>
+  <div class="filter">Deprecado</div>
+</div>
+
+<div class="grid">
+
+  <!-- Regular unit, single view link, single download -->
+  <div class="card">
+    <div class="card-title">Introducción</div>
+    <div class="card-desc">Condiciones de cursada, contenidos, vías de comunicación y contacto</div>
+    <div class="card-actions">
+      <a class="view-link" href="#">Presentación</a>
+      <div class="dl-menu">
+        <div class="dl-trigger">Descargar ▾</div>
+        <div class="dl-panel" hidden>
+          <a href="#">Presentación (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Regular unit, two view links, dropdown open (illustrative) -->
+  <div class="card">
+    <div class="card-title">Cálculo Lambda</div>
+    <div class="card-desc">Fundamentos, reglas de conversión, estrategias de reducción, funciones lógicas y numéricas</div>
+    <div class="card-actions">
+      <a class="view-link" href="#">Presentación</a>
+      <a class="view-link" href="#">Material teórico</a>
+      <div class="dl-menu">
+        <div class="dl-trigger">Descargar ▾</div>
+        <div class="dl-panel"><!-- open state shown for reference; toggle via JS -->
+          <a href="#">Presentación (PDF)</a>
+          <a href="#">Apunte teórico</a>
+          <a href="#">Guía de ejercicios</a>
+          <a href="#">Ejercicios adicionales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Próximamente placeholder: no actions, neutral badge -->
+  <div class="card">
+    <span class="badge proximamente">Próximamente</span>
+    <div class="card-title">Unidad próxima</div>
+    <div class="card-desc">Contenido a definir</div>
+  </div>
+
+  <!-- Extra topic: blue "Extra" badge -->
+  <div class="card">
+    <span class="badge extra">Extra</span>
+    <div class="card-title">Tema extra A</div>
+    <div class="card-desc">Contenido complementario a definir</div>
+    <div class="card-actions">
+      <a class="view-link" href="#">Presentación</a>
+      <div class="dl-menu">
+        <div class="dl-trigger">Descargar ▾</div>
+        <div class="dl-panel" hidden><a href="#">Presentación (PDF)</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deprecated: red badge, 0.5 opacity, always last -->
+  <div class="card deprecated">
+    <span class="badge deprecated">Deprecated</span>
+    <div class="card-title">FP — John Backus</div>
+    <div class="card-desc">Objetos, funciones, formas funcionales y definiciones</div>
+    <div class="card-actions">
+      <a class="view-link" href="#">Presentación</a>
+      <div class="dl-menu">
+        <div class="dl-trigger">Descargar ▾</div>
+        <div class="dl-panel" hidden><a href="#">Presentación (PDF)</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Toggle logic reference: click .dl-trigger to show/hide the sibling .dl-panel,
+  // close on outside click / Escape (see index.js in the current repo for the existing pattern).
+  document.querySelectorAll('.dl-menu').forEach(menu => {
+    const trigger = menu.querySelector('.dl-trigger');
+    const panel = menu.querySelector('.dl-panel');
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      panel.hidden = !panel.hidden;
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.dl-panel').forEach(p => p.hidden = true);
+  });
+</script>
+
+</body>
+</html>
+</content>
