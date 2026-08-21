@@ -76,10 +76,12 @@ Verify each SVG is actual content (not a redirect/HTML page). If broken, create 
 
 ## 6. Update root `index.html`
 
-Add a new `<li>` entry inside `.card-list` with:
-- Incremented card number
-- `href="./slug/"` and `data-dev-port` matching the next available port (3031 + N)
-- Title and short description
+The landing is a filterable card grid (`.grid > .card[data-category]`), not a list — see `AGENTS.md` for the full markup reference. Two cases:
+
+- **The slug already has a placeholder card** (core topics from `PLAN-UNIDAD-4.md` section 5, or one of the four optionals from section 7): find its `<div class="card" data-category="proximamente" data-pending="true">` (or `data-category="extra" data-pending="true"`), remove `data-pending` and the `<span class="badge ...">`, set `data-category="unidad"` if it was a core topic, and add the real `.card-actions` block (`.view-link` pills to `./slug/` and `./slug-docs/` with `data-dev-port`/`data-dev-path`, plus a `.card-download-menu` listing every PDF). Copy the exact structure from an already-activated unit card (e.g. "JS Contemporáneo") as a template.
+- **Brand-new topic with no placeholder**: add a new `.card` with `data-category="unidad"` (or `"extra"`) following the same structure, in the correct position — order is always Unidades → Próximamente → Extra → Deprecado.
+
+Also update `dev.sh`'s `MODULES`/`PORTS` arrays (the Slidev deck only — `-docs/` VitePress sites are not started by `dev.sh`, run `npm run docs:dev` from their own folder) and `.gitignore` (copy the 4-line pattern used for every existing `<slug>`/`<slug>-docs` pair).
 
 ## 7. Test locally
 
