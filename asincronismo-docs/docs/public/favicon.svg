@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="JS Contemporáneo">
+  <rect width="32" height="32" rx="6" fill="#323330"/>
+  <text
+    x="16"
+    y="21"
+    text-anchor="middle"
+    font-family="Menlo, Consolas, 'Courier New', monospace"
+    font-size="15"
+    font-weight="700"
+    fill="#F0DB4F"
+  >{ }</text>
+</svg>
