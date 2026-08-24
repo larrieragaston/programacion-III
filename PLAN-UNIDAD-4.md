@@ -312,12 +312,12 @@ Para no repetir 9 veces la configuración de CI que esto implicaría, `.github/w
 | js-contemporaneo-docs | 5181 | 4177 | ✅ construido |
 | asincronismo-docs | 5183 | 4178 | pendiente |
 | typescript-docs | 5185 | 4179 | pendiente |
-| react-docs | 5187 | 4180 | pendiente |
+| react-docs | 5187 | 4180 | ✅ construido |
 | node-express-docs | 5189 | 4181 | pendiente |
 | mongodb-docs | 5191 | 4182 | pendiente |
 | testing-docs | 5193 | 4183 | pendiente |
 
-El deck Slidev hermano (`<slug>/`) usa el siguiente puerto libre en la secuencia `dev.sh` (3031, 3032, ... — ver array `PORTS` en `dev.sh`, hoy llega a `3037` con `js-contemporaneo`; el próximo tema del núcleo usa `3038`).
+El deck Slidev hermano (`<slug>/`) usa el siguiente puerto libre en la secuencia `dev.sh` (3031, 3032, ... — ver array `PORTS` en `dev.sh`). **Nota**: Asincronismo (3038), TypeScript (3039) y React (3040) se construyeron en branches paralelos a partir de `main` (no secuenciales entre sí) — los puertos ya están asignados de antemano siguiendo el orden de esta tabla para que no choquen al mergear, pero cada branch solo ve construido su propio tema más los anteriores ya mergeados a `main`. Revisar conflictos en `index.html`/`dev.sh`/`.gitignore`/este archivo al mergear los PRs, en orden.
 
 **Cambios necesarios en el resto del repo por cada tema nuevo** (no olvidar):
 - `index.html`: **no se agregan tarjetas nuevas** para los 6 temas restantes del núcleo (5.4 a 5.9) — ya existe una card placeholder `data-category="proximamente" data-pending="true"` para cada uno. Hay que **activarla**: sacarle `data-pending`, cambiar `data-category` a `"unidad"`, sacar el `<span class="badge ...">`, y agregar el bloque `.card-actions` real (pills `.view-link` a `./<slug>/` y `./<slug>-docs/` + el `.card-download-menu` con los PDFs) — copiar la estructura completa de una card de unidad ya activada (ej. la de "JS Contemporáneo") como plantilla exacta, cambiando slug/puertos/textos. Para un tema fuera del núcleo (sección 7) que no tenía placeholder reservado, agregar una card nueva con `data-category="extra"` al final del bloque de Extras. Ver AGENTS.md para el detalle completo de esta estructura.
