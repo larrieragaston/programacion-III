@@ -1031,7 +1031,7 @@ layout: default
 - **Node.js**: el motor V8 de Chrome, empaquetado para correr JavaScript fuera del navegador — así JS se convierte en un lenguaje de servidor.
 - **npm**: el gestor de paquetes que viene con Node — instala, versiona y comparte librerías.
 - **`package.json`**: describe un proyecto (nombre, dependencias, scripts).
-- **`node_modules/`**: donde npm instala las dependencias — ya lo vivimos instalando Slidev y VitePress para esta materia.
+- **`node_modules/`**: donde npm instala las dependencias.
 
 </div>
 
