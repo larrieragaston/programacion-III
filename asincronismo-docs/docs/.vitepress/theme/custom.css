@@ -98,6 +98,16 @@
   border-color: var(--vp-c-green-3);
 }
 
+.info-card.tone-purple {
+  background: var(--vp-c-purple-soft);
+  border-color: var(--vp-c-purple-3);
+}
+
+.info-card.tone-orange {
+  background: rgba(251, 146, 60, 0.16);
+  border-color: #f97316;
+}
+
 .info-card h4 {
   margin: 0 0 0.5rem;
   border-top: none;
