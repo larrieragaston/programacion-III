@@ -107,13 +107,33 @@ layout: default
 
 # Otro ejemplo: cargar una página con varias APIs
 
-<div class="text-xs mb-2 opacity-70">Bloqueante — una espera atrás de la otra</div>
-<div class="flex items-center gap-1">
-<div class="h-9 bg-blue-300 rounded flex items-center justify-center text-xs px-1" style="width: 40%">Noticias — 2s</div>
-<div class="h-9 bg-yellow-300 rounded flex items-center justify-center text-xs px-1" style="width: 20%">Clima — 1s</div>
-<div class="h-9 bg-pink-300 rounded flex items-center justify-center text-xs px-1" style="width: 30%">Publicidad — 1.5s</div>
+<div class="flex gap-4 items-start mt-4">
+
+<div class="rounded-lg border border-gray-300 overflow-hidden" style="width: 42%">
+<div class="bg-gray-200 flex items-center gap-1 px-2" style="height: 1.1rem">
+<div class="rounded-full bg-red-400" style="width: 6px; height: 6px"></div>
+<div class="rounded-full bg-yellow-400" style="width: 6px; height: 6px"></div>
+<div class="rounded-full bg-green-400" style="width: 6px; height: 6px"></div>
+<div class="ml-2 bg-white rounded flex-1 text-gray-500 px-2" style="font-size: 0.5rem">minoticiario.com</div>
 </div>
-<div class="text-xs mt-1 opacity-70">Total: 2 + 1 + 1.5 = <b>4.5 segundos</b> hasta que la página responde a lo que sea.</div>
+<div class="bg-white p-2">
+<div class="bg-pink-200 text-pink-700 rounded flex items-center justify-center mb-2" style="height: 0.9rem; font-size: 0.5rem">Publicidad</div>
+<div class="flex gap-2">
+<div class="flex-1" style="font-size: 0.5rem">
+<div class="text-gray-500 font-bold mb-1">NOTICIAS</div>
+<div class="bg-gray-200 rounded mb-1" style="height: 6px; width: 100%"></div>
+<div class="bg-gray-200 rounded mb-1" style="height: 6px; width: 85%"></div>
+<div class="bg-gray-200 rounded" style="height: 6px; width: 70%"></div>
+</div>
+<div class="bg-blue-50 rounded text-center px-2 py-1" style="font-size: 0.5rem">
+<div class="text-blue-600 font-bold">CLIMA</div>
+<div style="font-size: 0.9rem">22°C</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="flex-1 text-xs">
 
 ```js
 function pedirNoticias()    { blockFor(2000); return 'Noticias del día' }
@@ -125,9 +145,13 @@ console.log(pedirClima())        // recién a los 3s
 console.log(pedirPublicidad())   // recién a los 4.5s
 ```
 
-<div class="mt-2 text-sm opacity-80">
+</div>
 
-Una página real pide noticias, clima y publicidad a servicios distintos e independientes entre sí. Si cada pedido bloqueara el hilo hasta tener respuesta, el tiempo total sería la **suma** de los tres — y ni un solo click funcionaría mientras tanto.
+</div>
+
+<div class="mt-3 text-xs opacity-80">
+
+Una página real como esta pide noticias, clima y publicidad a servicios distintos e independientes entre sí. Si cada pedido **bloqueara** el hilo hasta tener respuesta (`blockFor` simula eso), el tiempo total sería la **suma** de los tres — 2 + 1 + 1.5 = <b>4.5 segundos</b> — y ni un solo click funcionaría mientras tanto.
 
 </div>
 
@@ -160,7 +184,7 @@ console.log('La página ya es usable — nada bloqueó el hilo')
 
 <div class="mt-2 text-sm italic opacity-80">
 
-Esto es exactamente lo que va a formalizar `Promise.all` más adelante en este deck: varias operaciones asincrónicas corriendo "al mismo tiempo" en vez de una atrás de la otra, y el hilo principal libre para lo demás durante toda la espera.
+Esto es asincronismo en acción: en vez de bloquear el hilo esperando cada respuesta, se le devuelve el control a JS enseguida y el programa entero sigue respondiendo mientras las tres esperan "en paralelo". Este es, ni más ni menos, el problema que el resto de este deck viene a resolver — callbacks, Promises y `async`/`await` son las formas concretas de expresarlo en código.
 
 </div>
 
@@ -171,6 +195,45 @@ layout: center
 ---
 
 # El Event Loop
+
+---
+layout: default
+---
+
+# Las piezas, de un vistazo
+
+<div class="grid grid-cols-2 gap-4 mt-6 text-sm">
+<div class="p-4 rounded-lg bg-blue-50 border border-blue-200">
+
+**Call Stack**
+
+Dónde vive el código sincrónico mientras se ejecuta.
+</div>
+<div class="p-4 rounded-lg bg-yellow-50 border border-yellow-200">
+
+**Web APIs / libuv**
+
+Donde corren aparte los timers, la red, el disco.
+</div>
+<div class="p-4 rounded-lg bg-green-50 border border-green-200">
+
+**Colas de tareas**
+
+Donde esperan su turno los callbacks ya listos para correr.
+</div>
+<div class="p-4 rounded-lg bg-purple-50 border border-purple-200">
+
+**Event Loop**
+
+El mecanismo que conecta todo — decide cuándo le toca a cada cosa.
+</div>
+</div>
+
+<div class="mt-6 text-sm italic opacity-80">
+
+Las vemos una por una primero — y al final las juntamos todas en un solo diagrama.
+
+</div>
 
 ---
 layout: default
@@ -248,7 +311,7 @@ layout: default
 # La Task Queue (cola de tareas)
 
 - Cuando una Web API/libuv termina su trabajo (el timer llegó a cero, la respuesta de red llegó), **no** ejecuta el callback inmediatamente.
-- Lo pone en una **cola** — la task queue (también llamada *callback queue* o *macrotask queue*) — a esperar su turno.
+- Lo pone en una **cola** — la task queue (también llamada *callback queue*) — a esperar su turno.
 - El callback de la cola **solo se ejecuta cuando el call stack está completamente vacío**.
 
 <div class="mt-6 text-sm italic opacity-80">
@@ -256,57 +319,6 @@ layout: default
 Esta regla — "esperá a que el stack esté vacío" — es la razón por la que <code>setTimeout(fn, 0)</code> no ejecuta <code>fn</code> inmediatamente: igual tiene que esperar su turno en la cola, después de todo el código sincrónico pendiente.
 
 </div>
-
----
-layout: default
----
-
-# El Event Loop: todo junto
-
-<div class="flex justify-center items-stretch gap-3 mt-6 text-xs">
-<div class="p-3 rounded-lg border-2 border-blue-400 bg-blue-50 text-center w-36 flex flex-col justify-center">
-<div class="font-bold mb-1">1. Call Stack</div>
-<div class="opacity-70">código sincrónico</div>
-</div>
-
-<v-click>
-<div class="flex items-center text-lg opacity-60">→</div>
-</v-click>
-
-<div class="p-3 rounded-lg border-2 border-yellow-400 bg-yellow-50 text-center w-36 flex flex-col justify-center">
-<div class="font-bold mb-1">2. Web APIs / libuv</div>
-<div class="opacity-70">timer, red, disco — corren aparte</div>
-</div>
-
-<v-click>
-<div class="flex items-center text-lg opacity-60">→</div>
-</v-click>
-
-<div class="p-3 rounded-lg border-2 border-green-400 bg-green-50 text-center w-36 flex flex-col justify-center">
-<div class="font-bold mb-1">3. Task Queue</div>
-<div class="opacity-70">callbacks listos, en orden de llegada</div>
-</div>
-</div>
-
-<v-click>
-
-<div class="mt-4 p-3 rounded-lg border-2 border-purple-400 bg-purple-50 text-xs text-center mx-auto" style="max-width: 34rem">
-
-↩ <b>4. Event Loop</b>: mientras el programa vive, chequea todo el tiempo "¿está vacío el call stack?" — en cuanto lo está, saca el primero de la task queue y lo apila. Así el ciclo vuelve a empezar.
-
-</div>
-
-</v-click>
-
-<v-click>
-
-<div class="mt-4 text-sm italic opacity-80 text-center">
-
-Cuatro piezas que ya vimos por separado — esta es la foto de cómo interactúan entre sí, y en qué orden, mientras el programa corre.
-
-</div>
-
-</v-click>
 
 ---
 layout: default
@@ -387,6 +399,82 @@ Ni siquiera un `setTimeout(fn, 0)` corre "inmediatamente": siempre espera a que 
 </div>
 
 </v-click>
+
+---
+layout: center
+---
+
+# Microtasks vs. Macrotasks
+
+---
+layout: default
+---
+
+# Dos colas, no una
+
+<div class="text-sm">
+
+La "task queue" que acabamos de ver en realidad son (al menos) **dos colas** con distinta prioridad. Todavía no vimos la sintaxis de Promises ni de `async`/`await` en detalle — alcanza con que reconozcan los nombres, la vamos a formalizar en breve.
+
+</div>
+
+- **Macrotasks**: `setTimeout`, `setInterval`, eventos de I/O, y **callbacks comunes** (el mismo mecanismo que ya vimos).
+- **Microtasks**: callbacks de Promises (`.then`/`.catch`/`.finally`), la continuación del código que sigue después de un `await`, y `queueMicrotask`.
+- **Regla del event loop**: después de cada macrotask, se vacía **toda** la cola de microtasks antes de pasar a la siguiente macrotask — incluso si aparecen microtasks nuevas mientras se vacía la cola.
+
+<div class="mt-4 text-sm italic opacity-80">
+
+En otras palabras, de mayor a menor prioridad: **código sincrónico → microtasks (Promises, `async`/`await`) → macrotasks (callbacks, timers)**. Las Promises "cortan la fila" por delante de los timers y los callbacks comunes, aunque estos se hayan programado antes.
+
+</div>
+
+---
+layout: default
+---
+
+# El orden que sorprende
+
+```js
+console.log('1: sync')
+setTimeout(() => console.log('5: macrotask (setTimeout)'), 0)
+function operacionConCallback(cb) { setTimeout(cb, 0) }
+operacionConCallback(() => console.log('6: macrotask (callback)'))
+Promise.resolve().then(() => console.log('3: microtask (Promise)'))
+async function demo() {
+  await null
+  console.log('4: microtask (después de un await)')
+}
+demo()
+console.log('2: sync')
+```
+
+<div class="mt-2 text-xs opacity-80">
+
+Los dos `console.log` sincrónicos (**1** y **2**) corren primero, de punta a punta — ni una Promise ni un `await` los interrumpen. Después se vacía **toda** la cola de microtasks: la Promise (**3**) y la continuación del `await` (**4**), en el orden en que se encolaron. Recién al final se procesan los macrotasks — el `setTimeout` (**5**) y el callback (**6**), también en orden de llegada.
+
+</div>
+
+<div class="mt-1.5 text-sm font-mono text-center opacity-90">
+
+Orden real de salida: 1, 2, 3, 4, 5, 6
+
+</div>
+
+---
+layout: default
+---
+
+# El Event Loop: todo junto
+
+<div class="flex justify-center mt-2">
+<img src="/images/event-loop-diagram.png" alt="Diagrama del Event Loop de JavaScript: Call Stack, Heap, Web APIs y Callback Queue conectados por el Event Loop" style="max-height: 52vh; max-width: 92%" />
+</div>
+
+<div class="mt-2 text-xs opacity-60 text-center">
+
+Diagrama de <a href="https://commons.wikimedia.org/wiki/User:Byteslovesbits">Byteslovesbits</a>, <a href="https://commons.wikimedia.org/wiki/File:JavaScript_Event_Loop.png">Wikimedia Commons</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>). "Callback Queue" acá representa lo que ya sabemos que son en realidad **dos colas** — macro y microtasks.
+
+</div>
 
 ---
 layout: center
@@ -605,24 +693,26 @@ layout: default
 
 ```js
 fetchUser(1)
-  .then((user) => fetchOrders(user.id))
+  .catch((error) => {
+    console.error('No se pudo cargar el usuario:', error.message)
+    return null   // sin usuario no hay nada que pedir después
+  })
+  .then((user) => (user ? fetchOrders(user.id) : []))
   .catch((error) => {
     console.error('No se pudieron cargar las órdenes:', error.message)
-    return []   // la cadena se "recupera" y sigue con este valor
+    return []
   })
-  .then((orders) => fetchShipping(orders[0]?.id))
-  .catch((error) => console.error('Tampoco se pudo obtener el envío:', error.message))
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-3 text-xs opacity-80">
 
-Un `.catch()` intermedio no corta la cadena: atrapa el error de los pasos anteriores y, si no vuelve a lanzar (`throw`) ni devuelve una promise rechazada, la cadena sigue con el valor que ese `.catch` devuelva — acá, un array vacío en vez de romper todo. Así se pueden manejar distintos errores en distintos puntos de la cadena, en vez de un único `.catch` final para todo.
+Cada `.catch()` atrapa los errores de los pasos **anteriores** a él en la cadena — por eso, para diferenciar el error de `fetchUser` del error de `fetchOrders`, hace falta un `.catch` **pegado a `fetchUser`**, antes de encadenar el siguiente `.then`. Si no vuelve a lanzar (`throw`) ni devuelve una promise rechazada, la cadena sigue con el valor que ese `.catch` devuelva — acá, `null` primero y `[]` después, en vez de romper todo.
 
 </div>
 
 <v-click>
 
-<div class="mt-2 text-sm opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
 El costo: cuantos más puntos de manejo de errores hay, más difícil es seguir el flujo de la cadena a simple vista — otra razón, además de la anterior, por la que conviene conocer `async`/`await`.
 
@@ -657,6 +747,16 @@ Promise.all([
 <div class="mt-4 text-sm opacity-80">
 
 Distinto de encadenar con `.then`: acá las tres llamadas arrancan **al mismo tiempo**, no una después de la otra — el mismo principio que vimos con el ejemplo de la página cargando noticias, clima y publicidad en paralelo.
+
+</div>
+
+</v-click>
+
+<v-click>
+
+<div class="mt-2 text-xs opacity-70">
+
+Ojo con la expectativa: `Promise.all` no crea hilos ni paraleliza CPU. Solo tiene sentido para operaciones **asincrónicas** (I/O) — las tres arrancan y quedan delegadas a la vez, así que el tiempo total es el de la más lenta, no la suma. Si `fetchUser` fuera una función **sincrónica** (bloqueante), envolverla en `Promise.all` no cambia nada: el hilo sigue siendo uno solo, y las tres seguirían ejecutándose una atrás de la otra.
 
 </div>
 
@@ -925,57 +1025,6 @@ Dos `fetch` en secuencia (el segundo necesita el resultado del primero) — con 
 </div>
 
 ---
-layout: center
----
-
-# Microtasks vs. Macrotasks
-
----
-layout: default
----
-
-# Dos colas, no una
-
-- Lo que llamamos "task queue" en realidad son (al menos) **dos colas** con distinta prioridad:
-- **Macrotasks**: `setTimeout`, `setInterval`, eventos de I/O.
-- **Microtasks**: callbacks de Promises (`.then`/`.catch`/`.finally`), `queueMicrotask`.
-- **Regla del event loop**: después de cada macrotask, se vacía **toda** la cola de microtasks antes de pasar a la siguiente macrotask — incluso si aparecen microtasks nuevas mientras se vacía la cola.
-
-<div class="mt-6 text-sm italic opacity-80">
-
-En otras palabras: las Promises "cortan la fila" por delante de los timers, aunque el timer se haya programado antes.
-
-</div>
-
----
-layout: default
----
-
-# El orden que sorprende
-
-```js
-console.log('1: sync')
-
-setTimeout(() => console.log('2: macrotask (setTimeout)'), 0)
-
-Promise.resolve().then(() => console.log('3: microtask (Promise)'))
-
-console.log('4: sync')
-
-// Orden real de salida:
-// 1: sync
-// 4: sync
-// 3: microtask (Promise)
-// 2: macrotask (setTimeout)
-```
-
-<div class="mt-4 text-sm opacity-80">
-
-Aunque el `setTimeout` se programó con `0` milisegundos — es decir, "ejecutá esto ya" — la Promise se ejecuta primero. El código sincrónico siempre corre completo primero; después se vacía la cola de microtasks completa; recién después se saca **una** macrotask de su cola.
-
-</div>
-
----
 layout: default
 ---
 
@@ -992,8 +1041,8 @@ layout: default
 | Web APIs / libuv | Ejecutan timers, red, disco aparte |
 | Task queue | Callbacks listos, esperando su turno |
 | Event loop | El chequeo "¿stack vacío? seguí" |
-| Microtask | Cola de `.then`/`.catch` — prioridad alta |
-| Macrotask | Cola de `setTimeout`/eventos — prioridad baja |
+| Microtask | Cola de `.then`/`.catch`/`await` — prioridad alta |
+| Macrotask | Cola de `setTimeout`/callbacks — prioridad baja |
 
 </div>
 <div>
@@ -1019,14 +1068,31 @@ layout: default
 
 # Referencias y recursos
 
-<div class="space-y-2 mt-2">
+<div class="grid grid-cols-2 gap-6 mt-2 text-xs">
+<div>
 
-- [developer.mozilla.org — Asynchronous JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Asynchronous) — guía oficial en español
-- [developer.mozilla.org — Using promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) — referencia completa de Promises
-- [javascript.info — Async](https://javascript.info/async) — callbacks, promises y async/await en profundidad
-- [javascript.info — Event loop: microtasks and macrotasks](https://javascript.info/event-loop) — la distinción entre colas, explicada con ejemplos
-- ["What the heck is the event loop anyway?"](https://www.youtube.com/watch?v=8aGhZQkoFbQ) — Philip Roberts, JSConf — la charla clásica sobre el event loop
-- ["In The Loop"](https://www.youtube.com/watch?v=cCOL7MC4Pl0) — Jake Archibald, JSConf.Asia — profundiza en microtasks/macrotasks y rendering, buen siguiente paso
+**Asincronismo y Event Loop**
+
+- [MDN — Asynchronous JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Asynchronous)
+- [MDN — Concurrency model and event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model)
+- [javascript.info — Event loop: microtasks and macrotasks](https://javascript.info/event-loop)
+- [MDN — In depth: Microtasks](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth)
+- ["What the heck is the event loop anyway?"](https://www.youtube.com/watch?v=8aGhZQkoFbQ) — Philip Roberts, JSConf
+- ["In The Loop"](https://www.youtube.com/watch?v=cCOL7MC4Pl0) — Jake Archibald, JSConf.Asia
+- [Diagrama del Event Loop](https://commons.wikimedia.org/wiki/File:JavaScript_Event_Loop.png) — Byteslovesbits, Wikimedia Commons (CC BY-SA 4.0)
+
+</div>
+<div>
+
+**Callbacks, Promises y `async`/`await`**
+
+- [MDN — Callback function](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function)
+- [MDN — Using promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
+- [MDN — Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- [MDN — async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
+- [javascript.info — Async](https://javascript.info/async)
+- ["You Don't Know JS: Async & Performance"](https://github.com/getify/You-Dont-Know-JS/tree/1st-ed/async%20%26%20performance) — Kyle Simpson, libro gratuito
 - [nationalize.io](https://nationalize.io/) y [restcountries.com](https://restcountries.com/) — las APIs públicas usadas en los ejemplos de este deck
 
+</div>
 </div>
