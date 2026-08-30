@@ -14,7 +14,7 @@ This is a monorepo of independent projects, not an npm workspace — each subfol
 
 Two recurring patterns:
 
-- **`<slug>/`** — a Slidev deck. Standalone project: `package.json` (`dev`/`build`/`export` scripts), `slides.md`, `public/` for images/logos, `pdfs/` (symlinked to `public/pdfs`) for generated PDFs.
+- **`<slug>/`** — a Slidev deck. Standalone project: `package.json` (`dev`/`build`/`export` scripts), `slides.md`, `global-top.vue` (fixed home icon back to the landing page, hidden during export — generic, identical across every deck, easy to forget when scaffolding a new one since its absence doesn't break the build), `public/` for images/logos, `pdfs/` (symlinked to `public/pdfs`) for generated PDFs.
 - **`<slug>-docs/`** — a VitePress site: `docs/apunte.md`, `docs/ejercicios.md`, `docs/index.md` (hero landing), `docs/.vitepress/` (config + shared theme), `scripts/print-pdfs.mjs` (Playwright PDF export). Not every deck has one (`introduction/` and `fp-backus/` don't).
 
 Root level: the landing page (`index.html`/`index.css`/`index.js`), `dev.sh` (local dev orchestration), `.github/workflows/deploy.yml` (CI), and this documentation.
