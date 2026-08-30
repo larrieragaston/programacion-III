@@ -109,25 +109,25 @@ layout: default
 
 <div class="flex gap-4 items-start mt-4">
 
-<div class="rounded-lg border border-gray-300 overflow-hidden" style="width: 42%">
-<div class="bg-gray-200 flex items-center gap-1 px-2" style="height: 1.1rem">
-<div class="rounded-full bg-red-400" style="width: 6px; height: 6px"></div>
-<div class="rounded-full bg-yellow-400" style="width: 6px; height: 6px"></div>
-<div class="rounded-full bg-green-400" style="width: 6px; height: 6px"></div>
-<div class="ml-2 bg-white rounded flex-1 text-gray-500 px-2" style="font-size: 0.5rem">minoticiario.com</div>
+<div class="rounded-lg border border-gray-300 overflow-hidden" style="width: 56%">
+<div class="bg-gray-200 flex items-center gap-1 px-3" style="height: 1.6rem">
+<div class="rounded-full bg-red-400" style="width: 9px; height: 9px"></div>
+<div class="rounded-full bg-yellow-400" style="width: 9px; height: 9px"></div>
+<div class="rounded-full bg-green-400" style="width: 9px; height: 9px"></div>
+<div class="ml-2 bg-white rounded flex-1 text-gray-500 px-2" style="font-size: 0.7rem">minoticiario.com</div>
 </div>
-<div class="bg-white p-2">
-<div class="bg-pink-200 text-pink-700 rounded flex items-center justify-center mb-2" style="height: 0.9rem; font-size: 0.5rem">Publicidad</div>
-<div class="flex gap-2">
-<div class="flex-1" style="font-size: 0.5rem">
-<div class="text-gray-500 font-bold mb-1">NOTICIAS</div>
-<div class="bg-gray-200 rounded mb-1" style="height: 6px; width: 100%"></div>
-<div class="bg-gray-200 rounded mb-1" style="height: 6px; width: 85%"></div>
-<div class="bg-gray-200 rounded" style="height: 6px; width: 70%"></div>
+<div class="bg-white p-3">
+<div class="bg-pink-200 text-pink-700 rounded flex items-center justify-center mb-3" style="height: 1.3rem; font-size: 0.7rem">Publicidad</div>
+<div class="flex gap-3">
+<div class="flex-1" style="font-size: 0.7rem">
+<div class="text-gray-500 font-bold mb-1.5">NOTICIAS</div>
+<div class="bg-gray-200 rounded mb-1.5" style="height: 9px; width: 100%"></div>
+<div class="bg-gray-200 rounded mb-1.5" style="height: 9px; width: 85%"></div>
+<div class="bg-gray-200 rounded" style="height: 9px; width: 70%"></div>
 </div>
-<div class="bg-blue-50 rounded text-center px-2 py-1" style="font-size: 0.5rem">
+<div class="bg-blue-50 rounded text-center px-2 py-2" style="font-size: 0.7rem">
 <div class="text-blue-600 font-bold">CLIMA</div>
-<div style="font-size: 0.9rem">22°C</div>
+<div style="font-size: 1.2rem">22°C</div>
 </div>
 </div>
 </div>
@@ -136,13 +136,22 @@ layout: default
 <div class="flex-1 text-xs">
 
 ```js
-function pedirNoticias()    { blockFor(2000); return 'Noticias del día' }
-function pedirClima()       { blockFor(1000); return '22°C, soleado' }
-function pedirPublicidad()  { blockFor(1500); return 'Anuncio: ...' }
+function pedirNoticias() {
+  blockFor(2000)
+  return 'Noticias del día'
+}
+function pedirClima() {
+  blockFor(1000)
+  return '22°C, soleado'
+}
+function pedirPublicidad() {
+  blockFor(1500)
+  return 'Anuncio: ...'
+}
 
-console.log(pedirNoticias())     // recién a los 2s
-console.log(pedirClima())        // recién a los 3s
-console.log(pedirPublicidad())   // recién a los 4.5s
+console.log(pedirNoticias())   // 2s
+console.log(pedirClima())      // 3s
+console.log(pedirPublicidad()) // 4.5s
 ```
 
 </div>
@@ -161,7 +170,13 @@ layout: default
 
 # La misma página, sin bloquear el hilo
 
-<div class="text-xs mb-2 opacity-70">No bloqueante — las tres arrancan casi al mismo tiempo</div>
+<div class="text-sm italic opacity-80">
+
+Gracias al asincronismo en JavaScript, no hace falta bloquear el hilo esperando cada respuesta: se le devuelve el control a JS enseguida y el programa entero sigue respondiendo mientras las tres esperan "en paralelo". Este es, ni más ni menos, el problema que el resto de este deck viene a resolver — callbacks, Promises y `async`/`await` son las formas concretas de expresarlo en código.
+
+</div>
+
+<div class="text-xs mb-2 mt-3 opacity-70">No bloqueante — las tres arrancan casi al mismo tiempo</div>
 <div class="space-y-1.5">
 <div class="h-6 bg-blue-300 rounded flex items-center text-xs pl-2" style="width: 55%">Noticias — llega a los 2s</div>
 <div class="h-6 bg-yellow-300 rounded flex items-center text-xs pl-2" style="width: 28%">Clima — llega al 1s</div>
@@ -179,16 +194,6 @@ pedirClima()
 pedirPublicidad()
 console.log('La página ya es usable — nada bloqueó el hilo')
 ```
-
-<v-click>
-
-<div class="mt-2 text-sm italic opacity-80">
-
-Esto es asincronismo en acción: en vez de bloquear el hilo esperando cada respuesta, se le devuelve el control a JS enseguida y el programa entero sigue respondiendo mientras las tres esperan "en paralelo". Este es, ni más ni menos, el problema que el resto de este deck viene a resolver — callbacks, Promises y `async`/`await` son las formas concretas de expresarlo en código.
-
-</div>
-
-</v-click>
 
 ---
 layout: center
@@ -298,9 +303,15 @@ layout: default
 - En **Node.js**, ese entorno es **libuv**, una librería en C que maneja I/O de forma no bloqueante.
 - El motor de JS le dice "avisame cuando esto termine" y sigue ejecutando el resto del call stack **sin esperar**.
 
-<div class="mt-6 text-sm italic opacity-80">
+<div class="mt-3 text-xs opacity-80">
 
-Esta es la pieza clave: JS en sí mismo es de un solo hilo, pero el entorno que lo rodea sí puede hacer varias cosas en paralelo (temporizadores, conexiones de red) — y le devuelve el resultado a JS cuando está listo.
+¿Dónde "viven" exactamente? En el navegador, las Web APIs son código nativo de C++ del propio navegador (por ejemplo, del motor Blink en Chrome) — no son JavaScript. El navegador en sí **sí es multi-hilo**: puede contar un timer o esperar una respuesta de red en un thread del sistema operativo aparte, en paralelo real, mientras el hilo de JS sigue libre. En Node.js, libuv hace algo parecido con mecanismos del sistema operativo (`epoll` en Linux, `kqueue` en macOS) para la red, y un pool propio de threads para lo que el SO no puede resolver así, como algunas operaciones de archivos.
+
+</div>
+
+<div class="mt-2 text-sm italic opacity-80">
+
+Esta es la pieza clave: JS en sí mismo es de un solo hilo, pero el entorno que lo rodea sí puede hacer varias cosas en paralelo — y recién cuando termina, entrega el resultado a JS a través de la cola de tareas, no directamente.
 
 </div>
 
@@ -466,13 +477,28 @@ layout: default
 
 # El Event Loop: todo junto
 
-<div class="flex justify-center mt-2">
-<img src="/images/event-loop-diagram.png" alt="Diagrama del Event Loop de JavaScript: Call Stack, Heap, Web APIs y Callback Queue conectados por el Event Loop" style="max-height: 52vh; max-width: 92%" />
+<div class="flex justify-center mt-1">
+<img src="/images/event-loop-diagram.png" alt="Diagrama del Event Loop de JavaScript: Call Stack, Heap, Web APIs y Callback Queue conectados por el Event Loop" style="max-height: 17rem; max-width: 78%" />
+</div>
+
+<div class="grid grid-cols-2 gap-3 mt-2 text-xs">
+<div class="p-2 rounded-lg border border-purple-300 bg-purple-50 text-center">
+
+**Microtask Queue** (mayor prioridad)
+`.then`/`.catch`/`.finally`, continuación de un `await`
+
+</div>
+<div class="p-2 rounded-lg border border-orange-300 bg-orange-50 text-center">
+
+**Macrotask Queue** (menor prioridad)
+`setTimeout`, callbacks, eventos — la "Callback Queue" del diagrama
+
+</div>
 </div>
 
 <div class="mt-2 text-xs opacity-60 text-center">
 
-Diagrama de <a href="https://commons.wikimedia.org/wiki/User:Byteslovesbits">Byteslovesbits</a>, <a href="https://commons.wikimedia.org/wiki/File:JavaScript_Event_Loop.png">Wikimedia Commons</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>). "Callback Queue" acá representa lo que ya sabemos que son en realidad **dos colas** — macro y microtasks.
+Diagrama de <a href="https://commons.wikimedia.org/wiki/User:Byteslovesbits">Byteslovesbits</a>, <a href="https://commons.wikimedia.org/wiki/File:JavaScript_Event_Loop.png">Wikimedia Commons</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>) — simplifica todo a una sola cola; arriba separamos las dos que ya conocemos.
 
 </div>
 
