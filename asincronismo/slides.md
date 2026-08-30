@@ -27,31 +27,15 @@ INSPT - UTN · Ciclo Lectivo 2026
 layout: default
 ---
 
-# De dónde venimos
-
-- En **JS Funcional** vimos funciones puras, HOFs, composición.
-- En **JS Contemporáneo** vimos la sintaxis moderna — incluida una fecha que dejamos pendiente: **ES2017 trajo `async`/`await`**.
-- Todo lo que vimos hasta acá corre **de una sola vez, en orden, de arriba hacia abajo**. Este deck rompe esa suposición.
-
-<div class="mt-6 text-sm italic opacity-80">
-
-La pregunta de hoy: ¿qué pasa cuando una línea de código tarda — un pedido de red, leer un archivo, esperar un timer — y no querés que el resto del programa se congele mientras tanto?
-
-</div>
-
----
-layout: default
----
-
 # JavaScript es de un solo hilo
 
-- Un **hilo (thread)** ejecuta instrucciones de a una, en orden. JS tiene **un solo hilo principal**.
-- No hay dos líneas de código de tu programa corriendo literalmente al mismo tiempo — a diferencia de Java, que ya vieron con threads explícitos.
+- Un **hilo (thread)** ejecuta instrucciones de a una, en orden. JS tiene **un solo hilo principal** para correr código.
+- No hay dos líneas de tu programa corriendo literalmente al mismo tiempo — a diferencia de Java, que ya vieron con threads explícitos.
 - Consecuencia directa: si una operación bloquea el hilo, **todo** se congela — no se puede clickear un botón, no se puede scrollear, no corre ningún otro código.
 
 <div class="mt-6 text-sm italic opacity-80">
 
-Entonces, ¿cómo hace un navegador para bajar una imagen, esperar la respuesta de un servidor y seguir siendo usable mientras tanto? Ahí es donde entra la asincronía.
+Entonces, ¿qué pasa cuando una línea de código *tarda* — un pedido de red, leer un archivo, esperar un timer? Si hay un solo hilo y hay que quedarse parado esperando ahí mismo, el programa entero queda congelado hasta que esa línea termine. ¿Tiene que ser necesariamente así?
 
 </div>
 
@@ -112,6 +96,71 @@ console.log('Después del bloqueo')
 <div class="mt-4 text-sm opacity-80">
 
 Durante esos 5 segundos, la página **no responde a nada**: ni clicks, ni scroll, ni animaciones, ni ningún otro código. Este ejemplo simula, a propósito, el problema que la asincronía existe para resolver.
+
+</div>
+
+</v-click>
+
+---
+layout: default
+---
+
+# Otro ejemplo: cargar una página con varias APIs
+
+<div class="text-xs mb-2 opacity-70">Bloqueante — una espera atrás de la otra</div>
+<div class="flex items-center gap-1">
+<div class="h-9 bg-blue-300 rounded flex items-center justify-center text-xs px-1" style="width: 40%">Noticias — 2s</div>
+<div class="h-9 bg-yellow-300 rounded flex items-center justify-center text-xs px-1" style="width: 20%">Clima — 1s</div>
+<div class="h-9 bg-pink-300 rounded flex items-center justify-center text-xs px-1" style="width: 30%">Publicidad — 1.5s</div>
+</div>
+<div class="text-xs mt-1 opacity-70">Total: 2 + 1 + 1.5 = <b>4.5 segundos</b> hasta que la página responde a lo que sea.</div>
+
+```js
+function pedirNoticias()    { blockFor(2000); return 'Noticias del día' }
+function pedirClima()       { blockFor(1000); return '22°C, soleado' }
+function pedirPublicidad()  { blockFor(1500); return 'Anuncio: ...' }
+
+console.log(pedirNoticias())     // recién a los 2s
+console.log(pedirClima())        // recién a los 3s
+console.log(pedirPublicidad())   // recién a los 4.5s
+```
+
+<div class="mt-2 text-sm opacity-80">
+
+Una página real pide noticias, clima y publicidad a servicios distintos e independientes entre sí. Si cada pedido bloqueara el hilo hasta tener respuesta, el tiempo total sería la **suma** de los tres — y ni un solo click funcionaría mientras tanto.
+
+</div>
+
+---
+layout: default
+---
+
+# La misma página, sin bloquear el hilo
+
+<div class="text-xs mb-2 opacity-70">No bloqueante — las tres arrancan casi al mismo tiempo</div>
+<div class="space-y-1.5">
+<div class="h-6 bg-blue-300 rounded flex items-center text-xs pl-2" style="width: 55%">Noticias — llega a los 2s</div>
+<div class="h-6 bg-yellow-300 rounded flex items-center text-xs pl-2" style="width: 28%">Clima — llega al 1s</div>
+<div class="h-6 bg-pink-300 rounded flex items-center text-xs pl-2" style="width: 40%">Publicidad — llega a los 1.5s</div>
+</div>
+<div class="text-xs mt-1 opacity-70">Total: la página está lista en <b>~2 segundos</b> (la más lenta), no en 4.5.</div>
+
+```js
+function pedirNoticias()    { setTimeout(() => console.log('Noticias del día'), 2000) }
+function pedirClima()       { setTimeout(() => console.log('22°C, soleado'), 1000) }
+function pedirPublicidad()  { setTimeout(() => console.log('Anuncio: ...'), 1500) }
+
+pedirNoticias()
+pedirClima()
+pedirPublicidad()
+console.log('La página ya es usable — nada bloqueó el hilo')
+```
+
+<v-click>
+
+<div class="mt-2 text-sm italic opacity-80">
+
+Esto es exactamente lo que va a formalizar `Promise.all` más adelante en este deck: varias operaciones asincrónicas corriendo "al mismo tiempo" en vez de una atrás de la otra, y el hilo principal libre para lo demás durante toda la espera.
 
 </div>
 
@@ -212,57 +261,132 @@ Esta regla — "esperá a que el stack esté vacío" — es la razón por la que
 layout: default
 ---
 
-# El Event Loop, paso a paso
+# El Event Loop: todo junto
 
-<div class="flex justify-center gap-4 mt-4 text-xs">
-<div class="p-3 rounded-lg border-2 border-blue-400 bg-blue-50 text-center w-40">
-<div class="font-bold mb-1">Call Stack</div>
-<div class="opacity-70">funciones en ejecución, sincrónico</div>
-</div>
-<div class="p-3 rounded-lg border-2 border-yellow-400 bg-yellow-50 text-center w-40">
-<div class="font-bold mb-1">Web APIs / libuv</div>
-<div class="opacity-70">timers, red, disco — trabajan aparte</div>
-</div>
-<div class="p-3 rounded-lg border-2 border-green-400 bg-green-50 text-center w-40">
-<div class="font-bold mb-1">Task Queue</div>
-<div class="opacity-70">callbacks listos, esperando turno</div>
-</div>
+<div class="flex justify-center items-stretch gap-3 mt-6 text-xs">
+<div class="p-3 rounded-lg border-2 border-blue-400 bg-blue-50 text-center w-36 flex flex-col justify-center">
+<div class="font-bold mb-1">1. Call Stack</div>
+<div class="opacity-70">código sincrónico</div>
 </div>
 
-<div class="mt-6 text-center text-sm">
+<v-click>
+<div class="flex items-center text-lg opacity-60">→</div>
+</v-click>
+
+<div class="p-3 rounded-lg border-2 border-yellow-400 bg-yellow-50 text-center w-36 flex flex-col justify-center">
+<div class="font-bold mb-1">2. Web APIs / libuv</div>
+<div class="opacity-70">timer, red, disco — corren aparte</div>
+</div>
+
+<v-click>
+<div class="flex items-center text-lg opacity-60">→</div>
+</v-click>
+
+<div class="p-3 rounded-lg border-2 border-green-400 bg-green-50 text-center w-36 flex flex-col justify-center">
+<div class="font-bold mb-1">3. Task Queue</div>
+<div class="opacity-70">callbacks listos, en orden de llegada</div>
+</div>
+</div>
 
 <v-click>
 
-**1.** El call stack ejecuta código sincrónico. Encuentra `setTimeout(cb, 1000)` y se lo delega a la Web API correspondiente.
+<div class="mt-4 p-3 rounded-lg border-2 border-purple-400 bg-purple-50 text-xs text-center mx-auto" style="max-width: 34rem">
 
-</v-click>
-<v-click>
-
-**2.** El call stack sigue con el resto del código sincrónico — no espera. Mientras tanto, la Web API cuenta el segundo por su cuenta.
-
-</v-click>
-<v-click>
-
-**3.** Cuando el timer termina, la Web API pone `cb` en la task queue. Todavía no se ejecuta.
-
-</v-click>
-<v-click>
-
-**4.** El **event loop** — el mecanismo que da nombre a todo esto — chequea todo el tiempo: "¿está vacío el call stack?". En cuanto lo está, saca `cb` de la task queue y lo apila.
-
-</v-click>
+↩ <b>4. Event Loop</b>: mientras el programa vive, chequea todo el tiempo "¿está vacío el call stack?" — en cuanto lo está, saca el primero de la task queue y lo apila. Así el ciclo vuelve a empezar.
 
 </div>
+
+</v-click>
+
+<v-click>
 
 <div class="mt-4 text-sm italic opacity-80 text-center">
 
+Cuatro piezas que ya vimos por separado — esta es la foto de cómo interactúan entre sí, y en qué orden, mientras el programa corre.
+
+</div>
+
+</v-click>
+
+---
+layout: default
+---
+
+# Trazando la ejecución, paso a paso
+
+```js
+console.log('A')
+setTimeout(() => console.log('B'), 0)
+console.log('C')
+setTimeout(() => console.log('D'), 0)
+console.log('E')
+```
+
+<div class="mt-4 text-xs">
+
 <v-click>
 
-El event loop es, literalmente, ese chequeo repetido — "¿stack vacío? pasá el próximo de la cola" — corriendo todo el tiempo mientras el programa vive.
+<div class="mb-1.5">1. Se apila y corre `console.log('A')` → imprime **A** → se desapila.</div>
+
+</v-click>
+
+<v-click>
+
+<div class="mb-1.5">2. Se encuentra el primer `setTimeout(..., 0)` → se delega a la Web API, que arranca un timer de 0ms.</div>
+
+</v-click>
+
+<v-click>
+
+<div class="mb-1.5">3. Se apila y corre `console.log('C')` → imprime **C** → se desapila. (El timer de 0ms ya terminó, pero su callback tiene que esperar en la task queue: el call stack todavía no está vacío.)</div>
+
+</v-click>
+
+<v-click>
+
+<div class="mb-1.5">4. Se encuentra el segundo `setTimeout(..., 0)` → también se delega; su callback queda encolado detrás del anterior.</div>
+
+</v-click>
+
+<v-click>
+
+<div class="mb-1.5">5. Se apila y corre `console.log('E')` → imprime **E** → se desapila. Ya no queda código sincrónico: el call stack está vacío.</div>
+
+</v-click>
+
+<v-click>
+
+<div class="mb-1.5">6. El event loop lo detecta, saca el **primer** callback de la cola (el de "B" — llegó primero) y lo apila → imprime **B**.</div>
+
+</v-click>
+
+<v-click>
+
+<div class="mb-1.5">7. Call stack vacío otra vez → el event loop saca el siguiente (el de "D") y lo apila → imprime **D**.</div>
 
 </v-click>
 
 </div>
+
+<v-click>
+
+<div class="mt-4 text-sm font-mono text-center opacity-90">
+
+Salida real: A, C, E, B, D
+
+</div>
+
+</v-click>
+
+<v-click>
+
+<div class="mt-2 text-sm italic opacity-80 text-center">
+
+Ni siquiera un `setTimeout(fn, 0)` corre "inmediatamente": siempre espera a que termine **todo** el código sincrónico, y respeta el orden de llegada a la cola.
+
+</div>
+
+</v-click>
 
 ---
 layout: center
@@ -276,26 +400,30 @@ layout: default
 
 # Qué es un callback
 
-Un **callback** es, simplemente, una función que se pasa como argumento para que otra la ejecute más adelante — ya usamos esto en `map`/`filter`/`setTimeout`, pero ahora el eje es el **orden en el tiempo**, no la transformación de datos.
+<div class="text-sm">
+
+Un **callback** es una función que se pasa como argumento a otra función — ya usamos esto en JS Funcional (`map`, `filter`, `reduce`), donde el callback corre **sincrónicamente**, en el momento mismo de la llamada. En asincronismo hablamos de otra cosa: un callback que se invoca **más adelante**, cuando termina una operación que tarda.
+
+</div>
 
 ```js
+// callback síncrono (ya conocido): corre YA, durante la llamada
+[1, 2, 3].map((n) => n * 2)
+
+// callback asíncrono: corre DESPUÉS, cuando el timer termina
 function fetchUserName(id, callback) {
   setTimeout(() => {
-    const name = id === 1 ? 'Ada' : 'invitado'
-    callback(name)
+    callback(id === 1 ? 'Ada' : 'invitado')
   }, 1000)
 }
 
-fetchUserName(1, (name) => {
-  console.log(`Hola, ${name}!`)
-})
-
+fetchUserName(1, (name) => console.log(`Hola, ${name}!`))
 console.log('Esto se imprime primero')
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-3 text-xs opacity-80">
 
-`fetchUserName` simula una operación que tarda (acá, un timer) y avisa cuando termina llamando al `callback` con el resultado — el mismo patrón que usan `fetch`, lectura de archivos, y casi toda API asincrónica clásica.
+"Callback" no es una feature de una versión puntual de ECMAScript — existe desde que JS tiene funciones de primera clase, desde su primera versión (1997). Antes de que existieran las Promises (recién en **ES2015**), pasarle un callback era la **única** forma de decirle a una función "avisame cuando termines". Sigue vigente hoy: buena parte de Node.js (`fs`, por ejemplo) y librerías como Express (`(req, res, next) => {...}`) todavía lo usan.
 
 </div>
 
@@ -322,7 +450,7 @@ fetchUser(1, (user) => {
 
 <div class="mt-4 text-sm opacity-80">
 
-Cada paso depende del resultado del anterior, así que cada callback queda **anidado dentro** del anterior — el código crece hacia la derecha en vez de hacia abajo. Este patrón tiene nombre propio: **callback hell** (o *pyramid of doom*).
+¿Por qué anidar? Cada paso necesita un dato que **solo existe adentro del callback anterior** — `fetchOrders` necesita `user.id`, y `user` no existe todavía cuando se llama a `fetchUser`; recién llega como argumento del callback, milisegundos (o segundos) después. Un callback no puede "devolver" su resultado hacia afuera porque la función que lo programó ya terminó de ejecutarse — la única forma de usar ese dato es metiendo el siguiente paso **adentro** de ese mismo callback. Repetir esto varias veces produce la pirámide: **callback hell** (o *pyramid of doom*).
 
 </div>
 
@@ -356,32 +484,32 @@ layout: default
 
 # Qué es una Promise
 
-Una **Promise** es un objeto que representa el resultado (todavía desconocido) de una operación asincrónica. Tiene siempre uno de tres **estados**:
+Una **Promise** es un objeto que representa el resultado (todavía desconocido) de una operación asincrónica. Se introdujo en **ES2015 (ES6)** — justamente para resolver el problema de la slide anterior: una forma estándar de encadenar pasos asincrónicos sin anidar callbacks ni repetir el manejo de errores en cada paso.
 
-<div class="grid grid-cols-3 gap-4 mt-6 text-sm">
-<div class="p-4 rounded-lg bg-gray-100 text-center">
-
-**pending**
-
-Estado inicial — la operación todavía no terminó.
+<div class="flex flex-col items-center mt-6 text-sm">
+<div class="p-3 rounded-lg bg-gray-100 border border-gray-300 text-center w-44">
+<div class="font-bold">pending</div>
+<div class="opacity-70 text-xs">estado inicial</div>
 </div>
-<div class="p-4 rounded-lg bg-green-50 border border-green-300 text-center">
-
-**fulfilled**
-
-Terminó con éxito — tiene un valor resultado.
+<div class="flex gap-28 mt-1 text-xs opacity-70">
+<div>↙ resolve()</div>
+<div>reject() ↘</div>
 </div>
-<div class="p-4 rounded-lg bg-red-50 border border-red-300 text-center">
-
-**rejected**
-
-Terminó con error — tiene un motivo (`reason`) de rechazo.
+<div class="flex gap-6 mt-1">
+<div class="p-3 rounded-lg bg-green-50 border border-green-300 text-center w-44">
+<div class="font-bold">fulfilled</div>
+<div class="opacity-70 text-xs">éxito — tiene un valor</div>
+</div>
+<div class="p-3 rounded-lg bg-red-50 border border-red-300 text-center w-44">
+<div class="font-bold">rejected</div>
+<div class="opacity-70 text-xs">error — tiene un motivo</div>
 </div>
 </div>
+</div>
 
-<div class="mt-6 text-sm italic opacity-80">
+<div class="mt-4 text-sm italic opacity-80">
 
-Una vez que una Promise pasa de <code>pending</code> a <code>fulfilled</code> o <code>rejected</code>, queda **fija** para siempre en ese estado — no puede "cambiar de opinión" después.
+Una vez que una Promise pasa de `pending` a `fulfilled` o `rejected` según cuál de los dos callbacks se invoque, queda **fija** para siempre en ese estado — no puede "cambiar de opinión" después.
 
 </div>
 
@@ -395,20 +523,30 @@ layout: default
 function fetchUserName(id) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (id <= 0) {
-        reject(new Error('id inválido'))
-        return
-      }
-      resolve(id === 1 ? 'Ada' : 'invitado')
+      if (id > 0) resolve(id === 1 ? 'Ada' : 'invitado')
+      else reject(new Error('id inválido'))
     }, 1000)
   })
 }
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-`new Promise` recibe una función *executor* con dos parámetros: `resolve` (llamarla marca la promise como `fulfilled`, con ese valor) y `reject` (la marca como `rejected`, con ese motivo). En la práctica, casi no se crean Promises "a mano" así — la mayoría de las veces las devuelve directamente una función de una librería (`fetch`, drivers de bases de datos, etc.) — pero entender el mecanismo de abajo ayuda a entender todo lo que sigue.
+`new Promise` recibe una función *executor* con dos parámetros: `resolve` y `reject`. En la práctica casi no se crean Promises "a mano" así — la mayoría de las veces las devuelve directamente una función de librería (`fetch`, drivers de bases de datos) — pero entender el mecanismo de abajo ayuda a entender todo lo que sigue.
 
+</div>
+
+<div class="grid grid-cols-2 gap-3 mt-2 text-xs">
+<div class="p-3 rounded-lg bg-green-50 border border-green-300">
+
+**`resolve(...)`** → estado `fulfilled`, `value` = ese argumento. Pasa si `id > 0`, después de 1 segundo.
+
+</div>
+<div class="p-3 rounded-lg bg-red-50 border border-red-300">
+
+**`reject(new Error(...))`** → estado `rejected`, `reason` = ese `Error`. Pasa si `id <= 0`.
+
+</div>
 </div>
 
 ---
@@ -445,7 +583,7 @@ fetchUser(1)
 
 <div class="mt-4 text-sm opacity-80">
 
-Cada `.then` devuelve una **nueva Promise** — por eso se puede seguir encadenando. Si cualquier eslabón de la cadena rechaza, la ejecución **salta directo** al `.catch` más cercano, sin pasar por los `.then` intermedios: un único lugar para manejar errores, a diferencia del callback hell de la slide anterior.
+Cada `.then` devuelve una **nueva Promise** — por eso se puede seguir encadenando. Si cualquier eslabón de la cadena rechaza, la ejecución **salta directo** al `.catch` más cercano, sin pasar por los `.then` intermedios: un único lugar para manejar errores, a diferencia del callback hell de unas slides atrás.
 
 </div>
 
@@ -453,7 +591,40 @@ Cada `.then` devuelve una **nueva Promise** — por eso se puede seguir encadena
 
 <div class="mt-2 text-sm italic opacity-80">
 
-Comparar esta cadena con la pirámide de callbacks de unas slides atrás: mismo problema, resuelto sin anidar — la secuencia queda **plana**, de arriba hacia abajo.
+Pero esta cadena tiene sus propios límites: sigue sin leerse como código realmente secuencial (hay que seguir el rastro de `.then` en `.then`), y si un paso necesitara un valor de **dos** pasos atrás — no solo el inmediato anterior — hay que arrastrarlo a mano entre callbacks. Es el problema que resuelve `async`/`await`, más adelante en este deck.
+
+</div>
+
+</v-click>
+
+---
+layout: default
+---
+
+# Errores puntuales en la cadena
+
+```js
+fetchUser(1)
+  .then((user) => fetchOrders(user.id))
+  .catch((error) => {
+    console.error('No se pudieron cargar las órdenes:', error.message)
+    return []   // la cadena se "recupera" y sigue con este valor
+  })
+  .then((orders) => fetchShipping(orders[0]?.id))
+  .catch((error) => console.error('Tampoco se pudo obtener el envío:', error.message))
+```
+
+<div class="mt-4 text-sm opacity-80">
+
+Un `.catch()` intermedio no corta la cadena: atrapa el error de los pasos anteriores y, si no vuelve a lanzar (`throw`) ni devuelve una promise rechazada, la cadena sigue con el valor que ese `.catch` devuelva — acá, un array vacío en vez de romper todo. Así se pueden manejar distintos errores en distintos puntos de la cadena, en vez de un único `.catch` final para todo.
+
+</div>
+
+<v-click>
+
+<div class="mt-2 text-sm opacity-80">
+
+El costo: cuantos más puntos de manejo de errores hay, más difícil es seguir el flujo de la cadena a simple vista — otra razón, además de la anterior, por la que conviene conocer `async`/`await`.
 
 </div>
 
@@ -485,7 +656,7 @@ Promise.all([
 
 <div class="mt-4 text-sm opacity-80">
 
-Distinto de encadenar con `.then`: acá las tres llamadas arrancan **al mismo tiempo**, no una después de la otra — si cada una tarda 1 segundo, el total es ~1 segundo, no ~3.
+Distinto de encadenar con `.then`: acá las tres llamadas arrancan **al mismo tiempo**, no una después de la otra — el mismo principio que vimos con el ejemplo de la página cargando noticias, clima y publicidad en paralelo.
 
 </div>
 
@@ -500,6 +671,32 @@ Mención rápida: <code>Promise.race</code> se resuelve o rechaza con la **prime
 </div>
 
 </v-click>
+
+---
+layout: default
+---
+
+# Otro método útil: `Promise.allSettled`
+
+```js
+Promise.allSettled([
+  fetchUser(1),
+  fetchUser(-1),   // este va a rechazar
+  fetchUser(3),
+]).then((results) => {
+  results.forEach((r) =>
+    r.status === 'fulfilled'
+      ? console.log('OK:', r.value)
+      : console.log('Falló:', r.reason.message)
+  )
+})
+```
+
+<div class="mt-4 text-sm opacity-80">
+
+Introducido en **ES2020**. A diferencia de `Promise.all`, nunca rechaza — espera a que **todas** las promises terminen, sea como sea, y devuelve un array con el resultado de cada una: `{ status: 'fulfilled', value }` o `{ status: 'rejected', reason }`. Útil cuando querés el resultado de cada operación aunque alguna falle, en vez de descartar todo por un solo error.
+
+</div>
 
 ---
 layout: center
@@ -529,17 +726,17 @@ async function loadUser(id) {
 }
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-`async`/`await` **no es un mecanismo nuevo** — es sintaxis que se traduce, por debajo, a Promises encadenadas. La diferencia es de legibilidad: el código async/await se lee de arriba hacia abajo, como si fuera sincrónico, aunque no lo sea.
+Introducido en **ES2017 (ES8)**, después que las Promises (ES2015), para resolver lo que veíamos antes: cadenas de `.then` que crecen y dejan de leerse como una secuencia simple.
 
 </div>
 
 <v-click>
 
-<div class="mt-2 text-sm opacity-80">
+<div class="mt-1.5 text-xs opacity-80">
 
-Reglas básicas: `await` solo se puede usar dentro de una función marcada `async` (con alguna excepción moderna de *top-level await*, ES2022). Una función `async` **siempre devuelve una Promise** — aunque el `return` de adentro sea un valor normal, queda envuelto automáticamente.
+No **reemplaza** a las Promises: por debajo es el mismo motor, `async`/`await` es solo sintaxis. Reglas básicas: `await` solo se usa dentro de una función `async` (salvo *top-level await*, ES2022), y una función `async` **siempre devuelve una Promise**, aunque el `return` de adentro sea un valor normal.
 
 </div>
 
@@ -611,10 +808,10 @@ layout: default
 async function loadUserOrders(id) {
   try {
     const user = await fetchUser(id)
-    const orders = await fetchOrders(user.id)
-    return orders
+    return await fetchOrders(user.id)
   } catch (error) {
-    console.error('No se pudo cargar:', error.message)
+    if (error.status === 404) console.error('Usuario no encontrado')
+    else console.error('Error inesperado:', error.message)
     return []
   }
 }
@@ -622,7 +819,7 @@ async function loadUserOrders(id) {
 
 <div class="mt-4 text-sm opacity-80">
 
-Con `async`/`await`, el manejo de errores vuelve a ser el `try`/`catch` de siempre: si cualquier `await` de adentro rechaza, la ejecución salta directo al `catch` — mismo comportamiento que `.catch()` en una cadena de Promises, pero con la sintaxis sincrónica que ya conocían de Java/C.
+Con `async`/`await`, el manejo de errores vuelve a ser el `try`/`catch` de siempre: si cualquier `await` de adentro rechaza, la ejecución salta directo al `catch` — mismo comportamiento que `.catch()` en una cadena de Promises, pero con la sintaxis sincrónica que ya conocían de Java/C. Para diferenciar tipos de error alcanza con inspeccionar el objeto `error` adentro del mismo `catch` (por `instanceof`, por un código de estado, etc.), como con `error.status === 404` de arriba.
 
 </div>
 
@@ -708,15 +905,12 @@ async function averiguarPaisCompleto(nombre) {
     const res = await fetch(`https://api.nationalize.io/?name=${nombre}`)
     if (!res.ok) throw new Error(res.statusText)
     const data = await res.json()
-
     const paisId = data.country.reduce((a, b) =>
       a.probability > b.probability ? a : b
     ).country_id
-
     const resPais = await fetch(`https://restcountries.com/v3.1/alpha/${paisId}`)
     if (!resPais.ok) throw new Error(resPais.statusText)
     const [pais] = await resPais.json()
-
     console.log(`Probablemente seas de ${pais.translations.spa.common}`)
   } catch (error) {
     console.error(error)
@@ -724,9 +918,9 @@ async function averiguarPaisCompleto(nombre) {
 }
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-1.5 text-xs opacity-80">
 
-Dos `fetch` en secuencia (el segundo necesita el resultado del primero) — con `async`/`await`, el código se lee igual de lineal que si fuera sincrónico. Comparar con cómo se vería este mismo flujo anidado con callbacks puros.
+Dos `fetch` en secuencia (el segundo necesita el resultado del primero) — con `async`/`await` se lee igual de lineal que si fuera sincrónico. Comparar con este mismo flujo anidado con callbacks puros.
 
 </div>
 
@@ -785,19 +979,9 @@ Aunque el `setTimeout` se programó con `0` milisegundos — es decir, "ejecutá
 layout: default
 ---
 
-# Por qué importa
-
-- Es una pregunta clásica de entrevista técnica — vale la pena poder explicar el orden del ejemplo anterior sin dudar.
-- Explica bugs reales: código que "debería" ejecutarse en cierto orden y no lo hace, porque se mezclan timers con Promises sin tener en cuenta la prioridad de las colas.
-- No hace falta memorizar la implementación exacta del motor — alcanza con el modelo mental: **sync → todas las microtasks → una macrotask → repetir**.
-
----
-layout: default
----
-
 # Cheat sheet
 
-<div class="grid grid-cols-2 gap-8 mt-4 text-xs">
+<div class="grid grid-cols-2 gap-8 mt-2 text-xs">
 <div>
 
 **Conceptos**
@@ -821,7 +1005,8 @@ layout: default
 | Callback | `fn(arg, (result) => {...})` |
 | Crear Promise | `new Promise((resolve, reject) => {...})` |
 | Consumir | `p.then(...).catch(...).finally(...)` |
-| Paralelo | `Promise.all([p1, p2, p3])` |
+| Paralelo (all) | `Promise.all([p1, p2])` |
+| Paralelo (allSettled) | `Promise.allSettled([p1, p2])` |
 | async/await | `const x = await fn()` |
 | Errores async | `try { await fn() } catch (e) {...}` |
 
@@ -837,8 +1022,11 @@ layout: default
 <div class="space-y-2 mt-2">
 
 - [developer.mozilla.org — Asynchronous JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Asynchronous) — guía oficial en español
+- [developer.mozilla.org — Using promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) — referencia completa de Promises
 - [javascript.info — Async](https://javascript.info/async) — callbacks, promises y async/await en profundidad
-- ["What the heck is the event loop anyway?"](https://www.youtube.com/watch?v=8aGhZQkoFbQ) — Philip Roberts, JSConf — la charla de referencia sobre el event loop, muy recomendada
+- [javascript.info — Event loop: microtasks and macrotasks](https://javascript.info/event-loop) — la distinción entre colas, explicada con ejemplos
+- ["What the heck is the event loop anyway?"](https://www.youtube.com/watch?v=8aGhZQkoFbQ) — Philip Roberts, JSConf — la charla clásica sobre el event loop
+- ["In The Loop"](https://www.youtube.com/watch?v=cCOL7MC4Pl0) — Jake Archibald, JSConf.Asia — profundiza en microtasks/macrotasks y rendering, buen siguiente paso
 - [nationalize.io](https://nationalize.io/) y [restcountries.com](https://restcountries.com/) — las APIs públicas usadas en los ejemplos de este deck
 
 </div>
