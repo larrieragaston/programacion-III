@@ -225,33 +225,16 @@ Esta distinción es una pregunta clásica de entrevista técnica, y también exp
 
 ## El Event Loop, todo junto
 
-El **event loop** (bucle de eventos, el que le da nombre a todo este mecanismo) es, literalmente, un chequeo que se repite todo el tiempo mientras el programa vive: *"¿está vacío el call stack? Si es así, tomá el próximo callback de la cola correspondiente y apilalo."*
+El **event loop** (bucle de eventos, el que le da nombre a todo este mecanismo) es, literalmente, un chequeo que se repite todo el tiempo mientras el programa vive: *"¿está vacío el call stack? Si es así, vaciá toda la microtask queue, después tomá una sola tarea de la macrotask queue, y repetí."*
 
-<img src="/images/event-loop-diagram.png" alt="Diagrama del Event Loop de JavaScript: Call Stack, Heap, Web APIs y Callback Queue conectados por el Event Loop" style="max-width:100%;display:block;margin:1.5rem auto" />
+<img src="/images/event-loop-diagram.svg" alt="Diagrama del Event Loop de JavaScript: Call Stack, Web APIs, Microtask Queue, Macrotask Queue y Event Loop conectados con flechas" style="max-width:100%;display:block;margin:1.5rem auto" />
 
-<p style="text-align:center;font-size:0.8em;opacity:0.65;margin-top:-0.5rem">
-Diagrama de <a href="https://commons.wikimedia.org/wiki/User:Byteslovesbits" target="_blank" rel="noopener">Byteslovesbits</a>, <a href="https://commons.wikimedia.org/wiki/File:JavaScript_Event_Loop.png" target="_blank" rel="noopener">Wikimedia Commons</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>).
-</p>
-
-El diagrama simplifica todo a una sola "Callback Queue" — con lo visto en la sección anterior, ya sabemos que en realidad son **dos colas** con distinta prioridad:
-
-<div class="card-grid card-grid-2">
-<div class="info-card tone-purple">
-<h4>Microtask Queue (mayor prioridad)</h4>
-
-`.then`/`.catch`/`.finally`, continuación de un `await`
-</div>
-<div class="info-card tone-orange">
-<h4>Macrotask Queue (menor prioridad)</h4>
-
-`setTimeout`, callbacks, eventos — la "Callback Queue" del diagrama
-</div>
-</div>
+El diagrama junta las cinco piezas ya vistas: el **Call Stack** delega en las **Web APIs** (timers, red) y resuelve Promises directamente en el código; lo primero termina encolado en la **Macrotask Queue**, lo segundo en la **Microtask Queue**; y el **Event Loop** es quien decide, todo el tiempo, cuándo cada cola le devuelve trabajo al Call Stack — vaciando siempre primero la de microtasks.
 
 <div class="practice-box">
 <p class="practice-label">Practicá</p>
 
-Sin mirar la respuesta, dibujá (en papel o en un editor de diagramas) las cuatro piezas del modelo completo con sus flechas, y explicáselo en voz alta a un compañero o compañera como si fuera la primera vez que lo escucha. Si te trabás en algún punto, ese es justo el punto que hay que repasar.
+Sin mirar la respuesta, dibujá (en papel o en un editor de diagramas) el modelo completo — Call Stack, Web APIs, las dos colas y el Event Loop — con sus flechas, y explicáselo en voz alta a un compañero o compañera como si fuera la primera vez que lo escucha. Si te trabás en algún punto, ese es justo el punto que hay que repasar.
 </div>
 
 ## Callbacks
@@ -695,7 +678,6 @@ Escribí una función `async` que use `fetch` contra <a href="https://api.nation
 - [MDN — In depth: Microtasks](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth)
 - ["What the heck is the event loop anyway?"](https://www.youtube.com/watch?v=8aGhZQkoFbQ) — Philip Roberts, JSConf
 - ["In The Loop"](https://www.youtube.com/watch?v=cCOL7MC4Pl0) — Jake Archibald, JSConf.Asia
-- [Diagrama del Event Loop](https://commons.wikimedia.org/wiki/File:JavaScript_Event_Loop.png) — Byteslovesbits, Wikimedia Commons (CC BY-SA 4.0)
 
 </div>
 <div>

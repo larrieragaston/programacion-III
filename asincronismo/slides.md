@@ -477,29 +477,8 @@ layout: default
 
 # El Event Loop: todo junto
 
-<div class="flex justify-center mt-1">
-<img src="/images/event-loop-diagram.png" alt="Diagrama del Event Loop de JavaScript: Call Stack, Heap, Web APIs y Callback Queue conectados por el Event Loop" style="max-height: 17rem; max-width: 78%" />
-</div>
-
-<div class="grid grid-cols-2 gap-3 mt-2 text-xs">
-<div class="p-2 rounded-lg border border-purple-300 bg-purple-50 text-center">
-
-**Microtask Queue** (mayor prioridad)
-`.then`/`.catch`/`.finally`, continuación de un `await`
-
-</div>
-<div class="p-2 rounded-lg border border-orange-300 bg-orange-50 text-center">
-
-**Macrotask Queue** (menor prioridad)
-`setTimeout`, callbacks, eventos — la "Callback Queue" del diagrama
-
-</div>
-</div>
-
-<div class="mt-2 text-xs opacity-60 text-center">
-
-Diagrama de <a href="https://commons.wikimedia.org/wiki/User:Byteslovesbits">Byteslovesbits</a>, <a href="https://commons.wikimedia.org/wiki/File:JavaScript_Event_Loop.png">Wikimedia Commons</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>) — simplifica todo a una sola cola; arriba separamos las dos que ya conocemos.
-
+<div class="flex justify-center mt-2">
+<img src="/images/event-loop-diagram.svg" alt="Diagrama del Event Loop de JavaScript: Call Stack, Web APIs, Microtask Queue, Macrotask Queue y Event Loop conectados con flechas" style="max-height: 26rem; max-width: 74%" />
 </div>
 
 ---
@@ -1105,7 +1084,6 @@ layout: default
 - [MDN — In depth: Microtasks](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth)
 - ["What the heck is the event loop anyway?"](https://www.youtube.com/watch?v=8aGhZQkoFbQ) — Philip Roberts, JSConf
 - ["In The Loop"](https://www.youtube.com/watch?v=cCOL7MC4Pl0) — Jake Archibald, JSConf.Asia
-- [Diagrama del Event Loop](https://commons.wikimedia.org/wiki/File:JavaScript_Event_Loop.png) — Byteslovesbits, Wikimedia Commons (CC BY-SA 4.0)
 
 </div>
 <div>
