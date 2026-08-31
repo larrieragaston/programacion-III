@@ -27,48 +27,6 @@ INSPT - UTN · Ciclo Lectivo 2026
 layout: default
 ---
 
-# El pivot de la unidad
-
-- Todo lo anterior — JS Funcional, JS Contemporáneo, Asincronismo — fue **JavaScript puro**.
-- De acá en adelante — React, Node + Express, MongoDB — el código de este curso se presenta en **TypeScript**.
-- Ya usaron algo parecido a un genérico sin llamarlo así: `Promise<T>`, de Asincronismo. Vuelve a aparecer hoy, ahora explicado.
-
-<div class="mt-6 text-sm italic opacity-80">
-
-No es un lenguaje nuevo — es JavaScript con una capa extra encima. La pregunta de hoy es qué problema resuelve esa capa.
-
-</div>
-
----
-layout: default
----
-
-# El problema que resuelve
-
-```js
-// JavaScript — esto compila y corre sin quejarse
-function applyDiscount(price, rate) {
-  return price - price * rate
-}
-
-applyDiscount(1000, 0.1)     // => 900, como se esperaba
-applyDiscount(1000, '10%')   // => NaN — el error aparece recién en producción
-```
-
-<v-click>
-
-<div class="mt-4 text-sm opacity-80">
-
-JavaScript es dinámico: no hay que declarar tipos, lo cual da flexibilidad — pero errores tontos como pasar un string donde se esperaba un número recién se descubren **en tiempo de ejecución**, muchas veces lejos de donde ocurrió el error real.
-
-</div>
-
-</v-click>
-
----
-layout: default
----
-
 # TypeScript: JS + una capa de tipos
 
 ```ts
@@ -91,7 +49,7 @@ TypeScript es un **superset** de JavaScript: todo código JS válido es también
 
 <div class="mt-2 text-sm italic opacity-80">
 
-Por eso "tipado estático": los tipos se verifican en tiempo de **compilación**, no en tiempo de ejecución — el objetivo es adelantar el error al momento de escribir el código, no descubrirlo con un usuario real en producción.
+Por eso "tipado estático": los tipos se verifican en tiempo de **compilación**, no en tiempo de ejecución — el objetivo es adelantar el error al momento de escribir el código, no descubrirlo con un usuario real en producción. ¿Por qué hace falta esto? Veamos qué pasa sin esa capa.
 
 </div>
 
@@ -101,15 +59,72 @@ Por eso "tipado estático": los tipos se verifican en tiempo de **compilación**
 layout: default
 ---
 
+# El problema que resuelve
+
+```js
+// JavaScript — esto compila y corre sin quejarse
+function applyDiscount(price, rate) {
+  return price - price * rate
+}
+
+applyDiscount(1000, 0.1)     // => 900, como se esperaba
+applyDiscount(1000, '10%')   // => NaN — el error aparece recién en producción
+```
+
+<v-click>
+
+<div class="mt-4 text-sm opacity-80">
+
+JavaScript es dinámico: no hay que declarar tipos, lo cual da flexibilidad — pero errores tontos como pasar un string donde se esperaba un número recién se descubren **en tiempo de ejecución**, muchas veces lejos de donde ocurrió el error real. Es exactamente el mismo `applyDiscount` de la slide anterior — sin la capa de tipos, nada avisa del error hasta que ya es tarde.
+
+</div>
+
+</v-click>
+
+---
+layout: default
+---
+
+# Cómo leer un error de compilación
+
+```ts
+applyDiscount(1000, '10%')
+```
+
+```
+src/index.ts:5:21 - error TS2345: Argument of type 'string' is not
+assignable to parameter of type 'number'.
+
+5 applyDiscount(1000, '10%')
+                      ~~~~~~
+```
+
+<div class="mt-3 text-xs opacity-80">
+
+**`archivo:línea:columna`** — dónde está el problema. **`TS2345`** — el código del error (googleable: buscar "TS2345" lleva directo a la explicación). El mensaje describe qué esperaba TS y qué recibió. El **`~~~~~~`** señala la expresión exacta que lo disparó — no toda la línea.
+
+</div>
+
+<div class="mt-3 grid grid-cols-1 gap-1 text-xs">
+<div class="p-2 rounded bg-gray-100"><code>TS2322</code> — un valor no es asignable a ese tipo (lo más común)</div>
+<div class="p-2 rounded bg-gray-100"><code>TS2339</code> — esa propiedad no existe en el tipo (típico de un typo)</div>
+<div class="p-2 rounded bg-gray-100"><code>TS2345</code> — un argumento no coincide con el parámetro esperado</div>
+<div class="p-2 rounded bg-gray-100"><code>TS18048</code> / <code>TS2532</code> — el valor puede ser <code>undefined</code>, hay que comprobarlo antes</div>
+</div>
+
+---
+layout: default
+---
+
 # Tipos básicos
 
 ```ts
-let name: string = 'Ada'
-let age: number = 29
-let isActive: boolean = true
+let productName: string = 'Mouse'
+let price: number = 18000
+let inStock: boolean = true
 
-let ids: number[] = [1, 2, 3]        // array de numbers
-let names: Array<string> = ['Ada']    // misma idea, sintaxis genérica
+let ids: number[] = [1, 2, 3]          // array de numbers
+let names: Array<string> = ['Mouse']    // misma idea, sintaxis genérica
 
 let point: [number, number] = [10, 20]   // tupla: largo y tipos fijos
 ```
@@ -127,15 +142,15 @@ layout: default
 # Inferencia de tipos
 
 ```ts
-let name = 'Ada'        // TS infiere: string
-let age = 29             // TS infiere: number
+let productName = 'Mouse'   // TS infiere: string
+let price = 18000            // TS infiere: number
 
-name = 42                 // ❌ Type 'number' is not assignable to type 'string'
+price = '18000'               // ❌ Type 'string' is not assignable to type 'number'
 ```
 
 <div class="mt-4 text-sm opacity-80">
 
-No hace falta anotar **todo** — si TypeScript puede deducir el tipo a partir del valor inicial, alcanza con eso. Las anotaciones explícitas (`: string`, `: number`) importan sobre todo en las firmas de funciones, donde no hay un valor inicial del que inferir.
+No hace falta anotar **todo** — si TypeScript puede deducir el tipo a partir del valor inicial, alcanza con eso. Las anotaciones explícitas (`: string`, `: number`) importan sobre todo en las firmas de funciones, donde no hay un valor inicial del que inferir — como en `applyDiscount`, un par de slides atrás.
 
 </div>
 
@@ -146,20 +161,21 @@ layout: default
 # Tipar funciones
 
 ```ts
-function greet(name: string, greeting: string = 'Hola'): string {
-  return `${greeting}, ${name}!`
+function applyDiscount(price: number, rate: number = 0.1): number {
+  return price - price * rate
 }
 
-function logError(message: string, code?: number): void {
-  console.error(code ? `[${code}] ${message}` : message)
+function logStockWarning(product: string, remaining?: number): void {
+  console.warn(remaining ? `${product}: quedan ${remaining}` : `${product}: sin stock`)
 }
 
-const double = (x: number): number => x * 2
+applyDiscount(1000)              // usa el rate por defecto: 0.1
+logStockWarning('Mouse')          // remaining es opcional, se puede omitir
 ```
 
 <div class="mt-4 text-sm opacity-80">
 
-Parámetros y retorno se anotan igual que las variables. `code?: number` marca un parámetro **opcional** — se puede omitir al llamar la función. `void` indica que la función no devuelve nada útil (como `logError`, que solo tiene un efecto).
+Parámetros y retorno se anotan igual que las variables. `rate: number = 0.1` es un parámetro **con valor por defecto**; `remaining?: number` es **opcional** — se puede omitir al llamar la función. `void` indica que la función no devuelve nada útil, como `logStockWarning`, que solo tiene un efecto (un `console.warn`).
 
 </div>
 
@@ -170,21 +186,23 @@ layout: default
 # `any` vs. `unknown`
 
 ```ts
-let a: any = 'hola'
-a.toUpperCase()   // ✅ compila — TS no chequea nada sobre "any"
-a()                  // ✅ compila también — y explota en runtime
+// llega como respuesta de una API — en JS puro, esto es "cualquier cosa"
+function parseProduct(json: any) {
+  return json.name.toUpperCase()   // ✅ compila — TS no chequea nada sobre "any"
+}
+parseProduct({ precio: 100 })       // explota en runtime: json.name es undefined
 
-let b: unknown = 'hola'
-b.toUpperCase()   // ❌ error de compilación: hay que angostar el tipo primero
-
-if (typeof b === 'string') {
-  b.toUpperCase()   // ✅ ahora sí — TS sabe que acá b es un string
+function parseProductSafe(json: unknown) {
+  if (typeof json === 'object' && json !== null && 'name' in json) {
+    return (json as { name: string }).name.toUpperCase()   // ✅ ya lo comprobamos
+  }
+  throw new Error('JSON inválido: no tiene name')
 }
 ```
 
 <div class="mt-4 text-sm opacity-80">
 
-`any` **apaga el chequeo de tipos** por completo para esa variable — es escribir JS dentro de TS, y anula el motivo por el que se eligió TypeScript. `unknown` es la alternativa segura: acepta cualquier valor igual, pero obliga a comprobar el tipo (*narrowing*, próxima slide) antes de operar con él.
+`any` **apaga el chequeo de tipos** por completo — es escribir JS dentro de TS, y anula el motivo por el que se eligió TypeScript. `unknown` es la alternativa segura: acepta cualquier valor igual (útil para datos externos como una respuesta HTTP), pero obliga a comprobar la forma real (*narrowing*, próxima slide) antes de operar con él. `as { name: string }` es una **type assertion**: le dice al compilador "confiá en que esto tiene esta forma", sin volver a chequearlo — hay que usarla solo después de haber comprobado algo de verdad, como con el `if` de arriba.
 
 </div>
 
@@ -195,22 +213,55 @@ layout: default
 # Union types y narrowing
 
 ```ts
-function formatId(id: string | number): string {
+function formatProductId(id: string | number): string {
   if (typeof id === 'number') {
     return id.toString().padStart(6, '0')
   }
   return id.toUpperCase()
 }
 
-formatId(42)       // => "000042"
-formatId('abc')    // => "ABC"
+formatProductId(42)      // => "000042"
+formatProductId('mou1')  // => "MOU1"
 ```
 
 <div class="mt-4 text-sm opacity-80">
 
-`string | number` es un **union type**: el valor puede ser cualquiera de los dos. Dentro del `if`, TypeScript **angosta** (*narrows*) el tipo automáticamente según el chequeo (`typeof`) — dentro de esa rama, `id` ya es tratado como `number`, sin necesitar ninguna conversión manual.
+`string | number` es un **union type**: el valor puede ser cualquiera de los dos. Dentro del `if`, TypeScript **angosta** (*narrows*) el tipo automáticamente según el chequeo (`typeof`) — dentro de esa rama, `id` ya es tratado como `number`, sin necesitar ninguna conversión manual. El `'name' in json` de la slide anterior es otra forma de narrowing: comprueba si existe una propiedad, en vez del tipo primitivo.
 
 </div>
+
+---
+layout: default
+---
+
+# `?.`, `??` y `!`: trabajar con valores ausentes
+
+```ts
+function getStock(product?: Product): number {
+  return product?.stock ?? 0
+}
+
+getStock(undefined)                              // => 0
+getStock({ name: 'Mouse', price: 1, stock: 5 })    // => 5
+
+const trusted = product!.stock   // "confiá en mí, esto no es null/undefined"
+```
+
+<div class="mt-3 text-sm opacity-80">
+
+**`?.`** (*optional chaining*): si lo de la izquierda es `null`/`undefined`, corta ahí y devuelve `undefined`, en vez de explotar. **`??`** (*nullish coalescing*): da un valor por defecto **solo** si lo de la izquierda es `null`/`undefined` — a diferencia de `||`, que también reemplazaría `0`, `''` o `false` (un error común: `stock ?? 0` mantiene un stock de `0` real, `stock || 0` lo pisaría por las dudas).
+
+</div>
+
+<v-click>
+
+<div class="mt-2 text-xs opacity-80">
+
+**`!`** (*non-null assertion*) apaga el chequeo puntual: le decís al compilador que confíe en que ahí nunca va a haber `null`/`undefined`. Si te equivocás, explota en runtime exactamente igual que sin TypeScript — usarlo con cuidado, solo cuando estás realmente seguro.
+
+</div>
+
+</v-click>
 
 ---
 layout: default
@@ -219,15 +270,19 @@ layout: default
 # Literal types
 
 ```ts
-let role: 'alumno' | 'profesor' | 'admin'
+type ProductCategory = 'electronics' | 'clothing' | 'books'
 
-role = 'alumno'      // ✅
-role = 'invitado'    // ❌ Type '"invitado"' is not assignable...
+function shippingDays(category: ProductCategory): number {
+  return category === 'books' ? 2 : 5
+}
+
+shippingDays('electronics')   // ✅
+shippingDays('food')          // ❌ Type '"food"' is not assignable...
 ```
 
 <div class="mt-4 text-sm opacity-80">
 
-Un **literal type** no es "un string cualquiera" — es exactamente ese valor, o uno de un conjunto cerrado de valores. Es una forma de modelar, con el propio sistema de tipos, un conjunto fijo de opciones válidas (una alternativa más liviana a un `enum` cuando alcanza con comparar strings).
+Un **literal type** no es "un string cualquiera" — es exactamente ese valor, o uno de un conjunto cerrado de valores. Es una forma de modelar, con el propio sistema de tipos, un conjunto fijo de opciones válidas (una alternativa más liviana a un `enum`, que se ve más adelante, cuando alcanza con comparar strings).
 
 </div>
 
@@ -299,6 +354,34 @@ const ebook: DigitalProduct = {
 layout: default
 ---
 
+# `readonly`: inmutabilidad con tipos
+
+```ts
+interface Product {
+  readonly id: number
+  name: string
+  price: number
+}
+
+function renameProduct(product: Product, name: string) {
+  product.id = 999       // ❌ Cannot assign to 'id' because it is a read-only property
+  product.name = name     // ✅ esto sí se puede
+}
+
+const ids: readonly number[] = [1, 2, 3]
+ids.push(4)   // ❌ Property 'push' does not exist on type 'readonly number[]'
+```
+
+<div class="mt-4 text-sm opacity-80">
+
+La misma idea de no mutar que vieron en JS Funcional con `map`/`filter` (crear algo nuevo en vez de modificar lo existente) — ahora reforzada por el compilador. `readonly` no cambia nada en el JavaScript final (se borra al compilar, como todo tipo), pero avisa **en tiempo de compilación** si el propio código intenta reasignar una propiedad o mutar un array que se declaró como si no debiera cambiar.
+
+</div>
+
+---
+layout: default
+---
+
 # `type`
 
 ```ts
@@ -314,9 +397,44 @@ type ProductOrId = Product | ID                       // combinación de otros t
 
 <div class="mt-4 text-sm opacity-80">
 
-`type` es más general que `interface`: además de objetos, puede nombrar unions, tipos primitivos, tipos de función y combinaciones entre todos ellos. `interface` solo describe objetos (y se puede extender/fusionar de formas que `type` no permite).
+`type` es más general que `interface`: además de objetos, puede nombrar unions, tipos primitivos, tipos de función y combinaciones entre todos ellos. `interface` solo describe objetos — y tiene un comportamiento particular que vale la pena conocer antes de elegir entre uno y otro.
 
 </div>
+
+---
+layout: default
+---
+
+# Ojo con las interfaces: se fusionan
+
+```ts
+interface Product { name: string }
+// en otro archivo del mismo proyecto, sin saber que ya existía...
+interface Product { price: number }
+// TS no avisa nada — combina ambas declaraciones en una sola
+const mouse: Product = { name: 'Mouse', price: 18000 }   // ✅ compila
+```
+
+<div class="mt-2 text-xs opacity-80">
+
+Esto se llama ***declaration merging***: dos `interface` con el **mismo nombre** no chocan, TS las combina sola. Es una función real y deliberada (extender un tipo de una librería que no controlás) — pero en un proyecto grande, si dos módulos usan el mismo nombre **sin querer**, la fusión es silenciosa, y el error puede aparecer mucho después, lejos de la causa real.
+
+</div>
+
+<v-click>
+
+<div class="mt-2 text-xs opacity-80">
+
+```ts
+type Product = { name: string }
+type Product = { price: number }   // ❌ Error: Duplicate identifier 'Product'.
+```
+
+`type` es más estricto acá: el mismo nombre dos veces es directamente un error de compilación. Por eso, en equipos grandes, hay quienes prefieren `type` para que un choque de nombres accidental se note enseguida, en vez de fusionarse en silencio.
+
+</div>
+
+</v-click>
 
 ---
 layout: default
@@ -330,7 +448,7 @@ layout: default
 **`interface`**
 
 - Pensada para la forma de objetos y clases.
-- Se puede extender (`extends`) y fusionar declaraciones del mismo nombre.
+- Se puede extender (`extends`) y **fusiona** declaraciones repetidas del mismo nombre (a propósito o no).
 - Mensajes de error algo más legibles en objetos complejos.
 
 <div class="mt-2 text-xs opacity-70">Preferirla para modelar entidades: props de componentes, modelos de datos.</div>
@@ -340,9 +458,9 @@ layout: default
 **`type`**
 
 - Sirve para *cualquier* tipo: objetos, unions, primitivos, funciones.
-- No se puede reabrir/fusionar después de declarado.
+- **No** se puede reabrir/fusionar después de declarado — nombre repetido es error.
 
-<div class="mt-2 text-xs opacity-70">Preferirlo para unions, tipos de función, o combinaciones de otros tipos.</div>
+<div class="mt-2 text-xs opacity-70">Preferirlo para unions, tipos de función, o cuando un choque de nombres debe fallar fuerte.</div>
 </div>
 </div>
 
@@ -374,7 +492,7 @@ greetUser(UserRole.Teacher)
 
 <div class="mt-4 text-sm opacity-80">
 
-Un `enum` agrupa un conjunto fijo de valores con nombre. Cumple un propósito parecido al de los literal types (`'alumno' | 'profesor'`) vistos antes — la diferencia es que un `enum` existe también en el JavaScript compilado (genera código real), mientras que los literal types desaparecen por completo al compilar. Para casos simples, muchos equipos hoy prefieren un union de literal types por ser más liviano; `enum` sigue siendo útil cuando el conjunto de valores necesita existir también como objeto en runtime.
+Un `enum` agrupa un conjunto fijo de valores con nombre. Cumple un propósito parecido al de los literal types (`ProductCategory`, unas slides atrás) — la diferencia es que un `enum` existe también en el JavaScript compilado (genera código real), mientras que los literal types desaparecen por completo al compilar. Para casos simples, muchos equipos hoy prefieren un union de literal types por ser más liviano; `enum` sigue siendo útil cuando el conjunto de valores necesita existir también como objeto en runtime.
 
 </div>
 
@@ -411,18 +529,40 @@ layout: default
 # El genérico de Asincronismo: `Promise<T>`
 
 ```ts
-async function fetchUser(id: number): Promise<{ name: string; age: number }> {
-  const res = await fetch(`/api/users/${id}`)
+async function fetchProduct(id: number): Promise<Product> {
+  const res = await fetch(`/api/products/${id}`)
   return res.json()
 }
 
-const user = await fetchUser(1)
-user.name   // TS sabe que esto es un string — sin castear nada a mano
+const mouse = await fetchProduct(1)
+mouse.price   // TS sabe que esto es un number — sin castear nada a mano
 ```
 
 <div class="mt-4 text-sm opacity-80">
 
-Toda función `async` devuelve una `Promise` — en TypeScript, se tipa **qué** va a resolver esa promesa: `Promise<{ name: string; age: number }>` significa "una promesa que, cuando se resuelve, entrega un objeto con esa forma". Es la misma idea de <code>Array&lt;T&gt;</code> aplicada a Promises — el genérico que vieron en Asincronismo sin nombrarlo todavía.
+Toda función `async` devuelve una `Promise` — en TypeScript, se tipa **qué** va a resolver esa promesa: `Promise<Product>` significa "una promesa que, cuando se resuelve, entrega un `Product`". Es la misma idea de <code>Array&lt;T&gt;</code> aplicada a Promises — el genérico que vieron en Asincronismo sin nombrarlo todavía.
+
+</div>
+
+---
+layout: default
+---
+
+# Por qué hace falta un genérico propio
+
+```ts
+// sin genéricos: funciona, pero se pierde el tipo específico
+function firstElementAny(list: any[]) {
+  return list[0]
+}
+
+const p = firstElementAny([{ name: 'Mouse', price: 18000 }])
+p.priec   // typo — y TS no dice nada, porque "any" no chequea nada
+```
+
+<div class="mt-3 text-sm opacity-80">
+
+Con `any[]`, la función acepta cualquier array — pero devuelve `any`: TypeScript pierde por completo el rastro de qué había adentro. El typo `p.priec` en vez de `p.price` compila igual, y el error recién aparece en runtime.
 
 </div>
 
@@ -437,72 +577,48 @@ function firstElement<T>(list: T[]): T | undefined {
   return list[0]
 }
 
-firstElement([1, 2, 3])          // => number | undefined
-firstElement(['a', 'b'])         // => string | undefined
-firstElement([true, false])      // => boolean | undefined
+const products: Product[] = [
+  { name: 'Mouse', price: 18000, stock: 5 },
+  { name: 'Teclado', price: 25000, stock: 3 },
+]
+
+const p = firstElement(products)   // tipo: Product | undefined
+p?.priec   // ❌ TS avisa: Property 'priec' does not exist — ahora sí
+
+firstElement([1, 2, 3])        // tipo: number | undefined
+firstElement(['a', 'b'])       // tipo: string | undefined
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-3 text-sm opacity-80">
 
-`<T>` declara un **parámetro de tipo**: una variable que representa "el tipo que sea, decidido en cada llamada". La misma función funciona para arrays de cualquier tipo, y TypeScript infiere `T` automáticamente a partir del argumento — sin escribir la función tres veces (una por tipo) ni resignar el chequeo de tipos con `any`.
+`<T>` declara un **parámetro de tipo**: una variable que representa "el tipo que sea, decidido en cada llamada". La misma función funciona para arrays de cualquier tipo, y TypeScript infiere `T` automáticamente a partir del argumento — sin escribir la función una vez por tipo ni resignar el chequeo con `any`, como en la slide anterior.
 
 </div>
-
----
-layout: center
----
-
-# Repaso funcional, ahora tipado
 
 ---
 layout: default
 ---
 
-# Tipando `map`/`filter`/`reduce`
+# Utility types: transformar tipos existentes
 
 ```ts
 interface Product {
   name: string
   price: number
+  stock: number
 }
 
-const products: Product[] = [
-  { name: 'Mouse', price: 18000 },
-  { name: 'Teclado', price: 25000 },
-]
+type ProductPreview = Pick<Product, 'name' | 'price'>   // solo esas dos props
+type ProductUpdate = Partial<Product>                     // todas las props, opcionales
+type ProductWithoutStock = Omit<Product, 'stock'>         // todas menos esa
 
-const names: string[] = products.map((p) => p.name)
-const expensive: Product[] = products.filter((p) => p.price > 20000)
-const total: number = products.reduce((sum, p) => sum + p.price, 0)
+function updateProduct(id: number, changes: ProductUpdate) { /* ... */ }
+updateProduct(1, { price: 15000 })   // ✅ no hace falta pasar el objeto completo
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-3 text-sm opacity-80">
 
-Los mismos `map`/`filter`/`reduce` de JS Funcional — ahora TypeScript conoce la forma de cada elemento (<code>Product</code>) y el tipo de cada resultado, y avisa en el momento si, por ejemplo, se intenta sumar <code>p.name</code> en vez de <code>p.price</code>.
-
-</div>
-
----
-layout: default
----
-
-# Tipando `compose`
-
-```ts
-function compose<A, B, C>(f: (b: B) => C, g: (a: A) => B): (a: A) => C {
-  return (a: A) => f(g(a))
-}
-
-const double = (x: number): number => x * 2
-const toCurrency = (x: number): string => `$${x}`
-
-const doubleAndFormat = compose(toCurrency, double)
-doubleAndFormat(500)   // => "$1000"
-```
-
-<div class="mt-4 text-sm opacity-80">
-
-`compose` de JS Funcional, tipado con **tres** parámetros de tipo genéricos (`A`, `B`, `C`): el tipo de entrada, el tipo intermedio que devuelve `g`, y el tipo final que devuelve `f`. TypeScript encadena los tipos automáticamente y avisaría si se intentara componer dos funciones cuyos tipos no calzan.
+`Pick`, `Partial` y `Omit` son **genéricos que ya vienen incluidos** en TypeScript — toman un tipo existente y devuelven una versión transformada, sin reescribirlo a mano. Se usan todo el tiempo en proyectos reales (por ejemplo, para tipar el cuerpo de un `PATCH` HTTP, donde solo llegan los campos que cambian) — van a volver a aparecer en lo que viene (React, Node). Mención rápida de un cuarto: `Record<K, V>` construye un tipo objeto con claves `K` y valores `V`, útil para diccionarios (`Record<string, Product>`).
 
 </div>
 
@@ -537,7 +653,33 @@ npx tsc --init   # genera un tsconfig.json con valores por defecto comentados
 
 <div class="mt-4 text-sm opacity-80">
 
-`tsconfig.json` le dice al compilador (`tsc`) qué archivos compilar y con qué reglas. `target` fija a qué versión de JS se transpila; `outDir`/`rootDir` separan fuente y salida; `strict: true` activa el conjunto completo de chequeos estrictos — **muy recomendado** en proyectos nuevos, aunque el ejemplo de la slide anterior (<code>any</code>) siga siendo válido incluso con <code>strict</code> activado, salvo que además se active <code>noImplicitAny</code>.
+`tsconfig.json` le dice al compilador (`tsc`) qué archivos compilar y con qué reglas. `target` fija a qué versión de JS se transpila; `outDir`/`rootDir` separan fuente y salida; `esModuleInterop` permite mezclar `import`/`export` con paquetes viejos de CommonJS sin fricción.
+
+</div>
+
+---
+layout: default
+---
+
+# `tsconfig.json`: opciones que importan
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["ES2022", "DOM"],
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "moduleResolution": "bundler"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+<div class="mt-3 text-xs opacity-80">
+
+`strict: true` en realidad activa **varios** flags a la vez — entre ellos `noImplicitAny` (obliga a tipar en vez de inferir `any` en silencio) y `strictNullChecks` (`null`/`undefined` dejan de aceptarse en cualquier lado, hay que declararlos explícitamente: de ahí sale la necesidad de `?.`/`??` de unas slides atrás). `lib` importa cuando el código usa APIs del navegador (`document`, `fetch`) — sin `"DOM"` ahí, TS ni sabe que existen. `sourceMap` permite debuggear el `.ts` original en el navegador/editor, no el `.js` compilado. `skipLibCheck` acelera la compilación salteando el chequeo de tipos de las librerías instaladas. `include`/`exclude` acotan qué carpetas mira el compilador — **muy recomendado**, sobre todo `strict`, en cualquier proyecto nuevo.
 
 </div>
 
@@ -566,7 +708,7 @@ layout: default
 
 # Cheat sheet
 
-<div class="grid grid-cols-2 gap-8 mt-4 text-xs">
+<div class="grid grid-cols-2 gap-8 mt-1 text-xs">
 <div>
 
 **Tipos**
@@ -577,8 +719,9 @@ layout: default
 | Array | `number[]` o `Array<number>` |
 | Tupla | `[number, number]` |
 | Union | `string \| number` |
-| Literal | `'alumno' \| 'profesor'` |
+| Literal | `'electronics' \| 'books'` |
 | Función | `(a: number) => string` |
+| Ausencia / inmutable | `?.`, `??`, `!`, `readonly` |
 
 </div>
 <div>
@@ -592,6 +735,7 @@ layout: default
 | Extender | `interface B extends A {}` |
 | Genérico | `Array<T>`, `Promise<T>` |
 | Genérico propio | `function f<T>(x: T): T` |
+| Utility types | `Partial<T>`, `Pick<T,K>`, `Omit<T,K>` |
 | Config | `tsconfig.json` + `tsc` / `ts-node` |
 
 </div>
@@ -608,6 +752,9 @@ layout: default
 - [typescriptlang.org — Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) — documentación oficial, completa y bien organizada
 - [typescriptlang.org — Playground](https://www.typescriptlang.org/play) — probar TS en el navegador, sin instalar nada, útil para demos en vivo
 - [typescriptlang.org — TS for JS Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html) — resumen rápido pensado para quien ya sabe JS
+- [typescriptlang.org — TSConfig Reference](https://www.typescriptlang.org/tsconfig) — todas las opciones de `tsconfig.json`, explicadas una por una
+- [typescriptlang.org — Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html) — referencia de `Partial`, `Pick`, `Omit`, `Record` y el resto
+- [typescriptlang.org — Declaration Merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html) — referencia oficial sobre la fusión de interfaces
 - [totaltypescript.com](https://www.totaltypescript.com/) — artículos y ejercicios gratuitos de nivel intermedio/avanzado
 
 </div>
