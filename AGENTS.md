@@ -14,7 +14,7 @@ This is a monorepo of independent projects, not an npm workspace — each subfol
 
 Two recurring patterns:
 
-- **`<slug>/`** — a Slidev deck. Standalone project: `package.json` (`dev`/`build`/`export` scripts), `slides.md`, `public/` for images/logos, `pdfs/` (symlinked to `public/pdfs`) for generated PDFs.
+- **`<slug>/`** — a Slidev deck. Standalone project: `package.json` (`dev`/`build`/`export` scripts), `slides.md`, `global-top.vue` (fixed home icon back to the landing page, hidden during export — generic, identical across every deck, easy to forget when scaffolding a new one since its absence doesn't break the build), `public/` for images/logos, `pdfs/` (symlinked to `public/pdfs`) for generated PDFs.
 - **`<slug>-docs/`** — a VitePress site: `docs/apunte.md`, `docs/ejercicios.md`, `docs/index.md` (hero landing), `docs/.vitepress/` (config + shared theme), `scripts/print-pdfs.mjs` (Playwright PDF export). Not every deck has one (`introduction/` and `fp-backus/` don't).
 
 Root level: the landing page (`index.html`/`index.css`/`index.js`), `dev.sh` (local dev orchestration), `.github/workflows/deploy.yml` (CI), and this documentation.
@@ -23,9 +23,9 @@ Root level: the landing page (`index.html`/`index.css`/`index.js`), `dev.sh` (lo
 
 The landing page's own filter chips (Unidades / Próximamente / Extra / Deprecado) are the live source of truth for what exists — check `index.html` or the deployed site rather than trusting a stale list here. As of this writing:
 
-- **Built (`data-category="unidad"`)**: Introducción (deck only), Cálculo λ, Clojure, Git & GitHub, JS Funcional, JS Contemporáneo (deck + docs each).
+- **Built (`data-category="unidad"`)**: Introducción (deck only), Cálculo λ, Clojure, Git & GitHub, JS Funcional, JS Contemporáneo, Asincronismo (deck + docs each, except Introducción).
 - **Deprecated**: FP — John Backus (deck only, superseded by the Cálculo λ / Clojure / JS Funcional sequence).
-- **Planned (`data-category="proximamente"`, placeholder cards already in the grid)**: Asincronismo, TypeScript, React, Node + Express, MongoDB, Pruebas (Testing) — full spec for each in `PLAN-UNIDAD-4.md` section 5.
+- **Planned (`data-category="proximamente"`, placeholder cards already in the grid)**: TypeScript, React, Node + Express, MongoDB, Pruebas (Testing) — full spec for each in `PLAN-UNIDAD-4.md` section 5.
 - **Optional/extra (`data-category="extra"`, placeholder cards already in the grid)**: Next.js, Tailwind CSS, NestJS, React Native con Expo — spec in `PLAN-UNIDAD-4.md` section 7.
 
 ## Local dev workflow
@@ -59,8 +59,9 @@ npm run docs:dev
 | git-github | 3035 | 5177 | 4175 |
 | js-funcional | 3036 | 5179 | 4176 |
 | js-contemporaneo | 3037 | 5181 | 4177 |
+| asincronismo | 3038 | 5183 | 4178 |
 
-Index page: `3030`. Next free deck port: `3038`. Next free `-docs/` pair: `5183` / `4178` (docs:dev increments by 2, PRINT_PORT by 1 — they drifted apart early on; always grep the actual `package.json`/`print-pdfs.mjs` files to confirm rather than trusting a table, this one included). `PLAN-UNIDAD-4.md` section 6 has the full reserved table through the rest of the core program.
+Index page: `3030`. Next free deck port: `3039`. Next free `-docs/` pair: `5185` / `4179` (docs:dev increments by 2, PRINT_PORT by 1 — they drifted apart early on; always grep the actual `package.json`/`print-pdfs.mjs` files to confirm rather than trusting a table, this one included). `PLAN-UNIDAD-4.md` section 6 has the full reserved table through the rest of the core program.
 
 ### Regenerating PDFs
 
@@ -184,7 +185,8 @@ These have all been hit for real in this repo. QA is not complete until you've c
 - **Forward/backward reference bugs after reordering**: prose like "ya visto" / "como vimos antes" / "más adelante" becomes factually wrong the moment a section moves earlier or later in the document. After any reorder, grep for `ya vist|más adelante|próxim.*slide|a continuaci` (or similar) in the touched file and check each hit is still true.
 - **Heading-hierarchy orphaning in VitePress**: promoting/demoting a `##`/`###` heading changes the sidebar TOC nesting. Moving a `##` section away can leave its old sibling `###` subsections incorrectly nested under an unrelated `##` that happens to now precede them. Check the rendered sidebar after any structural move in an `apunte.md`.
 - **Stale Slidev/Vite dev-server state**: after many sequential structural edits to `slides.md`, the dev server can keep serving stale content for a specific route even after a hard refresh. If a slide shows content that doesn't match the source file, kill and restart the Slidev process rather than trusting HMR.
-- **`?print` query param** on a running Slidev deck renders the print/export layout in a normal browser tab — use it for fast iteration, but always confirm the *actual* exported PDF (`npm run export`) matches before calling a deck done; print-mode rendering in a live browser and Playwright's headless print aren't always pixel-identical.
+- **`?print` query param** on a running Slidev deck renders the print/export layout in a normal browser tab — use it for fast iteration, but always confirm the *actual* exported PDF (`npm run export`) matches before confirming a deck done; print-mode rendering in a live browser and Playwright's headless print aren't always pixel-identical.
+- **`npm install` on a new deck can pull a broken `markdown-exit`**: `unplugin-vue-markdown` depends on `markdown-exit` via a semver range, not a pin. A fresh `npm install` (any deck set up after roughly mid-2026) can resolve `markdown-exit@1.2.0`, whose stricter `Renderer.renderInline` throws `async rule detected, use renderInlineAsync()` the moment a slide has syntax-highlighted inline code (single backtick spans) — breaks the Overview page and, per-slide, sometimes the slide itself, with `slides.md` content that is otherwise completely valid Markdown. It looks exactly like a content bug (the error message points at your `.md` file) but isn't — every already-built deck's `node_modules` has the older `markdown-exit@1.0.0-beta.9`, which doesn't have this issue. Don't chase it by editing slide content. Fix: add `"overrides": { "markdown-exit": "1.0.0-beta.9" }` to the deck's `package.json` (see `asincronismo/package.json`) and re-run `npm install`. Confirm with `node -p "require('./node_modules/unplugin-vue-markdown/node_modules/markdown-exit/package.json').version"` — should print `1.0.0-beta.9`. If a future deck still breaks with this override in place, the fix may need a version bump instead; check whether newer `markdown-exit`/`unplugin-vue-markdown` releases have resolved the regression before assuming the pin is stale.
 
 ## Git workflow
 

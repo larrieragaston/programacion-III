@@ -27,7 +27,8 @@ Choose a short, lowercase, English slug (e.g. `introduction`, `lambda-calculus`,
 <slug>/
   package.json
   slides.md
-  public/logos/   (if images are needed)
+  global-top.vue   (copy verbatim from any existing deck — see step 3bis)
+  public/logos/    (if images are needed)
 ```
 
 ## 3. Create `package.json`
@@ -46,11 +47,26 @@ Use this template — only change the `name` and `build --base` path:
   "dependencies": {
     "@slidev/cli": "^52.14.1",
     "@slidev/theme-bricks": "^0.25.0"
+  },
+  "overrides": {
+    "markdown-exit": "1.0.0-beta.9"
   }
 }
 ```
 
+The `overrides` pin is required — see `AGENTS.md`'s "`npm install` on a new deck can pull a broken `markdown-exit`" note. Add it before the first `npm install`, not after hitting the bug.
+
 Then run `npm install` inside the new directory (with `ulimit -n 10240` on macOS).
+
+## 3bis. Copy `global-top.vue`
+
+Every deck needs this file at its root — it renders the fixed home icon (top-right) that links back to the landing page, and is hidden automatically during PDF export/print. It's fully generic (identical byte-for-byte across every deck), so just copy it verbatim from any existing deck, e.g.:
+
+```bash
+cp js-contemporaneo/global-top.vue <slug>/global-top.vue
+```
+
+Do this before the first local test — a deck missing this file has no way back to the index, and the omission is easy to miss because everything else still builds and runs fine.
 
 ## 4. Write `slides.md`
 

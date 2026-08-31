@@ -18,9 +18,9 @@ gaston.larriera@inspt.utn.edu.ar
 
 The landing page (`index.html`) is a filterable card grid — **Unidades** (built), **Próximamente** (planned, not built yet), **Extra** (optional/advanced, outside the core program), **Deprecado** (superseded). That grid is the source of truth for what currently exists; broadly:
 
-- **Built**: Introducción, Cálculo λ, Clojure, Git & GitHub, JS Funcional, JS Contemporáneo.
+- **Built**: Introducción, Cálculo λ, Clojure, Git & GitHub, JS Funcional, JS Contemporáneo, Asincronismo.
 - **Deprecated**: FP — John Backus (superseded by the Cálculo λ / Clojure / JS Funcional sequence).
-- **Planned**: Asincronismo, TypeScript, React, Node + Express, MongoDB, Pruebas (Testing) — see [`PLAN-UNIDAD-4.md`](PLAN-UNIDAD-4.md) for the full spec of each.
+- **Planned**: TypeScript, React, Node + Express, MongoDB, Pruebas (Testing) — see [`PLAN-UNIDAD-4.md`](PLAN-UNIDAD-4.md) for the full spec of each.
 - **Optional / extra**: Next.js, Tailwind CSS, NestJS, React Native con Expo.
 
 ## Prerequisites
@@ -102,6 +102,7 @@ programacion-III/
 ├── git-github/        + git-github-docs/
 ├── js-funcional/      + js-funcional-docs/
 ├── js-contemporaneo/  + js-contemporaneo-docs/
+├── asincronismo/      + asincronismo-docs/
 └── fp-backus/                   # Slidev only — deprecated, kept for reference
 ```
 
