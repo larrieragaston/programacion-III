@@ -27,42 +27,6 @@ INSPT - UTN · Ciclo Lectivo 2026
 layout: default
 ---
 
-# El problema que resuelve
-
-```js
-// JavaScript — esto compila y corre sin quejarse
-function applyDiscount(price, rate) {
-  return price - price * rate
-}
-
-applyDiscount(1000, 0.1)     // => 900, como se esperaba
-applyDiscount(1000, '10%')   // => NaN — el error aparece recién en producción
-```
-
-<v-click>
-
-<div class="mt-4 text-sm opacity-80">
-
-JavaScript es dinámico: no hay que declarar tipos, lo cual da flexibilidad — pero errores tontos como pasar un string donde se esperaba un número recién se descubren **en tiempo de ejecución**, muchas veces lejos de donde ocurrió el error real. Cuanto más grande el proyecto y más gente toca el mismo código, más cuesta esto: nadie avisa si le pasás mal un argumento, y el editor no puede ayudar con autocompletado porque no sabe qué forma tiene cada valor.
-
-</div>
-
-</v-click>
-
-<v-click>
-
-<div class="mt-2 text-sm italic opacity-80">
-
-¿Y si hubiera una forma de detectar este tipo de error **antes** de ejecutar nada?
-
-</div>
-
-</v-click>
-
----
-layout: default
----
-
 # ¿Qué es TypeScript?
 
 <div class="text-sm opacity-80 mb-3">
@@ -203,7 +167,7 @@ function parseProductSafe(json: unknown) {
 
 <div class="mt-4 text-sm opacity-80">
 
-`any` **apaga el chequeo de tipos** por completo — es escribir JS dentro de TS, y anula el motivo por el que se eligió TypeScript. `unknown` es la alternativa segura: acepta cualquier valor igual (útil para datos externos como una respuesta HTTP), pero obliga a comprobar la forma real (*narrowing*, próxima slide) antes de operar con él. `as { name: string }` es una **type assertion**: le dice al compilador "confiá en que esto tiene esta forma", sin volver a chequearlo — hay que usarla solo después de haber comprobado algo de verdad, como con el `if` de arriba.
+`any` **apaga el chequeo de tipos** por completo — es escribir JS dentro de TS, y anula el motivo por el que se eligió TypeScript. `unknown` es la alternativa segura: acepta cualquier valor igual (útil para datos externos como una respuesta HTTP), pero obliga a comprobar la forma real (*narrowing*, próxima slide) antes de operar con él. `as { name: string }` es una **type assertion**: el "casteo" de TypeScript — le dice al compilador "confiá en que esto tiene esta forma", sin volver a chequearlo. A diferencia de un cast en Java/C#, no convierte nada en runtime: es pura información para el compilador, se borra al compilar — si te equivocás, el error aparece después, en runtime. Por eso hay que usarlo solo después de haber comprobado algo de verdad, como con el `if` de arriba.
 
 </div>
 
@@ -390,6 +354,29 @@ ids.push(4)   // ❌ Property 'push' does not exist on type 'readonly number[]'
 <div class="mt-4 text-sm opacity-80">
 
 La misma idea de no mutar que vieron en JS Funcional con `map`/`filter` (crear algo nuevo en vez de modificar lo existente) — ahora reforzada por el compilador. `readonly` no cambia nada en el JavaScript final (se borra al compilar, como todo tipo), pero avisa **en tiempo de compilación** si el propio código intenta reasignar una propiedad o mutar un array que se declaró como si no debiera cambiar.
+
+</div>
+
+---
+layout: default
+---
+
+# `as const`: ¿y las constantes?
+
+```ts
+const config = { role: 'admin', level: 1 }
+config.role = 'user'          // ✅ compila — el objeto no es readonly, solo la variable
+
+const frozen = { role: 'admin', level: 1 } as const
+frozen.role = 'user'          // ❌ Cannot assign to 'role' because it is a read-only property
+
+let role = 'admin'            // tipo: string
+let fixedRole = 'admin' as const   // tipo: 'admin' (literal, no se ensancha)
+```
+
+<div class="mt-3 text-sm opacity-80">
+
+`const` (de JS) solo evita **reasignar la variable** — el objeto que contiene se puede seguir mutando por dentro, como `config.role` arriba. `as const` (de TS) es la pieza que faltaba: es el mismo `as` que ya vieron para castear (`any vs. unknown`), aplicado no a un tipo propio sino a la palabra `const` — le pide al compilador tratar el valor como su versión más específica posible: todas las propiedades pasan a ser `readonly` de forma recursiva, y los strings/numbers quedan fijados como su valor literal en vez de ensancharse a `string`/`number`. Es la forma de lograr, con un objeto, algo parecido a lo que `const` ya hacía con un primitivo.
 
 </div>
 
@@ -601,7 +588,10 @@ layout: default
 # Por qué hace falta un genérico propio
 
 ```ts
-// sin genéricos: funciona, pero se pierde el tipo específico
+// opción 1: una función por cada tipo — funciona, pero no escala
+function firstElementNumber(list: number[]): number | undefined { return list[0] }
+// firstElementString, firstElementProduct... una más por cada tipo nuevo
+// opción 2: unificarlas con "any" — escala, pero se pierde el tipo
 function firstElementAny(list: any[]) {
   return list[0]
 }
@@ -610,9 +600,9 @@ const p = firstElementAny([{ name: 'Mouse', price: 18000 }])
 p.priec   // typo — y TS no dice nada, porque "any" no chequea nada
 ```
 
-<div class="mt-3 text-sm opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-Con `any[]`, la función acepta cualquier array — pero devuelve `any`: TypeScript pierde por completo el rastro de qué había adentro. El typo `p.priec` en vez de `p.price` compila igual, y el error recién aparece en runtime.
+Escribir una función por tipo funciona, pero obliga a duplicar la misma lógica cada vez. Unificarlas con `any[]` evita la duplicación, pero devuelve `any` — se pierde el tipo, y un typo como `p.priec` compila igual. Hace falta una sola función que mantenga el tipo específico de cada llamada: ahí entra un genérico propio.
 
 </div>
 
@@ -676,24 +666,50 @@ updateProduct(1, { price: 15000 })   // ✅ no hace falta pasar el objeto comple
 layout: center
 ---
 
-# Configurar y correr un proyecto TS
+# Probar y correr TypeScript
 
 ---
 layout: default
 ---
 
-# Instalar TypeScript
+# La forma más rápida: el Playground
+
+<div class="mt-2 text-sm opacity-80">
+
+No hace falta instalar nada para probar los ejemplos de esta clase: en <a href="https://www.typescriptlang.org/play">typescriptlang.org/play</a> se escribe TypeScript en el navegador y se ve todo en vivo.
+
+</div>
+
+<div class="mt-4 grid grid-cols-1 gap-2 text-sm">
+<div class="p-2 rounded bg-gray-100">Panel izquierdo: el código TypeScript que vas escribiendo</div>
+<div class="p-2 rounded bg-gray-100">Panel derecho: el JavaScript que genera — para ver qué "le hace" el compilador</div>
+<div class="p-2 rounded bg-gray-100">Los errores de tipos aparecen subrayados en rojo ahí mismo, sin compilar nada a mano</div>
+</div>
+
+<div class="mt-4 text-sm italic opacity-80">
+
+Todavía no vimos cómo armar un proyecto de Node — para ir probando código TypeScript por su cuenta, esta es la forma más simple.
+
+</div>
+
+---
+layout: default
+---
+
+# Instalar y correr TypeScript en tu máquina
 
 ```bash
-npm install --save-dev typescript   # instalación local al proyecto (recomendado)
-npm install --save-dev ts-node       # para correr .ts directo, sin compilar a mano
+npm install -g typescript ts-node   # instalación global — sin armar un proyecto
 
-npx tsc --version    # confirma que quedó instalado: Version 5.x.x
+tsc archivo.ts          # compila un archivo suelto → archivo.js
+node archivo.js           # => 900
+
+ts-node archivo.ts       # compila y ejecuta en un solo paso, sin generar el .js
 ```
 
 <div class="mt-4 text-sm opacity-80">
 
-TypeScript no viene instalado por default: es un paquete de npm como cualquier otro. Se instala como **`devDependency`** — no hace falta en producción, porque el JavaScript ya compilado no lo necesita para correr. `npm install -g typescript` también existe (instalación global, disponible en toda la máquina), pero atarlo al proyecto asegura que todo el equipo compile con la misma versión.
+No hace falta un proyecto de Node (con `package.json`, carpetas `src/`, etc.) para esto: alcanza con instalar TypeScript de forma global y correrlo sobre un único archivo suelto. Cuando más adelante armen un proyecto real — con React, por ejemplo — van a instalar TypeScript como dependencia **de ese proyecto** en vez de global, y ahí sí van a ver un `package.json`, un `tsconfig.json` y una estructura de carpetas armados en serio.
 
 </div>
 
@@ -720,9 +736,9 @@ npx tsc --init   # genera un tsconfig.json con valores por defecto comentados
 }
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-3 text-sm opacity-80">
 
-`tsconfig.json` le dice al compilador (`tsc`) qué archivos compilar y con qué reglas. `target` fija a qué versión de JS se transpila; `outDir`/`rootDir` separan fuente y salida; `esModuleInterop` permite mezclar `import`/`export` con paquetes viejos de CommonJS sin fricción.
+Apenas armen un proyecto real (por ejemplo, con React) va a aparecer uno de estos junto al `package.json`. `tsconfig.json` le dice al compilador (`tsc`) qué archivos compilar y con qué reglas. `target` fija a qué versión de JS se transpila; `outDir`/`rootDir` separan fuente y salida; `esModuleInterop` permite mezclar `import`/`export` con paquetes viejos de CommonJS sin fricción.
 
 </div>
 
@@ -756,58 +772,6 @@ layout: default
 layout: default
 ---
 
-# Un proyecto TS simple: scaffolding
-
-```
-mi-proyecto/
-├── package.json
-├── tsconfig.json
-├── src/
-│   └── index.ts
-└── dist/          <- generado por tsc, no se versiona (.gitignore)
-```
-
-```ts
-// src/index.ts
-function applyDiscount(price: number, rate: number): number {
-  return price - price * rate
-}
-
-console.log(applyDiscount(1000, 0.1))
-```
-
-<div class="mt-3 text-sm opacity-80">
-
-Nada especial: un proyecto TS es un proyecto Node común, con un `tsconfig.json` al lado del `package.json` y el código fuente separado en `src/`. `dist/` (o el nombre que diga `outDir`) es **generado** por el compilador — se agrega a `.gitignore`, igual que `node_modules/`, porque se puede reconstruir en cualquier momento con `tsc`.
-
-</div>
-
----
-layout: default
----
-
-# Correr un proyecto TS
-
-```bash
-npx tsc                    # compila src/ → dist/, según tsconfig.json
-node dist/index.js          # => 900
-
-npx tsc --watch             # recompila automáticamente en cada cambio
-
-npx ts-node src/index.ts    # compila y ejecuta en un solo paso, sin generar dist/
-                             # => 900
-```
-
-<div class="mt-4 text-sm opacity-80">
-
-Dos flujos habituales, sobre el proyecto de la slide anterior: **compilar y correr** (`tsc` genera el `.js` en `outDir`, después se corre con `node`, como cualquier script) o **correr directo** con `ts-node`, que compila en memoria sobre la marcha — más cómodo mientras se desarrolla, no pensado para producción.
-
-</div>
-
----
-layout: default
----
-
 # Cómo leer un error de compilación
 
 ```ts
@@ -815,7 +779,7 @@ applyDiscount(1000, '10%')
 ```
 
 ```
-src/index.ts:5:21 - error TS2345: Argument of type 'string' is not
+archivo.ts:5:21 - error TS2345: Argument of type 'string' is not
 assignable to parameter of type 'number'.
 
 5 applyDiscount(1000, '10%')
@@ -849,12 +813,11 @@ layout: default
 | Forma | Ejemplo |
 |---|---|
 | Primitivos | `string`, `number`, `boolean` |
-| Array | `number[]` o `Array<number>` |
-| Tupla | `[number, number]` |
+| Array / Tupla | `number[]`, `[number, number]` |
 | Union | `string \| number` |
 | Literal | `'electronics' \| 'books'` |
 | Función | `(a: number) => string` |
-| Ausencia / inmutable | `?.`, `??`, `!`, `readonly` |
+| Ausencia / inmutable | `?.`, `??`, `!`, `readonly`, `as const` |
 
 </div>
 <div>
