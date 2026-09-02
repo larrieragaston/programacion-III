@@ -1,0 +1,117 @@
+<svg viewBox="0 0 1040 770" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#374151" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1040" height="770" fill="#ffffff" />
+
+  <!-- Outer wrapper -->
+  <rect x="15" y="15" width="1010" height="740" rx="16" fill="#ffffff" stroke="#9ca3af" stroke-width="2" />
+
+  <!-- Left: JavaScript Environment wrapper -->
+  <rect x="45" y="55" width="400" height="600" rx="14" fill="#dcfce7" stroke="#4ade80" stroke-width="2.5" />
+  <text x="245" y="88" text-anchor="middle" font-size="21" font-weight="700" fill="#166534">JavaScript Environment</text>
+
+  <!-- Heap -->
+  <rect x="70" y="110" width="170" height="520" rx="10" fill="#ffffff" stroke="#9ca3af" stroke-width="2" />
+  <text x="155" y="140" text-anchor="middle" font-size="18" font-weight="700" fill="#1f2937">Heap</text>
+  <text x="155" y="160" text-anchor="middle" font-size="12" fill="#6b7280">objetos y datos en memoria</text>
+  <rect x="120" y="190" width="18" height="18" rx="3" fill="#bbf7d0" stroke="#4ade80" />
+  <rect x="165" y="230" width="18" height="18" rx="3" fill="#bbf7d0" stroke="#4ade80" />
+  <rect x="105" y="270" width="18" height="18" rx="3" fill="#bbf7d0" stroke="#4ade80" />
+  <rect x="180" y="305" width="18" height="18" rx="3" fill="#bbf7d0" stroke="#4ade80" />
+  <rect x="130" y="345" width="18" height="18" rx="3" fill="#bbf7d0" stroke="#4ade80" />
+  <rect x="95" y="395" width="18" height="18" rx="3" fill="#bbf7d0" stroke="#4ade80" />
+
+  <!-- Call Stack -->
+  <rect x="260" y="110" width="170" height="520" rx="10" fill="#ffffff" stroke="#9ca3af" stroke-width="2" />
+  <text x="345" y="140" text-anchor="middle" font-size="18" font-weight="700" fill="#1f2937">Call Stack</text>
+  <text x="345" y="160" text-anchor="middle" font-size="12" fill="#6b7280">eventos sincrónicos</text>
+  <rect x="277" y="185" width="136" height="32" rx="5" fill="#bfdbfe" stroke="#60a5fa" />
+  <text x="345" y="206" text-anchor="middle" font-size="12.5" fill="#1e3a8a">console.log('1')</text>
+  <rect x="277" y="223" width="136" height="32" rx="5" fill="#bfdbfe" stroke="#60a5fa" />
+  <text x="345" y="244" text-anchor="middle" font-size="12.5" fill="#1e3a8a">operacionSync()</text>
+  <rect x="277" y="261" width="136" height="32" rx="5" fill="#bfdbfe" stroke="#60a5fa" />
+  <text x="345" y="282" text-anchor="middle" font-size="12.5" fill="#1e3a8a">console.log('2')</text>
+
+  <!-- Web APIs -->
+  <rect x="485" y="55" width="470" height="240" rx="14" fill="#dbeafe" stroke="#3b82f6" stroke-width="2.5" />
+  <text x="720" y="90" text-anchor="middle" font-size="21" font-weight="700" fill="#1e3a8a">Web APIs</text>
+  <text x="720" y="112" text-anchor="middle" font-size="13" fill="#1e40af">(o libuv, en Node)</text>
+  <rect x="505" y="130" width="430" height="32" rx="6" fill="#ffffff" stroke="#93c5fd" />
+  <text x="720" y="151" text-anchor="middle" font-size="13" fill="#1e3a8a">Timer (setTimeout) — cuenta los 0ms</text>
+  <rect x="505" y="170" width="430" height="32" rx="6" fill="#ffffff" stroke="#93c5fd" />
+  <text x="720" y="191" text-anchor="middle" font-size="13" fill="#1e3a8a">fetch()</text>
+  <rect x="505" y="210" width="430" height="32" rx="6" fill="#ffffff" stroke="#93c5fd" />
+  <text x="720" y="231" text-anchor="middle" font-size="13" fill="#1e3a8a">eventos del DOM</text>
+  <rect x="505" y="250" width="430" height="32" rx="6" fill="#ffffff" stroke="#93c5fd" />
+  <text x="720" y="271" text-anchor="middle" font-size="13" fill="#1e3a8a">lectura de archivos (Node)</text>
+
+  <!-- Microtask Queue -->
+  <rect x="485" y="325" width="225" height="330" rx="14" fill="#f3e8ff" stroke="#a855f7" stroke-width="2.5" />
+  <text x="597" y="358" text-anchor="middle" font-size="18" font-weight="700" fill="#581c87">Microtask Queue</text>
+  <text x="597" y="378" text-anchor="middle" font-size="12" font-style="italic" fill="#7e22ce">mayor prioridad</text>
+  <rect x="507" y="395" width="180" height="30" rx="5" fill="#ffffff" stroke="#c084fc" />
+  <text x="597" y="415" text-anchor="middle" font-size="12.5" fill="#581c87">.then()</text>
+  <rect x="507" y="433" width="180" height="30" rx="5" fill="#ffffff" stroke="#c084fc" />
+  <text x="597" y="453" text-anchor="middle" font-size="12.5" fill="#581c87">.catch()</text>
+  <rect x="507" y="471" width="180" height="30" rx="5" fill="#ffffff" stroke="#c084fc" />
+  <text x="597" y="491" text-anchor="middle" font-size="12.5" fill="#581c87">.finally()</text>
+  <rect x="507" y="509" width="180" height="30" rx="5" fill="#ffffff" stroke="#c084fc" />
+  <text x="597" y="529" text-anchor="middle" font-size="12.5" fill="#581c87">continuación de un await</text>
+
+  <!-- Macrotask Queue -->
+  <rect x="725" y="325" width="225" height="330" rx="14" fill="#ffedd5" stroke="#f97316" stroke-width="2.5" />
+  <text x="837" y="358" text-anchor="middle" font-size="18" font-weight="700" fill="#7c2d12">Macrotask Queue</text>
+  <text x="837" y="378" text-anchor="middle" font-size="12" font-style="italic" fill="#c2410c">menor prioridad</text>
+  <rect x="747" y="395" width="180" height="30" rx="5" fill="#ffffff" stroke="#fdba74" />
+  <text x="837" y="415" text-anchor="middle" font-size="12.5" fill="#7c2d12">setTimeout callback</text>
+  <rect x="747" y="433" width="180" height="30" rx="5" fill="#ffffff" stroke="#fdba74" />
+  <text x="837" y="453" text-anchor="middle" font-size="12.5" fill="#7c2d12">onClick()</text>
+  <rect x="747" y="471" width="180" height="30" rx="5" fill="#ffffff" stroke="#fdba74" />
+  <text x="837" y="491" text-anchor="middle" font-size="12.5" fill="#7c2d12">onLoad()</text>
+  <rect x="747" y="509" width="180" height="30" rx="5" fill="#ffffff" stroke="#fdba74" />
+  <text x="837" y="529" text-anchor="middle" font-size="12.5" fill="#7c2d12">callback1()</text>
+
+  <!-- Arrows -->
+  <!-- Call Stack -> Web APIs -->
+  <line x1="431" y1="200" x2="481" y2="200" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)" />
+  <text x="456" y="178" text-anchor="middle" font-size="11" fill="#374151">llama a setTimeout,</text>
+  <text x="456" y="191" text-anchor="middle" font-size="11" fill="#374151">fetch... (delega)</text>
+
+  <!-- Web APIs -> Macrotask Queue -->
+  <line x1="837" y1="299" x2="837" y2="321" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)" />
+  <text x="852" y="308" text-anchor="start" font-size="11" fill="#374151">cuando termina,</text>
+  <text x="852" y="320" text-anchor="start" font-size="11" fill="#374151">encola</text>
+
+  <!-- Call Stack -> Microtask Queue -->
+  <line x1="446" y1="490" x2="481" y2="490" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)" />
+  <text x="463" y="477" text-anchor="middle" font-size="10.5" fill="#374151">resolve()/</text>
+  <text x="463" y="505" text-anchor="middle" font-size="10.5" fill="#374151">reject()</text>
+
+  <!-- Return path: queues -> Event Loop -> Call Stack -->
+  <line x1="597" y1="657" x2="597" y2="700" stroke="#374151" stroke-width="2.5" />
+  <line x1="837" y1="657" x2="837" y2="700" stroke="#374151" stroke-width="2.5" />
+  <path d="M 837 700 L 340 700" fill="none" stroke="#374151" stroke-width="2.5" />
+  <line x1="340" y1="700" x2="340" y2="659" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)" />
+
+  <!-- Event Loop: loose label + gear icon, not boxed -->
+  <g transform="translate(560,725)">
+    <circle r="13" fill="none" stroke="#4b5563" stroke-width="3" />
+    <circle r="4" fill="#4b5563" />
+    <rect x="-3" y="-20" width="6" height="7" fill="#4b5563" />
+    <rect x="-3" y="13" width="6" height="7" fill="#4b5563" />
+    <rect x="-20" y="-3" width="6" height="7" fill="#4b5563" />
+    <rect x="13" y="-3" width="6" height="7" fill="#4b5563" />
+    <g transform="rotate(45)">
+      <rect x="-3" y="-20" width="6" height="7" fill="#4b5563" />
+      <rect x="-3" y="13" width="6" height="7" fill="#4b5563" />
+      <rect x="-20" y="-3" width="6" height="7" fill="#4b5563" />
+      <rect x="13" y="-3" width="6" height="7" fill="#4b5563" />
+    </g>
+  </g>
+  <text x="590" y="732" text-anchor="start" font-size="17" font-weight="700" fill="#1f2937">Event Loop</text>
+  <text x="720" y="732" text-anchor="start" font-size="11.5" fill="#374151">¿stack vacío? TODO microtask → 1 macrotask</text>
+</svg>
