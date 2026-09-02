@@ -1,0 +1,21 @@
+{
+  "name": "programacion-III-typescript",
+  "private": true,
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build --base /programacion-III/typescript/",
+    "clean:exports": "rm -f pdfs/exports/*.pdf slides-export.pdf *-slides-export.pdf *-export.pdf",
+    "export": "npm run clean:exports && mkdir -p pdfs/exports && slidev export --output pdfs/exports/typescript-slides-export.pdf"
+  },
+  "dependencies": {
+    "@slidev/cli": "52.14.1",
+    "@slidev/theme-bricks": "^0.25.0"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.59.1"
+  },
+  "overrides": {
+    "fuse.js": "7.1.0",
+    "markdown-exit": "1.0.0-beta.9"
+  }
+}

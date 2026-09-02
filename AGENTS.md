@@ -23,9 +23,9 @@ Root level: the landing page (`index.html`/`index.css`/`index.js`), `dev.sh` (lo
 
 The landing page's own filter chips (Unidades / Próximamente / Extra / Deprecado) are the live source of truth for what exists — check `index.html` or the deployed site rather than trusting a stale list here. As of this writing:
 
-- **Built (`data-category="unidad"`)**: Introducción (deck only), Cálculo λ, Clojure, Git & GitHub, JS Funcional, JS Contemporáneo, Asincronismo (deck + docs each, except Introducción).
+- **Built (`data-category="unidad"`)**: Introducción (deck only), Cálculo λ, Clojure, Git & GitHub, JS Funcional, JS Contemporáneo, Asincronismo, TypeScript (deck + docs each, except Introducción). React was built in a parallel feature branch — check `git log`/open PRs if this file is being read from a branch that predates its merge.
 - **Deprecated**: FP — John Backus (deck only, superseded by the Cálculo λ / Clojure / JS Funcional sequence).
-- **Planned (`data-category="proximamente"`, placeholder cards already in the grid)**: TypeScript, React, Node + Express, MongoDB, Pruebas (Testing) — full spec for each in `PLAN-UNIDAD-4.md` section 5.
+- **Planned (`data-category="proximamente"`, placeholder cards already in the grid)**: React, Node + Express, MongoDB, Pruebas (Testing) — full spec for each in `PLAN-UNIDAD-4.md` section 5.
 - **Optional/extra (`data-category="extra"`, placeholder cards already in the grid)**: Next.js, Tailwind CSS, NestJS, React Native con Expo — spec in `PLAN-UNIDAD-4.md` section 7.
 
 ## Local dev workflow
@@ -60,8 +60,10 @@ npm run docs:dev
 | js-funcional | 3036 | 5179 | 4176 |
 | js-contemporaneo | 3037 | 5181 | 4177 |
 | asincronismo | 3038 | 5183 | 4178 |
+| typescript | 3039 | 5185 | 4179 |
+| react | 3040 | 5187 | 4180 |
 
-Index page: `3030`. Next free deck port: `3039`. Next free `-docs/` pair: `5185` / `4179` (docs:dev increments by 2, PRINT_PORT by 1 — they drifted apart early on; always grep the actual `package.json`/`print-pdfs.mjs` files to confirm rather than trusting a table, this one included). `PLAN-UNIDAD-4.md` section 6 has the full reserved table through the rest of the core program.
+Asincronismo, TypeScript and React were built in parallel branches off `main` (not sequentially) — ports were pre-assigned per `PLAN-UNIDAD-4.md` section 6 so they wouldn't collide once merged. Asincronismo and TypeScript are merged/on this branch; React is still a parallel feature branch — check `git log`/open PRs for its status. Index page: `3030`. Next free deck port after React lands: `3041`. Next free `-docs/` pair: `5189` / `4181` (docs:dev increments by 2, PRINT_PORT by 1 — they drifted apart early on; always grep the actual `package.json`/`print-pdfs.mjs` files to confirm rather than trusting a table, this one included). `PLAN-UNIDAD-4.md` section 6 has the full reserved table through the rest of the core program.
 
 ### Regenerating PDFs
 
