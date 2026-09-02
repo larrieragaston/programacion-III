@@ -27,38 +27,6 @@ INSPT - UTN · Ciclo Lectivo 2026
 layout: default
 ---
 
-# TypeScript: JS + una capa de tipos
-
-```ts
-function applyDiscount(price: number, rate: number): number {
-  return price - price * rate
-}
-
-applyDiscount(1000, 0.1)     // ✅ compila
-applyDiscount(1000, '10%')   // ❌ error de compilación, antes de correr nada
-// Argument of type 'string' is not assignable to parameter of type 'number'.
-```
-
-<div class="mt-4 text-sm opacity-80">
-
-TypeScript es un **superset** de JavaScript: todo código JS válido es también código TS válido. Agrega anotaciones de tipo que el compilador (`tsc`) chequea — y después **borra por completo** al generar el JavaScript final. En runtime no queda ni rastro de TypeScript.
-
-</div>
-
-<v-click>
-
-<div class="mt-2 text-sm italic opacity-80">
-
-Por eso "tipado estático": los tipos se verifican en tiempo de **compilación**, no en tiempo de ejecución — el objetivo es adelantar el error al momento de escribir el código, no descubrirlo con un usuario real en producción. ¿Por qué hace falta esto? Veamos qué pasa sin esa capa.
-
-</div>
-
-</v-click>
-
----
-layout: default
----
-
 # El problema que resuelve
 
 ```js
@@ -75,7 +43,17 @@ applyDiscount(1000, '10%')   // => NaN — el error aparece recién en producci�
 
 <div class="mt-4 text-sm opacity-80">
 
-JavaScript es dinámico: no hay que declarar tipos, lo cual da flexibilidad — pero errores tontos como pasar un string donde se esperaba un número recién se descubren **en tiempo de ejecución**, muchas veces lejos de donde ocurrió el error real. Es exactamente el mismo `applyDiscount` de la slide anterior — sin la capa de tipos, nada avisa del error hasta que ya es tarde.
+JavaScript es dinámico: no hay que declarar tipos, lo cual da flexibilidad — pero errores tontos como pasar un string donde se esperaba un número recién se descubren **en tiempo de ejecución**, muchas veces lejos de donde ocurrió el error real. Cuanto más grande el proyecto y más gente toca el mismo código, más cuesta esto: nadie avisa si le pasás mal un argumento, y el editor no puede ayudar con autocompletado porque no sabe qué forma tiene cada valor.
+
+</div>
+
+</v-click>
+
+<v-click>
+
+<div class="mt-2 text-sm italic opacity-80">
+
+¿Y si hubiera una forma de detectar este tipo de error **antes** de ejecutar nada?
 
 </div>
 
@@ -85,31 +63,52 @@ JavaScript es dinámico: no hay que declarar tipos, lo cual da flexibilidad — 
 layout: default
 ---
 
-# Cómo leer un error de compilación
+# ¿Qué es TypeScript?
 
-```ts
-applyDiscount(1000, '10%')
-```
+<div class="text-sm opacity-80 mb-3">
 
-```
-src/index.ts:5:21 - error TS2345: Argument of type 'string' is not
-assignable to parameter of type 'number'.
-
-5 applyDiscount(1000, '10%')
-                      ~~~~~~
-```
-
-<div class="mt-3 text-xs opacity-80">
-
-**`archivo:línea:columna`** — dónde está el problema. **`TS2345`** — el código del error (googleable: buscar "TS2345" lleva directo a la explicación). El mensaje describe qué esperaba TS y qué recibió. El **`~~~~~~`** señala la expresión exacta que lo disparó — no toda la línea.
+TypeScript es un **superset** de JavaScript: todo código JS válido es también código TS válido. Agrega anotaciones de tipo que un compilador (`tsc`) chequea — y después **borra por completo** al generar el JavaScript final, sin dejar rastro en runtime. Por eso "tipado **estático**": los tipos se verifican en tiempo de **compilación**, no de ejecución.
 
 </div>
 
-<div class="mt-3 grid grid-cols-1 gap-1 text-xs">
-<div class="p-2 rounded bg-gray-100"><code>TS2322</code> — un valor no es asignable a ese tipo (lo más común)</div>
-<div class="p-2 rounded bg-gray-100"><code>TS2339</code> — esa propiedad no existe en el tipo (típico de un typo)</div>
-<div class="p-2 rounded bg-gray-100"><code>TS2345</code> — un argumento no coincide con el parámetro esperado</div>
-<div class="p-2 rounded bg-gray-100"><code>TS18048</code> / <code>TS2532</code> — el valor puede ser <code>undefined</code>, hay que comprobarlo antes</div>
+<div class="grid grid-cols-2 gap-4 text-xs">
+<div>
+
+**JavaScript**
+
+```js
+function applyDiscount(price, rate) {
+  return price - price * rate
+}
+
+applyDiscount(1000, '10%')
+// => NaN, recién se nota en runtime
+```
+
+</div>
+<div>
+
+**TypeScript**
+
+```ts
+function applyDiscount(
+  price: number,
+  rate: number
+): number {
+  return price - price * rate
+}
+
+applyDiscount(1000, '10%')
+// ❌ error de compilación
+```
+
+</div>
+</div>
+
+<div class="mt-3 text-xs italic opacity-80 text-center">
+
+Mismo bug, mismo lugar — la diferencia es CUÁNDO se detecta: en TS, mientras se escribe el código; en JS, cuando un usuario real llega a ejecutar esa línea.
+
 </div>
 
 ---
@@ -123,15 +122,17 @@ let productName: string = 'Mouse'
 let price: number = 18000
 let inStock: boolean = true
 
+inStock = 'sí'   // ❌ Type 'string' is not assignable to type 'boolean'
+
 let ids: number[] = [1, 2, 3]          // array de numbers
 let names: Array<string> = ['Mouse']    // misma idea, sintaxis genérica
 
 let point: [number, number] = [10, 20]   // tupla: largo y tipos fijos
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-3 text-sm opacity-80">
 
-`number[]` y `Array<number>` son exactamente lo mismo, dos formas de escribir el mismo tipo. La segunda forma ya es una pista de lo que viene más adelante: los **genéricos**.
+`number[]` y `Array<number>` son exactamente lo mismo, dos formas de escribir el mismo tipo. La segunda forma ya es una pista de lo que viene más adelante: los **genéricos**. En JS puro, la línea de `inStock = 'sí'` no tira ningún error — el valor simplemente cambia de tipo en silencio, y cualquier código que esperaba un `boolean` ahí puede romperse más adelante, sin aviso.
 
 </div>
 
@@ -175,7 +176,7 @@ logStockWarning('Mouse')          // remaining es opcional, se puede omitir
 
 <div class="mt-4 text-sm opacity-80">
 
-Parámetros y retorno se anotan igual que las variables. `rate: number = 0.1` es un parámetro **con valor por defecto**; `remaining?: number` es **opcional** — se puede omitir al llamar la función. `void` indica que la función no devuelve nada útil, como `logStockWarning`, que solo tiene un efecto (un `console.warn`).
+Parámetros y retorno se anotan igual que las variables. `rate: number = 0.1` es un parámetro **con valor por defecto**; `remaining?: number` es **opcional** — se puede omitir al llamar la función. `void` indica que la función no devuelve nada útil, como `logStockWarning`, que solo tiene un efecto (un `console.warn`). En JS puro, llamar a `logStockWarning('Mouse', '5')` con un string en vez de un número no tira ningún error — acá sí, apenas se escribe la línea.
 
 </div>
 
@@ -318,6 +319,20 @@ const mouse: Product = { name: 'Mouse', price: 18000, stock: 5 }
 `interface` define la **forma** de un objeto: qué propiedades tiene y de qué tipo es cada una. Cualquier objeto que "encaje" en esa forma es válido — no hace falta declarar explícitamente que `mouse` "implementa" `Product`, alcanza con que tenga las propiedades correctas (*structural typing*, distinto del *nominal typing* de Java/C#, donde sí hay que declarar la relación explícitamente).
 
 </div>
+
+<v-click>
+
+<div class="mt-2 text-xs opacity-80">
+
+En JS puro, este typo no lo detecta nadie hasta que alguien ejecute `describe(mouse)` y el resultado salga mal:
+
+```js
+const mouse = { name: 'Mouse', pryce: 18000, stock: 5 }   // "pryce", nadie avisa
+```
+
+</div>
+
+</v-click>
 
 ---
 layout: default
@@ -506,19 +521,22 @@ layout: center
 layout: default
 ---
 
-# El genérico que ya usaban
+# ¿Qué es un genérico?
 
 ```ts
-let ids: number[]        // "array de numbers"
-let ids: Array<number>   // mismo tipo — Array es un genérico, number es su parámetro
+function identity<T>(value: T): T {
+  return value
+}
 
-let names: Array<string>
-let flags: Array<boolean>
+identity<number>(42)        // T = number  → devuelve 42
+identity<string>('hola')    // T = string  → devuelve 'hola'
+
+identity<number>('hola')    // ❌ Argument of type 'string' is not assignable to parameter of type 'number'
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-3 text-sm opacity-80">
 
-Un **genérico** es un tipo que recibe otro tipo como parámetro — `Array<T>` no es un tipo fijo, es una plantilla: `Array<number>`, `Array<string>` y `Array<boolean>` son cada uno un tipo distinto, generado a partir de la misma plantilla `Array<T>`. Ya lo venían usando en la slide de tipos básicos, sin el nombre.
+Un **genérico** es un tipo que recibe otro tipo como parámetro — igual que un parámetro común, pero en vez de un valor se pasa un tipo. `<T>` declara esa "variable de tipo": se completa en cada llamada (`T = number`, `T = string`, ...), y TypeScript chequea que el argumento realmente coincida con lo que se pidió. Sin nombrarlo, ya lo venían usando: `Array<T>` y `Promise<T>` son genéricos — vuelven en la próxima slide.
 
 </div>
 
@@ -526,21 +544,53 @@ Un **genérico** es un tipo que recibe otro tipo como parámetro — `Array<T>` 
 layout: default
 ---
 
-# El genérico de Asincronismo: `Promise<T>`
+# Genéricos en objetos: `interface<T>`
 
 ```ts
+interface ApiResponse<T> {
+  data: T
+  status: number
+}
+
+const productResponse: ApiResponse<Product> = {
+  data: { name: 'Mouse', price: 18000, stock: 5 },
+  status: 200,
+}
+
+const listResponse: ApiResponse<Product[]> = {
+  data: [{ name: 'Mouse', price: 18000, stock: 5 }],
+  status: 200,
+}
+```
+
+<div class="mt-3 text-sm opacity-80">
+
+La misma idea aplicada a un objeto en vez de a una función: `ApiResponse<T>` es una plantilla, no un tipo cerrado — `data` va a tener la forma de lo que sea `T` en cada uso. `ApiResponse<Product>` y `ApiResponse<Product[]>` son dos tipos distintos, generados a partir de la misma interfaz genérica, sin escribirla dos veces.
+
+</div>
+
+---
+layout: default
+---
+
+# Ya los venían usando: `Array<T>` y `Promise<T>`
+
+```ts
+let ids: number[]        // "array de numbers"
+let ids: Array<number>   // mismo tipo — azúcar sintáctico de lo mismo
+
 async function fetchProduct(id: number): Promise<Product> {
   const res = await fetch(`/api/products/${id}`)
   return res.json()
 }
 
 const mouse = await fetchProduct(1)
-mouse.price   // TS sabe que esto es un number — sin castear nada a mano
+mouse.price   // TS sabe que es number, sin castear nada a mano
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-3 text-sm opacity-80">
 
-Toda función `async` devuelve una `Promise` — en TypeScript, se tipa **qué** va a resolver esa promesa: `Promise<Product>` significa "una promesa que, cuando se resuelve, entrega un `Product`". Es la misma idea de <code>Array&lt;T&gt;</code> aplicada a Promises — el genérico que vieron en Asincronismo sin nombrarlo todavía.
+Mismo patrón que `identity<T>` y `ApiResponse<T>`: una plantilla (`Array<T>`, `Promise<T>`) con un tipo concreto adentro. `Array<number>` es "un array donde `T = number`"; `Promise<Product>` es "una promesa que, cuando se resuelve, entrega un `Product`" — el genérico que vieron en Asincronismo, ahora con nombre y sabiendo por qué funciona así.
 
 </div>
 
@@ -611,14 +661,14 @@ interface Product {
 type ProductPreview = Pick<Product, 'name' | 'price'>   // solo esas dos props
 type ProductUpdate = Partial<Product>                     // todas las props, opcionales
 type ProductWithoutStock = Omit<Product, 'stock'>         // todas menos esa
-
+type ProductCatalog = Record<string, Product>             // diccionario: clave → Product
 function updateProduct(id: number, changes: ProductUpdate) { /* ... */ }
 updateProduct(1, { price: 15000 })   // ✅ no hace falta pasar el objeto completo
 ```
 
-<div class="mt-3 text-sm opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-`Pick`, `Partial` y `Omit` son **genéricos que ya vienen incluidos** en TypeScript — toman un tipo existente y devuelven una versión transformada, sin reescribirlo a mano. Se usan todo el tiempo en proyectos reales (por ejemplo, para tipar el cuerpo de un `PATCH` HTTP, donde solo llegan los campos que cambian) — van a volver a aparecer en lo que viene (React, Node). Mención rápida de un cuarto: `Record<K, V>` construye un tipo objeto con claves `K` y valores `V`, útil para diccionarios (`Record<string, Product>`).
+`Pick`, `Partial`, `Omit` y `Record` son **genéricos ya incluidos** en TS: toman un tipo y devuelven una versión transformada. Útiles para tipar un `PATCH` HTTP o un diccionario — van a volver a aparecer en React y Node.
 
 </div>
 
@@ -626,7 +676,26 @@ updateProduct(1, { price: 15000 })   // ✅ no hace falta pasar el objeto comple
 layout: center
 ---
 
-# Configurar un proyecto TS
+# Configurar y correr un proyecto TS
+
+---
+layout: default
+---
+
+# Instalar TypeScript
+
+```bash
+npm install --save-dev typescript   # instalación local al proyecto (recomendado)
+npm install --save-dev ts-node       # para correr .ts directo, sin compilar a mano
+
+npx tsc --version    # confirma que quedó instalado: Version 5.x.x
+```
+
+<div class="mt-4 text-sm opacity-80">
+
+TypeScript no viene instalado por default: es un paquete de npm como cualquier otro. Se instala como **`devDependency`** — no hace falta en producción, porque el JavaScript ya compilado no lo necesita para correr. `npm install -g typescript` también existe (instalación global, disponible en toda la máquina), pero atarlo al proyecto asegura que todo el equipo compile con la misma versión.
+
+</div>
 
 ---
 layout: default
@@ -687,19 +756,83 @@ layout: default
 layout: default
 ---
 
+# Un proyecto TS simple: scaffolding
+
+```
+mi-proyecto/
+├── package.json
+├── tsconfig.json
+├── src/
+│   └── index.ts
+└── dist/          <- generado por tsc, no se versiona (.gitignore)
+```
+
+```ts
+// src/index.ts
+function applyDiscount(price: number, rate: number): number {
+  return price - price * rate
+}
+
+console.log(applyDiscount(1000, 0.1))
+```
+
+<div class="mt-3 text-sm opacity-80">
+
+Nada especial: un proyecto TS es un proyecto Node común, con un `tsconfig.json` al lado del `package.json` y el código fuente separado en `src/`. `dist/` (o el nombre que diga `outDir`) es **generado** por el compilador — se agrega a `.gitignore`, igual que `node_modules/`, porque se puede reconstruir en cualquier momento con `tsc`.
+
+</div>
+
+---
+layout: default
+---
+
 # Correr un proyecto TS
 
 ```bash
-npx tsc              # compila una vez, según tsconfig.json
-npx tsc --watch       # recompila automáticamente en cada cambio
+npx tsc                    # compila src/ → dist/, según tsconfig.json
+node dist/index.js          # => 900
 
-npx ts-node src/index.ts   # compila y ejecuta en un solo paso, sin generar .js
+npx tsc --watch             # recompila automáticamente en cada cambio
+
+npx ts-node src/index.ts    # compila y ejecuta en un solo paso, sin generar dist/
+                             # => 900
 ```
 
 <div class="mt-4 text-sm opacity-80">
 
-Dos flujos habituales: **compilar y correr** (`tsc` genera el `.js` en `outDir`, después se corre con `node`) o **correr directo** con `ts-node`, que compila en memoria sobre la marcha — más cómodo mientras se desarrolla, no pensado para producción.
+Dos flujos habituales, sobre el proyecto de la slide anterior: **compilar y correr** (`tsc` genera el `.js` en `outDir`, después se corre con `node`, como cualquier script) o **correr directo** con `ts-node`, que compila en memoria sobre la marcha — más cómodo mientras se desarrolla, no pensado para producción.
 
+</div>
+
+---
+layout: default
+---
+
+# Cómo leer un error de compilación
+
+```ts
+applyDiscount(1000, '10%')
+```
+
+```
+src/index.ts:5:21 - error TS2345: Argument of type 'string' is not
+assignable to parameter of type 'number'.
+
+5 applyDiscount(1000, '10%')
+                      ~~~~~~
+```
+
+<div class="mt-3 text-xs opacity-80">
+
+**`archivo:línea:columna`** — dónde está el problema. **`TS2345`** — el código del error (googleable: buscar "TS2345" lleva directo a la explicación). El mensaje describe qué esperaba TS y qué recibió. El **`~~~~~~`** señala la expresión exacta que lo disparó — no toda la línea.
+
+</div>
+
+<div class="mt-3 grid grid-cols-1 gap-1 text-xs">
+<div class="p-2 rounded bg-gray-100"><code>TS2322</code> — un valor no es asignable a ese tipo (lo más común)</div>
+<div class="p-2 rounded bg-gray-100"><code>TS2339</code> — esa propiedad no existe en el tipo (típico de un typo)</div>
+<div class="p-2 rounded bg-gray-100"><code>TS2345</code> — un argumento no coincide con el parámetro esperado</div>
+<div class="p-2 rounded bg-gray-100"><code>TS18048</code> / <code>TS2532</code> — el valor puede ser <code>undefined</code>, hay que comprobarlo antes</div>
 </div>
 
 ---
@@ -751,10 +884,12 @@ layout: default
 
 - [typescriptlang.org — Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) — documentación oficial, completa y bien organizada
 - [typescriptlang.org — Playground](https://www.typescriptlang.org/play) — probar TS en el navegador, sin instalar nada, útil para demos en vivo
-- [typescriptlang.org — TS for JS Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html) — resumen rápido pensado para quien ya sabe JS
 - [typescriptlang.org — TSConfig Reference](https://www.typescriptlang.org/tsconfig) — todas las opciones de `tsconfig.json`, explicadas una por una
 - [typescriptlang.org — Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html) — referencia de `Partial`, `Pick`, `Omit`, `Record` y el resto
-- [typescriptlang.org — Declaration Merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html) — referencia oficial sobre la fusión de interfaces
-- [totaltypescript.com](https://www.totaltypescript.com/) — artículos y ejercicios gratuitos de nivel intermedio/avanzado
+- [totaltypescript.com](https://www.totaltypescript.com/) — artículos y ejercicios gratuitos de nivel intermedio/avanzado, de Matt Pocock
+- [freeCodeCamp — Learn TypeScript](https://www.freecodecamp.org/news/learn-typescript-beginners-guide/) — curso introductorio gratuito, con proyecto práctico
+- [Google TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) — convenciones reales de un equipo grande, útil para ver cómo se usa TS "en serio"
+- [type-challenges](https://github.com/type-challenges/type-challenges) — ejercicios de la comunidad para practicar el sistema de tipos, de básico a muy avanzado
+- [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) — el repositorio de tipos (`@types/...`) para librerías JS que no traen los suyos
 
 </div>
