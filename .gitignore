@@ -11,6 +11,8 @@ js-funcional-docs/docs/.vitepress/dist
 js-funcional-docs/docs/.vitepress/cache
 js-contemporaneo-docs/docs/.vitepress/dist
 js-contemporaneo-docs/docs/.vitepress/cache
+asincronismo-docs/docs/.vitepress/dist
+asincronismo-docs/docs/.vitepress/cache
 typescript-docs/docs/.vitepress/dist
 typescript-docs/docs/.vitepress/cache
 # Generated from Markdown (npm run docs:pdf)
@@ -19,6 +21,7 @@ clojure-docs/docs/public/pdfs/*.pdf
 git-github-docs/docs/public/pdfs/*.pdf
 js-funcional-docs/docs/public/pdfs/*.pdf
 js-contemporaneo-docs/docs/public/pdfs/*.pdf
+asincronismo-docs/docs/public/pdfs/*.pdf
 typescript-docs/docs/public/pdfs/*.pdf
 lambda-calculus/public/pdfs/originales/*.pdf
 lambda-calculus/pdfs/originales/*.pdf
@@ -30,6 +33,8 @@ js-funcional/public/pdfs/originales/*.pdf
 js-funcional/pdfs/originales/*.pdf
 js-contemporaneo/public/pdfs/originales/*.pdf
 js-contemporaneo/pdfs/originales/*.pdf
+asincronismo/public/pdfs/originales/*.pdf
+asincronismo/pdfs/originales/*.pdf
 typescript/public/pdfs/originales/*.pdf
 typescript/pdfs/originales/*.pdf
 **/pdfs/exports/*.pdf
