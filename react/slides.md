@@ -111,67 +111,32 @@ Fuente: [State of JS 2025](https://2025.stateofjs.com/en-US/libraries/front-end-
 layout: default
 ---
 
-# Adopción en proyectos nuevos (2026)
+# Adopción real: % de sitios web
 
-<div class="flex rounded-lg overflow-hidden mt-10 text-sm font-bold" style="height: 70px">
-<div class="bg-blue-400 flex items-center justify-center text-white" style="width: 60%">React 60%</div>
-<div class="bg-red-400 flex items-center justify-center text-white" style="width: 15%">Vue 15%</div>
-<div class="bg-yellow-400 flex items-center justify-center" style="width: 12%">Angular 12%</div>
-<div class="bg-gray-300 flex items-center justify-center" style="width: 13%">Otros 13%</div>
+<div class="space-y-3 text-sm mt-8">
+<div class="flex items-center gap-3">
+<div class="w-20 font-bold text-right">React</div>
+<div class="bg-blue-400 rounded h-8 flex items-center px-2 text-white font-bold" style="width: 80%">6.1%</div>
 </div>
-
-<div class="mt-2 text-xs opacity-60 text-center">
-
-"Otros" agrupa Svelte, Solid, Preact y el resto de las opciones.
-
+<div class="flex items-center gap-3">
+<div class="w-20 font-bold text-right">Vue</div>
+<div class="bg-red-400 rounded h-8 flex items-center px-2 text-white font-bold" style="width: 8%">0.6%</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-20 font-bold text-right">Angular</div>
+<div class="bg-yellow-400 rounded h-8 flex items-center px-2 font-bold" style="width: 3%">0.2%</div>
+</div>
 </div>
 
 <div class="mt-6 text-sm opacity-80">
 
-Un dato distinto al de la tabla anterior: no es "cuánta gente ya sabe usarlo" (encuesta) ni "cuántas estrellas tiene en GitHub" (repositorio) — es qué elige la gente **hoy**, al arrancar un proyecto desde cero. React se lleva más de la mitad de los proyectos nuevos.
+Medido sobre **todos los sitios que W3Techs releva** — la mayoría son webs viejas, estáticas o hechas con un CMS sin ningún framework de este tipo, por eso los números absolutos parecen chicos. Aun así, entre estos tres, la diferencia es contundente: React aparece **10 veces más** que Vue, y **30 veces más** que Angular.
 
 </div>
 
 <div class="mt-2 text-xs italic opacity-60">
 
-Fuente: estimación de la industria (no una encuesta formal como State of JS) — cifras aproximadas.
-
-</div>
-
----
-layout: default
----
-
-# Uso y satisfacción, lado a lado
-
-<div class="grid grid-cols-2 gap-2 mt-2 text-xs">
-<div>
-
-```mermaid
-xychart-beta
-    title "% de uso"
-    x-axis [React, Vue, Angular, Svelte, Solid]
-    y-axis "% de encuestados" 0 --> 100
-    bar [85, 52, 48, 27, 10]
-```
-
-</div>
-<div>
-
-```mermaid
-xychart-beta
-    title "% de satisfacción"
-    x-axis [React, Vue, Angular, Svelte, Solid]
-    y-axis "% satisfecho/a" 0 --> 100
-    bar [72, 84, 48, 86, 90]
-```
-
-</div>
-</div>
-
-<div class="mt-2 text-xs italic opacity-60 text-center">
-
-Fuente: [State of JS 2025](https://2025.stateofjs.com/en-US/libraries/front-end-frameworks/).
+Fuente: [W3Techs — JavaScript Library Usage](https://w3techs.com/technologies/overview/javascript_library), septiembre 2026 — medición directa sobre sitios reales, no una encuesta.
 
 </div>
 
@@ -262,33 +227,42 @@ layout: default
 
 # Así se ve en una pantalla real
 
-<div class="border-2 border-red-400 rounded-lg p-2 text-xs mt-2">
-<div class="font-bold text-red-500 mb-1">① Header</div>
-<div class="flex justify-between items-center bg-gray-50 p-1 rounded">
+<div class="border-2 border-red-400 rounded-lg p-1 text-xs mt-1 flex items-center gap-2">
+<span class="font-bold text-red-500">① Header</span>
 <span>Mi Tienda</span>
-<div class="border-2 border-pink-400 rounded px-2 text-pink-600 font-bold">② UserMenu: Ada ▾</div>
-<span>🛒 Carrito</span>
+<span class="border-2 border-pink-400 rounded px-1 text-pink-600 font-bold">② UserMenu: Ada ▾</span>
+<span>🛒</span>
+</div>
+
+<div class="flex gap-1 mt-1 text-xs">
+<div class="border-2 border-green-400 rounded-lg p-1 w-1/4">
+<div class="font-bold text-green-600">③ Sidebar</div>
+<div class="border-2 border-teal-400 rounded p-1 mt-1 text-teal-600 font-bold">
+④ CategoryList
+<div class="border border-cyan-500 rounded px-1 mt-1 text-cyan-700 font-normal">⑧ Category</div>
+<div class="border border-cyan-500 rounded px-1 mt-1 text-cyan-700 font-normal">⑧ Category</div>
+<div class="border border-cyan-500 rounded px-1 mt-1 text-cyan-700 font-normal">⑧ Category</div>
+</div>
+</div>
+<div class="border-2 border-blue-400 rounded-lg p-1 flex-1">
+<div class="font-bold text-blue-600">⑤ ProductGrid</div>
+<div class="grid grid-cols-3 gap-1 mt-1">
+<div class="border-2 border-purple-400 rounded text-purple-600 font-bold text-center py-1">⑥ ProductCard</div>
+<div class="border-2 border-purple-400 rounded text-purple-600 font-bold text-center py-1">⑥ ProductCard</div>
+<div class="border-2 border-purple-400 rounded text-purple-600 font-bold text-center py-1">⑥ ProductCard</div>
+<div class="border-2 border-purple-400 rounded text-purple-600 font-bold text-center py-1">⑥ ProductCard</div>
+<div class="border-2 border-purple-400 rounded text-purple-600 font-bold text-center py-1">⑥ ProductCard</div>
+<div class="border-2 border-purple-400 rounded text-purple-600 font-bold text-center py-1">⑥ ProductCard</div>
+<div class="border-2 border-purple-400 rounded text-purple-600 font-bold text-center py-1">⑥ ProductCard</div>
+<div class="border-2 border-purple-400 rounded text-purple-600 font-bold text-center py-1">⑥ ProductCard</div>
+<div class="border-2 border-purple-400 rounded text-purple-600 font-bold text-center py-1">⑥ ProductCard</div>
+</div>
 </div>
 </div>
 
-<div class="flex gap-2 mt-2 text-xs">
-<div class="border-2 border-green-400 rounded-lg p-2 w-1/4">
-<div class="font-bold text-green-600 mb-1">③ Sidebar</div>
-<div class="border-2 border-teal-400 rounded p-1 text-teal-600 font-bold text-center">④ CategoryList</div>
-</div>
-<div class="border-2 border-blue-400 rounded-lg p-2 flex-1">
-<div class="font-bold text-blue-600 mb-1">⑤ ProductGrid</div>
-<div class="grid grid-cols-3 gap-1">
-<div class="border-2 border-purple-400 rounded p-1 text-purple-600 font-bold text-center">⑥ ProductCard</div>
-<div class="border-2 border-purple-400 rounded p-1 text-purple-600 font-bold text-center">⑥ ProductCard</div>
-<div class="border-2 border-purple-400 rounded p-1 text-purple-600 font-bold text-center">⑥ ProductCard</div>
-</div>
-</div>
-</div>
-
-<div class="border-2 border-orange-400 rounded-lg p-2 mt-2 text-xs">
-<div class="font-bold text-orange-600 mb-1">⑦ Footer</div>
-<div class="bg-gray-50 p-1 rounded">© 2026 Mi Tienda · Contacto · Términos</div>
+<div class="border-2 border-orange-400 rounded-lg p-1 mt-1 text-xs flex items-center gap-2">
+<span class="font-bold text-orange-600">⑦ Footer</span>
+<span>© 2026 Mi Tienda · Contacto · Términos</span>
 </div>
 
 ---
@@ -797,14 +771,12 @@ layout: default
 function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
-
   useEffect(() => {
-    async function loadProducts() {
+    (async () => {
       const res = await fetch('/api/products')
       setProducts(await res.json())
       setLoading(false)
-    }
-    loadProducts()
+    })()
   }, [])   // [] — solo al montar el componente
 
   if (loading) return <p>Cargando...</p>
@@ -812,9 +784,9 @@ function ProductList() {
 }
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-2 text-sm opacity-80">
 
-El mismo `async`/`await` de Asincronismo, ahora disparado desde `useEffect` con dependencias `[]` — "buscá los productos una vez, apenas se monta el componente". El estado `loading` maneja el intermedio entre "todavía no llegó la respuesta" y "ya se puede mostrar algo" — un patrón que va a reaparecer todo el tiempo al conectar con una API real (Node + Express, más adelante en la unidad).
+El mismo `async`/`await` de Asincronismo, disparado desde `useEffect` con `[]` — corre una vez, al montar. `loading` cubre el intermedio entre "no llegó" y "ya se puede mostrar", un patrón que reaparece con cualquier API real.
 
 </div>
 
@@ -828,17 +800,13 @@ layout: center
 layout: default
 ---
 
-# `useContext`: estado global sin prop drilling
+# `useContext`: sin prop drilling
 
 ```tsx
 const UserContext = createContext<string | null>(null)
 function App() {
   const [user] = useState('Ada')
-  return (
-    <UserContext.Provider value={user}>
-      <Toolbar />
-    </UserContext.Provider>
-  )
+  return <UserContext.Provider value={user}><Toolbar /></UserContext.Provider>
 }
 function Toolbar() {
   return <UserGreeting />   // no recibe "user" como prop
@@ -849,9 +817,9 @@ function UserGreeting() {
 }
 ```
 
-<div class="mt-3 text-xs opacity-80">
+<div class="mt-1 text-xs opacity-80">
 
-Sin `useContext`, `user` tendría que pasarse como prop a través de `Toolbar`, aunque no lo use — solo para que llegue a `UserGreeting` (*prop drilling*). Un `Context.Provider` publica un valor que cualquier descendiente lee directo con `useContext`, sin importar el anidamiento.
+Sin `useContext`, `user` tendría que pasarse como prop a través de `Toolbar`, aunque no lo use, solo para llegar a `UserGreeting` (*prop drilling*). Un `Context.Provider` publica un valor que cualquier descendiente lee directo, sin importar el anidamiento.
 
 </div>
 
@@ -916,7 +884,7 @@ Los dos resuelven el mismo problema — evitar recalcular algo caro (o recrear u
 layout: default
 ---
 
-# `useReducer`: estado complejo con reducers
+# `useReducer`: estado complejo
 
 ```tsx
 type Action = { type: 'add'; name: string } | { type: 'clear' }
@@ -928,11 +896,8 @@ function cartReducer(state: string[], action: Action): string[] {
 }
 function Cart() {
   const [items, dispatch] = useReducer(cartReducer, [])
-  return (
-    <button onClick={() => dispatch({ type: 'add', name: 'Mouse' })}>
-      Agregar ({items.length})
-    </button>
-  )
+  const add = () => dispatch({ type: 'add', name: 'Mouse' })
+  return <button onClick={add}>Agregar ({items.length})</button>
 }
 ```
 
@@ -1056,27 +1021,28 @@ Ninguna de estas carpetas la exige React — es una convención de organización
 layout: default
 ---
 
-# Manos a la obra: un catálogo con filtro
+# Manos a la obra: lo más simple
 
-```tsx
-function App() {
-  const [showAvailable, setShowAvailable] = useState(false)
-  const filtered = showAvailable ? products.filter((p) => p.stock > 0) : products
-  return (
-    <>
-      <h1>Catálogo</h1>
-      <button onClick={() => setShowAvailable(!showAvailable)}>
-        {showAvailable ? 'Ver todos' : 'Solo con stock'}
-      </button>
-      <ul>{filtered.map((p) => <li key={p.name}>{p.name} — ${p.price}</li>)}</ul>
-    </>
-  )
-}
-```
+<div class="border-2 border-gray-300 rounded-lg overflow-hidden mt-6 max-w-lg mx-auto">
+<div class="bg-gray-100 px-3 py-1.5 flex gap-1.5 items-center">
+<div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+<div class="ml-2 text-xs text-gray-500 bg-white rounded px-2 py-0.5">localhost:5173</div>
+</div>
+<div class="p-4 text-sm">
+<div class="font-bold text-base mb-2">Catálogo</div>
+<div class="space-y-1">
+<div>Mouse — $18.000</div>
+<div>Teclado — $25.000</div>
+<div>Monitor — $80.000</div>
+</div>
+</div>
+</div>
 
-<div class="mt-1 text-xs opacity-80">
+<div class="mt-4 text-sm opacity-80 text-center">
 
-Nada nuevo — es todo lo visto hasta ahora, armado en un componente real.
+Un componente que recibe una lista de productos y la muestra — nada más. Alcanza con renderizado de listas y `key`.
 
 </div>
 
@@ -1084,14 +1050,60 @@ Nada nuevo — es todo lo visto hasta ahora, armado en un componente real.
 layout: default
 ---
 
-# A dónde va esto
+# Sumamos un filtro
 
-- De un catálogo con un filtro simple a una pantalla con **rutas** (una URL por producto), **parámetros** (`/products/:id`), un **formulario** para editar, y una **tabla** con acciones — todo lo que viene en lo que resta de este módulo.
-- Cada pieza nueva (router, formularios, una librería de componentes) se suma sobre esta misma base, sin tirar nada de lo ya construido.
+<div class="border-2 border-gray-300 rounded-lg overflow-hidden mt-6 max-w-lg mx-auto">
+<div class="bg-gray-100 px-3 py-1.5 flex gap-1.5 items-center">
+<div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+<div class="ml-2 text-xs text-gray-500 bg-white rounded px-2 py-0.5">localhost:5173</div>
+</div>
+<div class="p-4 text-sm">
+<div class="font-bold text-base mb-2">Catálogo</div>
+<div class="border rounded px-2 py-1 inline-block text-xs bg-gray-50 mb-2">Solo con stock</div>
+<div class="space-y-1">
+<div>Mouse — $18.000</div>
+<div>Teclado — $25.000</div>
+</div>
+</div>
+</div>
 
-<div class="mt-6 text-sm italic opacity-80 text-center">
+<div class="mt-4 text-sm opacity-80 text-center">
 
-Así se ve un proyecto real: no se arranca por la versión completa, se llega ahí sumando una pieza genuina por vez.
+Un estado (¿mostrar todo o solo con stock?) y un evento que lo cambia al clickear — el mismo patrón visto en formularios.
+
+</div>
+
+---
+layout: default
+---
+
+# Objetivo final de esta práctica
+
+<div class="border-2 border-gray-300 rounded-lg overflow-hidden mt-4 max-w-lg mx-auto">
+<div class="bg-gray-100 px-3 py-1.5 flex gap-1.5 items-center">
+<div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+<div class="ml-2 text-xs text-gray-500 bg-white rounded px-2 py-0.5">localhost:5173/products</div>
+</div>
+<div class="p-3 text-xs">
+<div class="font-bold text-sm mb-2">Catálogo</div>
+<div class="flex gap-2 mb-2">
+<div class="border rounded px-2 py-1 flex-1 bg-gray-50 text-gray-400">Buscar...</div>
+<div class="border rounded px-2 py-1 bg-gray-50">Solo con stock</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="border rounded p-2"><div class="font-semibold">Mouse</div><div class="text-gray-500">$18.000</div><div class="flex gap-1 mt-1"><div class="border rounded px-1">Editar</div><div class="border rounded px-1">Borrar</div></div></div>
+<div class="border rounded p-2"><div class="font-semibold">Teclado</div><div class="text-gray-500">$25.000</div><div class="flex gap-1 mt-1"><div class="border rounded px-1">Editar</div><div class="border rounded px-1">Borrar</div></div></div>
+</div>
+</div>
+</div>
+
+<div class="mt-3 text-sm opacity-80 text-center">
+
+Búsqueda, grilla y acciones por producto — para llegar acá hace falta ruteo (una pantalla de edición), un formulario, y una librería de componentes. Cada pieza que se agrega en lo que sigue del módulo apunta a construir exactamente esto.
 
 </div>
 
@@ -1105,19 +1117,34 @@ layout: center
 layout: default
 ---
 
-# Instalar y armar las rutas
+# Instalar react-router-dom
+
+<div class="text-sm opacity-80 mb-2">
 
 React, por sí solo, no sabe qué mostrar según la URL — hace falta una librería de ruteo, y `react-router-dom` es la más usada.
+
+</div>
 
 ```bash
 npm install react-router-dom
 ```
 
+<div class="mt-6 text-sm opacity-80">
+
+Expone tres piezas centrales: `<BrowserRouter>` habilita el ruteo basado en la URL del navegador, `<Routes>` agrupa las rutas posibles, y cada `<Route path="..." element={...}/>` mapea una URL puntual a un componente.
+
+</div>
+
+---
+layout: default
+---
+
+# Armar las rutas
+
 ```tsx
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
-import Home from './routes/Home'
-import Products from './routes/Products'
 import Layout from './components/Layout'
+
 function App() {
   return (
     <BrowserRouter>
@@ -1132,9 +1159,9 @@ function App() {
 }
 ```
 
-<div class="mt-2 text-xs opacity-80">
+<div class="mt-1 text-xs opacity-80">
 
-Cada `<Route path="..." element={...}/>` mapea una URL a un componente; envolver a los demás en `<Route element={<Layout/>}>` define un **layout compartido**.
+Envolver a las demás rutas en `<Route element={<Layout/>}>` define un **layout compartido**, con `<Outlet />` marcando dónde va cada página.
 
 </div>
 
@@ -1146,7 +1173,6 @@ layout: default
 
 ```tsx
 import { NavLink, Outlet } from 'react-router-dom'
-
 function Layout() {
   return (
     <div>
@@ -1155,18 +1181,17 @@ function Layout() {
         <NavLink to="/products">Productos</NavLink>
       </nav>
       <main>
-        <Outlet />   {/* acá se renderiza la ruta activa (Home o Products) */}
+        <Outlet />   {/* la ruta activa: Home o Products */}
       </main>
     </div>
   )
 }
-
 export default Layout
 ```
 
-<div class="mt-3 text-sm opacity-80">
+<div class="mt-1 text-sm opacity-80">
 
-`NavLink` navega sin recargar la página (a diferencia de un `<a href>` común) y marca automáticamente el link activo. `<Outlet />` es el "hueco" donde React Router inserta el componente de la ruta hija que corresponda a la URL actual — así el `<nav>` y el resto del layout se escriben una sola vez, en vez de repetirlos en cada página.
+`NavLink` navega sin recargar la página y marca el link activo. `<Outlet />` es el "hueco" donde se inserta la ruta hija según la URL — el resto del layout se escribe una sola vez.
 
 </div>
 
@@ -1289,6 +1314,54 @@ layout: default
 - Del lado del servidor (Node + Express, más adelante en la unidad) el mismo concepto valida un token **antes** de que la request llegue a la lógica real de la ruta — la misma pregunta ("¿tiene permiso?"), resuelta en un lugar central en vez de repetirla en cada endpoint.
 
 ---
+layout: default
+---
+
+# Middleware: cliente y servidor
+
+<div class="grid grid-cols-2 gap-3 text-xs mt-2">
+<div>
+
+**Cliente (React Router)**
+
+```tsx
+function RequireAuth() {
+  return getToken()
+    ? <Outlet />
+    : <Navigate to="/login" />
+}
+```
+
+</div>
+<div>
+
+**Servidor (Express)**
+
+```js
+function requireAuth(req, res, next) {
+  const token = req.headers.authorization
+  if (!isValid(token)) {
+    return res.status(401)
+      .json({ error: 'No autorizado' })
+  }
+  next()   // token OK: sigue
+}
+
+app.get('/products', requireAuth, (req, res) => {
+  res.json(products)
+})
+```
+
+</div>
+</div>
+
+<div class="mt-1 text-xs opacity-80">
+
+Mismo chequeo de permiso, en un solo lugar: si falla, el cliente **redirige** y el servidor **corta la request**, antes de tocar la base de datos.
+
+</div>
+
+---
 layout: center
 ---
 
@@ -1300,7 +1373,11 @@ layout: default
 
 # Prettier: formateo automático
 
+<div class="text-sm opacity-80 mb-2">
+
 Cuando varias personas tocan el mismo código, cada quien indenta y comenta a su manera — Prettier elimina esa fricción formateando todo automáticamente, según reglas configurables una sola vez.
+
+</div>
 
 ```bash
 npm install --save-dev --save-exact prettier
@@ -1327,7 +1404,11 @@ layout: default
 
 # ESLint: errores antes de correr nada
 
+<div class="text-sm opacity-80 mb-2">
+
 Antes de ejecutar una sola línea, conviene detectar problemas reales del código — variables sin usar, un hook llamado condicionalmente, un import roto. Para eso existe ESLint, un analizador estático.
+
+</div>
 
 ```bash
 npm create vite@latest   # ya viene con un .eslintrc básico incluido
@@ -1361,7 +1442,11 @@ layout: default
 
 # Axios: cliente HTTP
 
+<div class="text-sm opacity-80 mb-2">
+
 `fetch` nativo alcanza para pedidos simples, pero un proyecto real necesita algo más cómodo para manejar headers, tokens y errores en cada request — ahí entra Axios, un cliente HTTP basado en Promises.
+
+</div>
 
 ```bash
 npm install axios
@@ -1376,18 +1461,12 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
-// corre antes de CADA request
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
-  if (token) config.headers.Authorization = `Bearer ${token}`
-  return config
-})
 export default api
 ```
 
-<div class="mt-2 text-xs opacity-80">
+<div class="mt-1 text-sm opacity-80">
 
-Los **interceptores** corren antes de cada request o después de cada respuesta — acá, el de request agrega el token automáticamente, sin repetirlo en cada llamada.
+`axios.create()` arma una instancia con config base (URL, headers) reusada en cada pedido — se importa este `api` en vez de `axios` directo. Más adelante se le suman **interceptores** para el token.
 
 </div>
 
@@ -1397,7 +1476,11 @@ layout: default
 
 # Configs con Vite: `.env`
 
+<div class="text-sm opacity-80 mb-2">
+
 Cada ambiente (desarrollo, producción) necesita apuntar a una URL de API distinta, sin hardcodearla en el código ni subir secretos al repositorio — para eso existen las variables de entorno.
+
+</div>
 
 ```bash
 # .env.development
@@ -1480,13 +1563,11 @@ npm install antd
 
 ```tsx
 import { Button, Table } from 'antd'
-
 function ProductTable({ products }: { products: Product[] }) {
   const columns = [
     { title: 'Nombre', dataIndex: 'name' },
     { title: 'Precio', dataIndex: 'price' },
   ]
-
   return (
     <>
       <Table dataSource={products} columns={columns} rowKey="name" />
@@ -1496,9 +1577,64 @@ function ProductTable({ products }: { products: Product[] }) {
 }
 ```
 
+<div class="mt-1 text-sm opacity-80">
+
+`Table` resuelve ordenamiento, paginado y estilos consistentes de una sola vez. `Button type="primary"` ya trae el estilo de marca (definido una vez, en el tema), sin escribir CSS propio.
+
+</div>
+
+---
+layout: default
+---
+
+# Ant Design: formularios
+
+```tsx
+import { Form, Input, Button } from 'antd'
+function ProductForm() {
+  const onFinish = (v: { name: string; price: number }) =>
+    console.log('producto válido:', v)
+  return (
+    <Form onFinish={onFinish} layout="vertical">
+      <Form.Item name="name" label="Nombre" rules={[{ required: true }]}>
+        <Input />
+      </Form.Item>
+      <Form.Item name="price" label="Precio" rules={[{ required: true, type: 'number' }]}>
+        <Input type="number" />
+      </Form.Item>
+      <Button type="primary" htmlType="submit">Guardar</Button>
+    </Form>
+  )
+}
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+Sin `useState` por campo: `Form` maneja el estado, `rules` declara las validaciones, y `onFinish` corre solo si **todo** es válido.
+
+</div>
+
+---
+layout: default
+---
+
+# Ant Design: tema propio con `ConfigProvider`
+
+```tsx
+import { ConfigProvider } from 'antd'
+
+function App() {
+  return (
+    <ConfigProvider theme={{ token: { colorPrimary: '#e11d48' } }}>
+      <ProductTable products={products} />
+    </ConfigProvider>
+  )
+}
+```
+
 <div class="mt-3 text-sm opacity-80">
 
-`Table` resuelve de una sola vez ordenamiento, paginado y estilos consistentes — lo mismo que armar a mano tomaría bastantes slides de este propio módulo. `Button type="primary"` ya viene con el estilo de la marca del proyecto (definido una sola vez, en el tema de Ant Design), sin escribir CSS propio.
+`ConfigProvider` envuelve la app (o una parte) y redefine los `tokens` de diseño de la librería — acá, el color primario. Todo `Button type="primary"`, todo link, todo estado de foco que dependa de ese color cambia de una sola vez, en un solo lugar, en vez de sobreescribir CSS componente por componente.
 
 </div>
 
@@ -1660,6 +1796,60 @@ test('incrementa el contador al hacer click', () => {
 <div class="mt-4 text-sm opacity-80">
 
 `render` monta el componente en un DOM virtual de prueba. `screen.getByRole` busca el botón igual que lo encontraría alguien usando un lector de pantalla — por su rol y su texto, no por un `id` interno. `fireEvent.click` simula la interacción real. El `expect` final verifica lo que **ve** la persona usuaria (el texto "1" en pantalla), no una variable interna del componente.
+
+</div>
+
+---
+layout: default
+---
+
+# Testear un input controlado
+
+```tsx
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { SearchBox } from './SearchBox'
+
+test('filtra al escribir en el buscador', async () => {
+  const user = userEvent.setup()
+  render(<SearchBox />)
+
+  const input = screen.getByPlaceholderText('Buscar producto...')
+  await user.type(input, 'mouse')
+
+  expect(input).toHaveValue('mouse')
+})
+```
+
+<div class="mt-2 text-xs opacity-80">
+
+`userEvent` (en vez de `fireEvent`) simula la interacción **como la haría una persona real** — tecla por tecla, con los eventos intermedios que dispara un navegador de verdad, no solo el evento final. Es la API recomendada hoy para escribir tests nuevos; `fireEvent` sigue existiendo para casos puntuales que `userEvent` no cubre.
+
+</div>
+
+---
+layout: default
+---
+
+# Testear algo asíncrono
+
+```tsx
+import { render, screen } from '@testing-library/react'
+import { ProductList } from './ProductList'
+
+test('muestra los productos después de cargar', async () => {
+  render(<ProductList />)
+
+  expect(screen.getByText('Cargando...')).toBeInTheDocument()
+
+  const item = await screen.findByText('Mouse')   // espera a que aparezca
+  expect(item).toBeInTheDocument()
+})
+```
+
+<div class="mt-2 text-xs opacity-80">
+
+`ProductList` (la del `useEffect` + `fetch`) primero muestra "Cargando..." y después los productos — el test necesita **esperar** ese cambio. `findByText` es la versión asíncrona de `getByText`: reintenta hasta encontrar el elemento (o falla, pasado un timeout), en vez de fallar apenas se ejecuta, antes de que la respuesta llegue.
 
 </div>
 
