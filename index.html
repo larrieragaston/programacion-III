@@ -250,10 +250,31 @@
         </div>
       </div>
 
-      <div class="card" data-category="proximamente" data-pending="true">
-        <span class="badge badge-proximamente">Próximamente</span>
+      <div class="card" data-category="unidad">
         <div class="card-title">React</div>
         <div class="card-desc">Componentes, estado, props y hooks</div>
+        <div class="card-actions">
+          <a class="view-link" href="./react/" data-dev-port="3040">Presentación</a>
+          <a class="view-link" href="./react-docs/" data-dev-port="5187" data-dev-path="/">Material teórico</a>
+          <div class="card-download-menu">
+            <button
+              type="button"
+              class="card-download-menu-trigger"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls="menu-pdf-react"
+              id="menu-pdf-react-btn"
+            >
+              <span class="card-download-menu-label">Descargar</span>
+              <svg class="card-download-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="card-download-menu-panel" id="menu-pdf-react" hidden>
+              <a href="./react/pdfs/exports/react-slides-export.pdf" download target="_blank" rel="noopener noreferrer">Presentación (PDF)</a>
+              <a href="./react/pdfs/originales/react-apunte.pdf" download target="_blank" rel="noopener noreferrer">Apunte teórico</a>
+              <a href="./react/pdfs/originales/react-ejercicios.pdf" download target="_blank" rel="noopener noreferrer">Guía de ejercicios</a>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="card" data-category="proximamente" data-pending="true">
