@@ -29,15 +29,32 @@ layout: default
 
 # ¿Qué es React?
 
-<div class="mt-8 text-lg opacity-90">
+<div class="mt-6 text-xl opacity-90">
 
 React es una **librería** de JavaScript/TypeScript para construir interfaces de usuario.
 
 </div>
 
-<div class="mt-8 text-sm opacity-80">
+<div class="mt-6 text-base opacity-80">
 
-No es un framework completo (a diferencia de Angular): se enfoca únicamente en la capa de vista — cómo se ve la pantalla y cómo se actualiza cuando cambian los datos — y se combina con otras librerías para todo lo demás (ruteo, llamadas HTTP, manejo de formularios...). Ese "combinar piezas" es, de hecho, buena parte de lo que se ve en este módulo.
+No es un framework completo (a diferencia de Angular): se enfoca únicamente en la capa de vista — cómo se ve la pantalla y cómo se actualiza cuando cambian los datos — y se combina con otras librerías para todo lo demás (ruteo, llamadas HTTP, manejo de formularios...). Ese "combinar piezas" es buena parte de lo que se ve en este módulo.
+
+</div>
+
+<div class="grid grid-cols-2 gap-4 mt-6 text-base">
+<div class="p-4 rounded-lg bg-gray-100">Se usa tanto para la web como, con <strong>React Native</strong>, para apps móviles — mismo modelo mental, distinto renderer.</div>
+<div class="p-4 rounded-lg bg-gray-100">No reemplaza HTML/CSS/JS: los combina. JSX (se ve más adelante) es JavaScript con una sintaxis parecida a HTML.</div>
+</div>
+
+```jsx
+function Greeting() {
+  return <h1>Hola, mundo</h1>
+}
+```
+
+<div class="text-sm italic opacity-70 text-center">
+
+Un componente de React: una función que devuelve la interfaz que quiere mostrar.
 
 </div>
 
@@ -57,30 +74,7 @@ layout: default
 
 <div class="mt-4 text-sm italic opacity-80">
 
-Trece años de historia continua es mucho tiempo en el mundo del frontend — la próxima slide muestra qué tan vigente sigue estando.
-
-</div>
-
----
-layout: default
----
-
-# ¿Quién lo usa?
-
-<div class="grid grid-cols-4 gap-3 mt-8 text-sm">
-<div class="p-4 rounded-lg bg-gray-100 text-center font-semibold">Meta / Facebook</div>
-<div class="p-4 rounded-lg bg-gray-100 text-center font-semibold">Instagram</div>
-<div class="p-4 rounded-lg bg-gray-100 text-center font-semibold">Netflix</div>
-<div class="p-4 rounded-lg bg-gray-100 text-center font-semibold">WhatsApp Web</div>
-<div class="p-4 rounded-lg bg-gray-100 text-center font-semibold">Airbnb</div>
-<div class="p-4 rounded-lg bg-gray-100 text-center font-semibold">Uber</div>
-<div class="p-4 rounded-lg bg-gray-100 text-center font-semibold">Discord</div>
-<div class="p-4 rounded-lg bg-gray-100 text-center font-semibold">The New York Times</div>
-</div>
-
-<div class="mt-6 text-sm italic opacity-80 text-center">
-
-Desde redes sociales hasta streaming, e-commerce y medios — el mismo modelo de componentes sirve para interfaces muy distintas entre sí.
+Trece años de historia continua es mucho tiempo en el mundo del frontend.
 
 </div>
 
@@ -90,27 +84,79 @@ layout: default
 
 # Competidores: cómo se compara
 
-<div class="overflow-x-auto mt-4 text-xs">
+<div class="overflow-x-auto mt-3 text-xs">
 
-| | React | Vue | Angular | Svelte |
-|---|---|---|---|---|
-| Lanzamiento | 2013 | 2014 | 2016 (reescritura de AngularJS, 2010) | 2016 |
-| ⭐ GitHub | ~230k | ~210k | ~95k | menor, en crecimiento |
-| Descargas npm/semana | ~28.5M | ~7.2M | ~3.8M | mucho menor |
-| % de uso (State of JS 2025) | **85%** | 52% | 48% | 27% |
-| % satisfacción (State of JS 2025) | 72% | 84% | 48% | **86%** |
+| | React | Vue | Angular | Svelte | Solid |
+|---|---|---|---|---|---|
+| Lanzamiento | 2013 | 2014 | 2016 (AngularJS: 2010) | 2016 | 2018 |
+| ⭐ GitHub | ~230k | ~210k | ~95k | ~85k | ~36k |
+| % de uso (State of JS 2025) | **85%** | 52% | 48% | 27% | 10% |
+| % satisfacción (State of JS 2025) | 72% | 84% | 48% | 86% | **90%+** |
 
 </div>
 
 <div class="mt-2 text-xs opacity-80">
 
-React lidera en adopción real — descargas, empleos, proyectos productivos. Angular es el único **framework completo** de la lista, pesado pero atractivo en proyectos empresariales grandes. Svelte genera la mayor satisfacción entre quienes ya lo usan, aunque lo usa mucha menos gente.
+React lidera en adopción real. Angular es el único **framework completo** de la lista, pesado pero atractivo en proyectos empresariales grandes. Svelte y Solid, con mucha menos gente usándolos, son los que generan mayor satisfacción — Solid lleva **cinco años consecutivos** primero en ese ranking. Otra opción relevante fuera de esta tabla: **Preact**, una reimplementación de la API de React en solo ~3kb, usada cuando el tamaño del bundle es crítico.
 
 </div>
 
 <div class="mt-1 text-xs italic opacity-60">
 
 Fuente: [State of JS 2025](https://2025.stateofjs.com/en-US/libraries/front-end-frameworks/), [npmtrends.com](https://npmtrends.com/angular-vs-react-vs-vue) — principios de 2025/2026.
+
+</div>
+
+---
+layout: default
+---
+
+# Adopción: estrellas en GitHub
+
+```mermaid
+pie showData title Estrellas en GitHub (miles)
+    "React" : 230
+    "Vue" : 210
+    "Angular" : 95
+    "Svelte" : 85
+    "Preact" : 39
+    "Solid" : 36
+```
+
+---
+layout: default
+---
+
+# Uso y satisfacción, lado a lado
+
+<div class="grid grid-cols-2 gap-2 mt-2 text-xs">
+<div>
+
+```mermaid
+xychart-beta
+    title "% de uso"
+    x-axis [React, Vue, Angular, Svelte, Solid]
+    y-axis "% de encuestados" 0 --> 100
+    bar [85, 52, 48, 27, 10]
+```
+
+</div>
+<div>
+
+```mermaid
+xychart-beta
+    title "% de satisfacción"
+    x-axis [React, Vue, Angular, Svelte, Solid]
+    y-axis "% satisfecho/a" 0 --> 100
+    bar [72, 84, 48, 86, 90]
+```
+
+</div>
+</div>
+
+<div class="mt-2 text-xs italic opacity-60 text-center">
+
+Fuente: [State of JS 2025](https://2025.stateofjs.com/en-US/libraries/front-end-frameworks/).
 
 </div>
 
@@ -128,52 +174,54 @@ layout: default
 <div class="p-3 rounded-lg bg-gray-100"><strong>Ecosistema enorme</strong> — se combina con otras librerías para todo lo demás</div>
 </div>
 
-<div class="mt-6 text-sm italic opacity-80 text-center">
-
-Las próximas slides desarrollan cada una.
-
-</div>
-
 ---
 layout: default
 ---
 
 # Por qué declarativo
 
+<div class="grid grid-cols-2 gap-3 mt-2 text-xs">
+<div>
+
+**Imperativo**
+
 ```js
-// Imperativo: hay que describir CÓMO llegar al resultado, paso a paso
-const li = document.createElement('li')
-li.textContent = 'Mouse'
-li.classList.add('product-item')
-document.querySelector('ul').appendChild(li)
+let liked = false
+const btn = document.querySelector('#like-btn')
+btn.addEventListener('click', () => {
+  liked = !liked
+  btn.textContent = liked
+    ? '❤️ Te gusta'
+    : '🤍 Me gusta'
+  btn.classList.toggle('liked', liked)
+})
 ```
-
-```jsx
-// Declarativo: se describe QUÉ se quiere ver, no los pasos para lograrlo
-<ul>
-  <li className="product-item">Mouse</li>
-</ul>
-```
-
-<div class="mt-4 text-sm opacity-80">
-
-Con manipulación directa del DOM (imperativo), cada cambio de estado obliga a escribir a mano los pasos para actualizar la pantalla. React invierte el problema: se describe la UI **en función del estado actual**, y React se encarga de calcular qué cambió y actualizar solo eso.
 
 </div>
+<div>
 
----
-layout: default
----
+**Declarativo**
 
-# El salto de paradigma más grande
+```jsx
+function LikeButton() {
+  const [liked, setLiked] = useState(false)
+  return (
+    <button
+      className={liked ? 'liked' : ''}
+      onClick={() => setLiked(!liked)}
+    >
+      {liked ? '❤️ Te gusta' : '🤍 Me gusta'}
+    </button>
+  )
+}
+```
 
-- Vieron paradigmas imperativos/OO (Java, C) y bases relacionales en los primeros dos años. El salto más grande de esta unidad es el modelo **declarativo, basado en componentes** — y conecta directo con el eje funcional de todo el curso.
-- Un componente de React es, en esencia, **una función pura de `props`/`state` a JSX**: mismos props/state → mismo resultado visual. La idea de "función pura" de JS Funcional vuelve, aplicada a interfaces de usuario.
-- De acá en adelante, todo el código de la unidad se escribe en **TypeScript** — recién visto — empezando por los `props` tipados de cada componente.
+</div>
+</div>
 
-<div class="mt-6 text-sm italic opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-Retomando: en JS Funcional, una función pura devolvía siempre el mismo resultado para los mismos argumentos. React aplica exactamente esa idea a la pantalla — un componente "devuelve" la UI que corresponde a su estado actual.
+Imperativo: una línea más por cada lugar que refleje `liked`, a mano. Declarativo: se define una vez, y React sincroniza la pantalla solo.
 
 </div>
 
@@ -185,11 +233,45 @@ layout: default
 
 - Toda la interfaz se arma combinando piezas reutilizables e independientes: los **componentes**.
 - Cada uno encapsula su propia lógica y su propia porción de pantalla — como una pieza de LEGO que se puede ensamblar con otras para construir una aplicación completa.
-- Se ve en profundidad un poco más adelante, en la sección dedicada a componentes.
+- React no inventó los "componentes" (ya existían en UI de escritorio hace décadas) — lo que instaló como estándar de la industria fue combinarlos con un DOM virtual y un flujo de datos unidireccional.
 
-<div class="mt-6 text-sm italic opacity-80 text-center">
+<div class="mt-4 text-sm italic opacity-80">
 
-React no inventó los "componentes" (la idea ya existía en UI de escritorio hace décadas) — lo que sí instaló como estándar de la industria fue combinarlos con un DOM virtual y un flujo de datos unidireccional, que se ven a continuación.
+Para verlo en código real: cualquier sitio hecho con React se puede inspeccionar con la extensión **React Developer Tools** (Chrome) — muestra el árbol de componentes tal cual está en el código fuente. [react.dev](https://react.dev) es un buen ejemplo para probarlo en vivo.
+
+</div>
+
+---
+layout: default
+---
+
+# Así se ve en una pantalla real
+
+<div class="border-2 border-red-400 rounded-lg p-2 text-xs mt-4">
+<div class="font-bold text-red-500 mb-1">① Header</div>
+<div class="flex justify-between items-center bg-gray-50 p-2 rounded">
+<span>Mi Tienda</span>
+<span>🛒 Carrito</span>
+</div>
+</div>
+
+<div class="flex gap-2 mt-2 text-xs">
+<div class="border-2 border-green-400 rounded-lg p-2 w-1/3">
+<div class="font-bold text-green-600 mb-1">② Sidebar</div>
+<div class="bg-gray-50 p-2 rounded">Categorías...</div>
+</div>
+<div class="border-2 border-blue-400 rounded-lg p-2 flex-1">
+<div class="font-bold text-blue-600 mb-1">③ ProductGrid</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="border-2 border-purple-400 rounded p-2 text-purple-600 font-bold">④ ProductCard</div>
+<div class="border-2 border-purple-400 rounded p-2 text-purple-600 font-bold">④ ProductCard</div>
+</div>
+</div>
+</div>
+
+<div class="mt-4 text-sm italic opacity-80 text-center">
+
+¿Qué componentes identificás en esta pantalla? Marquen en voz alta cada sección numerada.
 
 </div>
 
@@ -216,7 +298,7 @@ html
 
 <div class="mt-4 text-sm opacity-80">
 
-El **DOM** (*Document Object Model*) representa la página como un árbol de nodos — cada etiqueta HTML es un nodo, anidado según cómo esté anidado el HTML. El navegador guarda este árbol en memoria y lo usa para todo: pintar la pantalla, calcular estilos, responder a eventos. Modificarlo directamente (como en el ejemplo imperativo de un par de slides atrás) es una operación relativamente **costosa** — de ahí sale la próxima idea.
+El **DOM** (*Document Object Model*) representa la página como un árbol de nodos — cada etiqueta HTML es un nodo, anidado según cómo esté anidado el HTML. El navegador guarda este árbol en memoria y lo usa para todo: pintar la pantalla, calcular estilos, responder a eventos. Modificarlo directamente (como en el ejemplo imperativo de un par de slides atrás) es una operación relativamente **costosa**.
 
 </div>
 
@@ -248,6 +330,15 @@ layout: default
 
 # Flujo de datos unidireccional
 
+<div class="flex flex-col items-center mt-2">
+<div class="p-2 rounded-lg bg-blue-50 border-2 border-blue-400 font-bold text-xs">Padre</div>
+<div class="flex gap-20 text-xs my-1">
+<div class="text-blue-600">↓ props</div>
+<div class="text-green-600">evento ↑</div>
+</div>
+<div class="p-2 rounded-lg bg-green-50 border-2 border-green-400 font-bold text-xs">Hijo</div>
+</div>
+
 ```tsx
 function ProductCard({ name, onAddToCart }: { name: string; onAddToCart: () => void }) {
   return (
@@ -257,24 +348,17 @@ function ProductCard({ name, onAddToCart }: { name: string; onAddToCart: () => v
     </div>
   )
 }
-
 function ProductList() {
   const handleAdd = () => console.log('agregado al carrito')
   return <ProductCard name="Mouse" onAddToCart={handleAdd} />   {/* dato baja */}
 }
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-1 text-xs opacity-80">
 
-Los **datos bajan**: un componente padre le pasa `props` a sus hijos, nunca al revés. Los **eventos suben**: un hijo no puede modificar el estado de su padre directamente — le avisa a través de una función que el padre le pasó como prop (`onAddToCart`). Esta disciplina (a diferencia de que cualquier parte de la app pueda modificar cualquier dato) es lo que hace que una aplicación grande siga siendo predecible: el estado de algo siempre vive en un solo lugar, y se sabe exactamente quién puede cambiarlo.
+Los **datos bajan** (`props`) y los **eventos suben** (una función que el padre le pasa al hijo). El hijo nunca modifica el estado del padre — así el estado de algo vive en un solo lugar.
 
 </div>
-
----
-layout: center
----
-
-# JSX
 
 ---
 layout: default
@@ -350,40 +434,6 @@ Antes de los Hooks (2019), esto se escribía con clases: `class Greeting extends
 layout: default
 ---
 
-# Armando una pantalla con componentes
-
-<div class="border-2 border-red-400 rounded-lg p-2 text-xs mt-4">
-<div class="font-bold text-red-500 mb-1">① Header</div>
-<div class="flex justify-between items-center bg-gray-50 p-2 rounded">
-<span>Mi Tienda</span>
-<span>🛒 Carrito</span>
-</div>
-</div>
-
-<div class="flex gap-2 mt-2 text-xs">
-<div class="border-2 border-green-400 rounded-lg p-2 w-1/3">
-<div class="font-bold text-green-600 mb-1">② Sidebar</div>
-<div class="bg-gray-50 p-2 rounded">Categorías...</div>
-</div>
-<div class="border-2 border-blue-400 rounded-lg p-2 flex-1">
-<div class="font-bold text-blue-600 mb-1">③ ProductGrid</div>
-<div class="grid grid-cols-2 gap-2">
-<div class="border-2 border-purple-400 rounded p-2 text-purple-600 font-bold">④ ProductCard</div>
-<div class="border-2 border-purple-400 rounded p-2 text-purple-600 font-bold">④ ProductCard</div>
-</div>
-</div>
-</div>
-
-<div class="mt-4 text-sm italic opacity-80 text-center">
-
-¿Qué componentes identificás en esta pantalla? Marquen en voz alta cada sección numerada antes de pasar a la próxima slide.
-
-</div>
-
----
-layout: default
----
-
 # Composición de componentes
 
 ```tsx
@@ -405,7 +455,7 @@ function App() {
 
 <div class="mt-3 text-sm opacity-80">
 
-Los componentes se combinan como funciones que llaman a otras funciones — cada caja numerada de la slide anterior es, literalmente, un componente (`ProductCard` ya se definió un par de slides atrás). Misma idea de composición de JS Funcional (`compose`/`pipe`), ahora aplicada a piezas de interfaz.
+Los componentes se combinan como funciones que llaman a otras funciones — cada caja numerada de la pantalla que vimos antes es, literalmente, un componente. Misma idea de composición de JS Funcional (`compose`/`pipe`), ahora aplicada a piezas de interfaz.
 
 </div>
 
@@ -415,6 +465,19 @@ layout: default
 
 # Props vs. state: la diferencia
 
+<div class="flex gap-3 mt-3 text-xs">
+<div class="flex-1 p-3 rounded-lg bg-blue-50 border-2 border-blue-400">
+<div class="font-bold text-blue-600 mb-1">props</div>
+<div>Vienen de afuera (el padre) ⬇</div>
+<div>Son de solo lectura</div>
+</div>
+<div class="flex-1 p-3 rounded-lg bg-purple-50 border-2 border-purple-400">
+<div class="font-bold text-purple-600 mb-1">state</div>
+<div>Vive adentro del componente</div>
+<div>Se modifica con su setter ♻️</div>
+</div>
+</div>
+
 ```tsx
 interface CounterProps {
   step: number   // prop: lo decide quien usa el componente, de afuera
@@ -422,18 +485,15 @@ interface CounterProps {
 
 function Counter({ step }: CounterProps) {
   const [count, setCount] = useState(0)   // state: lo maneja el componente, por dentro
-
-  return (
-    <button onClick={() => setCount(count + step)}>{count}</button>
-  )
+  return <button onClick={() => setCount(count + step)}>{count}</button>
 }
 
 <Counter step={5} />   // el padre elige step; Counter elige y controla count
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-**`props`**: datos que un componente **recibe** de su padre — de solo lectura, el componente no los puede modificar (si necesita cambiarlos, se lo pide al padre vía una función, como en el flujo unidireccional). **`state`**: datos que un componente **posee y administra** internamente, con `useState` — privados a ese componente, y su cambio dispara un re-render. La confusión más común es intentar reasignar un prop directamente: si algo puede cambiar por acción del propio componente, es `state`; si lo define quien lo usa desde afuera, es `props`.
+Si algo puede cambiar por acción del propio componente, es `state`; si lo define quien lo usa desde afuera, es `props` — de solo lectura, no se puede reasignar.
 
 </div>
 
@@ -553,7 +613,7 @@ function ProductList({ products }: { products: Product[] }) {
 
 <div class="mt-4 text-sm opacity-80">
 
-Otra conexión directa con JS Funcional: renderizar una lista es `map`-ear un array de datos a un array de elementos JSX. La única pieza nueva es `key`, en la próxima slide.
+Otra conexión directa con JS Funcional: renderizar una lista es `map`-ear un array de datos a un array de elementos JSX. La única pieza nueva es `key`.
 
 </div>
 
@@ -971,9 +1031,9 @@ layout: default
 ```
 src/
 ├── components/   # piezas de UI reutilizables (ProductCard, Header...)
-├── routes/       # una página/vista por ruta (ver React Router, próxima sección)
+├── routes/       # una página/vista por ruta (con React Router)
 ├── hooks/        # custom hooks propios (useFetch, useAuth...)
-├── services/     # llamadas a APIs externas (axios, próxima sección)
+├── services/     # llamadas a APIs externas (con Axios)
 ├── constants/    # valores fijos compartidos
 ├── configs/      # configuración de librerías (axios, i18n...)
 ├── styles/       # CSS/estilos globales
@@ -1000,6 +1060,8 @@ layout: default
 
 # Instalar y armar las rutas
 
+React, por sí solo, no sabe qué mostrar según la URL — hace falta una librería de ruteo, y `react-router-dom` es la más usada.
+
 ```bash
 npm install react-router-dom
 ```
@@ -1023,9 +1085,9 @@ function App() {
 }
 ```
 
-<div class="mt-3 text-xs opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-React, por sí solo, no sabe qué mostrar según la URL — para eso existe `react-router-dom`. Cada `<Route path="..." element={...}/>` mapea una URL a un componente; envolver a los demás en `<Route element={<Layout/>}>` define un **layout compartido** (próxima slide).
+Cada `<Route path="..." element={...}/>` mapea una URL a un componente; envolver a los demás en `<Route element={<Layout/>}>` define un **layout compartido**.
 
 </div>
 
@@ -1073,6 +1135,8 @@ layout: default
 
 # Prettier: formateo automático
 
+Cuando varias personas tocan el mismo código, cada quien indenta y comenta a su manera — Prettier elimina esa fricción formateando todo automáticamente, según reglas configurables una sola vez.
+
 ```bash
 npm install --save-dev --save-exact prettier
 ```
@@ -1086,9 +1150,9 @@ npm install --save-dev --save-exact prettier
 }
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-Prettier es un **formateador de código**: reacomoda indentación, comillas, punto y coma, saltos de línea, según reglas configurables — para que todo el código del equipo luzca igual, sin discutirlo línea por línea en cada revisión. Se integra con el editor (formatea al guardar) y con `git` (un *pre-commit hook* que lo corre antes de cada commit).
+Se integra con el editor (formatea al guardar) y con `git` (un *pre-commit hook* que lo corre antes de cada commit) — para que el estilo se mantenga consistente sin que nadie tenga que acordarse de revisarlo.
 
 </div>
 
@@ -1097,6 +1161,8 @@ layout: default
 ---
 
 # ESLint: errores antes de correr nada
+
+Antes de ejecutar una sola línea, conviene detectar problemas reales del código — variables sin usar, un hook llamado condicionalmente, un import roto. Para eso existe ESLint, un analizador estático.
 
 ```bash
 npm create vite@latest   # ya viene con un .eslintrc básico incluido
@@ -1112,9 +1178,9 @@ npm create vite@latest   # ya viene con un .eslintrc básico incluido
 }
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-ESLint es un **analizador estático**: lee el código sin ejecutarlo y detecta problemas reales — variables declaradas y nunca usadas, un hook llamado condicionalmente (rompe las reglas de React), una importación que no existe. Un proyecto de Vite ya trae una configuración de ESLint razonable por defecto; se puede extender con más reglas, o integrarlo con Prettier para que no choquen entre sí.
+Un proyecto de Vite ya trae una configuración razonable por defecto; se puede extender con más reglas, o integrarlo con Prettier para que no choquen entre sí.
 
 </div>
 
@@ -1129,6 +1195,8 @@ layout: default
 ---
 
 # Axios: cliente HTTP
+
+`fetch` nativo alcanza para pedidos simples, pero un proyecto real necesita algo más cómodo para manejar headers, tokens y errores en cada request — ahí entra Axios, un cliente HTTP basado en Promises.
 
 ```bash
 npm install axios
@@ -1152,9 +1220,9 @@ api.interceptors.request.use((config) => {
 export default api
 ```
 
-<div class="mt-3 text-xs opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-Axios es un cliente HTTP basado en Promises — la alternativa más usada a `fetch` nativo, con una API más cómoda (JSON automático, interceptores, cancelación de requests). Los **interceptores** corren antes de cada request o después de cada respuesta — acá, el de request agrega el token automáticamente, sin repetirlo en cada llamada.
+Los **interceptores** corren antes de cada request o después de cada respuesta — acá, el de request agrega el token automáticamente, sin repetirlo en cada llamada.
 
 </div>
 
@@ -1163,6 +1231,8 @@ layout: default
 ---
 
 # Configs con Vite: `.env`
+
+Cada ambiente (desarrollo, producción) necesita apuntar a una URL de API distinta, sin hardcodearla en el código ni subir secretos al repositorio — para eso existen las variables de entorno.
 
 ```bash
 # .env.development
@@ -1176,9 +1246,9 @@ VITE_API_URL=https://mi-api.com/
 const api = axios.create({ baseURL: import.meta.env.VITE_API_URL })
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-2 text-xs opacity-80">
 
-Un proyecto Vite lee archivos `.env` de forma **nativa** — no hace falta instalar la librería `dotenv` (útil en un proyecto Node "pelado", sin bundler, pero redundante acá). Solo hay una regla: toda variable que necesite llegar al código del navegador tiene que empezar con el prefijo `VITE_` — es una medida de seguridad, para que Vite nunca exponga por accidente una variable de entorno del sistema que no estaba pensada para ser pública.
+Un proyecto Vite las lee de forma **nativa** — no hace falta instalar `dotenv` (útil en un proyecto Node "pelado", redundante acá). Toda variable que llegue al navegador debe empezar con `VITE_`, una medida de seguridad para no exponer por accidente una variable del sistema que no era pública.
 
 </div>
 
@@ -1200,7 +1270,7 @@ layout: default
 
 <div class="mt-6 text-sm italic opacity-80 text-center">
 
-Nada de esto es gratis: agrega peso al bundle y un estilo visual reconocible — la próxima slide compara las opciones más usadas hoy.
+Nada de esto es gratis: agrega peso al bundle y un estilo visual reconocible.
 
 </div>
 
@@ -1272,6 +1342,31 @@ layout: center
 ---
 
 # Autenticación
+
+---
+layout: default
+---
+
+# Cómo funciona la autenticación con tokens
+
+- Un **token** (normalmente un *JWT*, *JSON Web Token*) es una cadena que certifica "quién sos" sin reenviar la contraseña en cada pedido. Lo genera el **backend**, una sola vez, justo después de un login exitoso.
+- Tiene fecha de expiración: pasado ese tiempo deja de ser válido y hay que loguearse de nuevo (o usar un *refresh token*, un mecanismo más avanzado para renovarlo sin pedir la contraseña otra vez).
+- El frontend no lo genera ni lo valida — solo lo guarda y lo reenvía en cada pedido a una ruta protegida.
+
+<div class="flex items-center justify-center gap-3 mt-4 text-xs">
+<div class="p-3 rounded-lg bg-gray-100 border-2 border-gray-400 text-center">Cliente</div>
+<div class="text-center">
+<div>usuario + contraseña →</div>
+<div>← token</div>
+</div>
+<div class="p-3 rounded-lg bg-gray-100 border-2 border-gray-400 text-center">Backend</div>
+</div>
+
+<div class="flex items-center justify-center gap-3 mt-3 text-xs">
+<div class="p-3 rounded-lg bg-gray-100 border-2 border-gray-400 text-center">Cliente</div>
+<div>Authorization: Bearer &lt;token&gt; →</div>
+<div class="p-3 rounded-lg bg-gray-100 border-2 border-gray-400 text-center">Backend (cada request)</div>
+</div>
 
 ---
 layout: default

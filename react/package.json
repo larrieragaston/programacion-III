@@ -5,7 +5,7 @@
     "dev": "slidev",
     "build": "slidev build --base /programacion-III/react/",
     "clean:exports": "rm -f pdfs/exports/*.pdf slides-export.pdf *-slides-export.pdf *-export.pdf",
-    "export": "npm run clean:exports && mkdir -p pdfs/exports && slidev export --output pdfs/exports/react-slides-export.pdf"
+    "export": "npm run clean:exports && mkdir -p pdfs/exports && slidev export --per-slide --output pdfs/exports/react-slides-export.pdf"
   },
   "dependencies": {
     "@slidev/cli": "52.14.1",
