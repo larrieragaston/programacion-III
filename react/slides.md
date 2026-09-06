@@ -111,17 +111,32 @@ Fuente: [State of JS 2025](https://2025.stateofjs.com/en-US/libraries/front-end-
 layout: default
 ---
 
-# Adopción: estrellas en GitHub
+# Adopción en proyectos nuevos (2026)
 
-```mermaid
-pie showData title Estrellas en GitHub (miles)
-    "React" : 230
-    "Vue" : 210
-    "Angular" : 95
-    "Svelte" : 85
-    "Preact" : 39
-    "Solid" : 36
-```
+<div class="flex rounded-lg overflow-hidden mt-10 text-sm font-bold" style="height: 70px">
+<div class="bg-blue-400 flex items-center justify-center text-white" style="width: 60%">React 60%</div>
+<div class="bg-red-400 flex items-center justify-center text-white" style="width: 15%">Vue 15%</div>
+<div class="bg-yellow-400 flex items-center justify-center" style="width: 12%">Angular 12%</div>
+<div class="bg-gray-300 flex items-center justify-center" style="width: 13%">Otros 13%</div>
+</div>
+
+<div class="mt-2 text-xs opacity-60 text-center">
+
+"Otros" agrupa Svelte, Solid, Preact y el resto de las opciones.
+
+</div>
+
+<div class="mt-6 text-sm opacity-80">
+
+Un dato distinto al de la tabla anterior: no es "cuánta gente ya sabe usarlo" (encuesta) ni "cuántas estrellas tiene en GitHub" (repositorio) — es qué elige la gente **hoy**, al arrancar un proyecto desde cero. React se lleva más de la mitad de los proyectos nuevos.
+
+</div>
+
+<div class="mt-2 text-xs italic opacity-60">
+
+Fuente: estimación de la industria (no una encuesta formal como State of JS) — cifras aproximadas.
+
+</div>
 
 ---
 layout: default
@@ -247,32 +262,33 @@ layout: default
 
 # Así se ve en una pantalla real
 
-<div class="border-2 border-red-400 rounded-lg p-2 text-xs mt-4">
+<div class="border-2 border-red-400 rounded-lg p-2 text-xs mt-2">
 <div class="font-bold text-red-500 mb-1">① Header</div>
-<div class="flex justify-between items-center bg-gray-50 p-2 rounded">
+<div class="flex justify-between items-center bg-gray-50 p-1 rounded">
 <span>Mi Tienda</span>
+<div class="border-2 border-pink-400 rounded px-2 text-pink-600 font-bold">② UserMenu: Ada ▾</div>
 <span>🛒 Carrito</span>
 </div>
 </div>
 
 <div class="flex gap-2 mt-2 text-xs">
-<div class="border-2 border-green-400 rounded-lg p-2 w-1/3">
-<div class="font-bold text-green-600 mb-1">② Sidebar</div>
-<div class="bg-gray-50 p-2 rounded">Categorías...</div>
+<div class="border-2 border-green-400 rounded-lg p-2 w-1/4">
+<div class="font-bold text-green-600 mb-1">③ Sidebar</div>
+<div class="border-2 border-teal-400 rounded p-1 text-teal-600 font-bold text-center">④ CategoryList</div>
 </div>
 <div class="border-2 border-blue-400 rounded-lg p-2 flex-1">
-<div class="font-bold text-blue-600 mb-1">③ ProductGrid</div>
-<div class="grid grid-cols-2 gap-2">
-<div class="border-2 border-purple-400 rounded p-2 text-purple-600 font-bold">④ ProductCard</div>
-<div class="border-2 border-purple-400 rounded p-2 text-purple-600 font-bold">④ ProductCard</div>
+<div class="font-bold text-blue-600 mb-1">⑤ ProductGrid</div>
+<div class="grid grid-cols-3 gap-1">
+<div class="border-2 border-purple-400 rounded p-1 text-purple-600 font-bold text-center">⑥ ProductCard</div>
+<div class="border-2 border-purple-400 rounded p-1 text-purple-600 font-bold text-center">⑥ ProductCard</div>
+<div class="border-2 border-purple-400 rounded p-1 text-purple-600 font-bold text-center">⑥ ProductCard</div>
 </div>
 </div>
 </div>
 
-<div class="mt-4 text-sm italic opacity-80 text-center">
-
-¿Qué componentes identificás en esta pantalla? Marquen en voz alta cada sección numerada.
-
+<div class="border-2 border-orange-400 rounded-lg p-2 mt-2 text-xs">
+<div class="font-bold text-orange-600 mb-1">⑦ Footer</div>
+<div class="bg-gray-50 p-1 rounded">© 2026 Mi Tienda · Contacto · Términos</div>
 </div>
 
 ---
@@ -429,6 +445,42 @@ Antes de los Hooks (2019), esto se escribía con clases: `class Greeting extends
 </div>
 
 </v-click>
+
+---
+layout: default
+---
+
+# ¿Qué encapsula un componente?
+
+- Su propio **markup** (el JSX que devuelve) — cómo se ve.
+- Su propio **estado interno**, si lo necesita (`useState`, `useReducer`) — nadie de afuera lo ve ni lo toca directamente.
+- Su propia **lógica**: funciones auxiliares, efectos (`useEffect`), validaciones.
+- Opcionalmente, sus propios **estilos** (un archivo CSS asociado, o una librería de estilos).
+
+<div class="mt-6 text-sm italic opacity-80">
+
+Por fuera, un componente bien diseñado se ve como una caja cerrada: solo expone sus `props` de entrada — cómo resuelve internamente lo que hace es un detalle de implementación, no algo que el resto de la app necesite conocer.
+
+</div>
+
+---
+layout: default
+---
+
+# Principios para diseñar un componente
+
+<div class="grid grid-cols-2 gap-3 mt-4 text-sm">
+<div class="p-3 rounded-lg bg-gray-100"><strong>Una sola responsabilidad</strong> — si hace demasiadas cosas distintas, conviene partirlo en varios.</div>
+<div class="p-3 rounded-lg bg-gray-100"><strong>Props claras y mínimas</strong> — es la interfaz pública del componente; menos props, más fácil de usar y testear.</div>
+<div class="p-3 rounded-lg bg-gray-100"><strong>Estado en el lugar correcto</strong> — si dos hermanos necesitan el mismo dato, ese estado vive en el padre común, no duplicado.</div>
+<div class="p-3 rounded-lg bg-gray-100"><strong>Reutilizable, sin sobre-generalizar</strong> — abstraer recién cuando aparece un segundo caso real de uso, no antes.</div>
+</div>
+
+<div class="mt-6 text-sm italic opacity-80 text-center">
+
+Los mismos principios de diseño de funciones (de JS Funcional) — piezas chicas, predecibles y componibles — aplicados a interfaz.
+
+</div>
 
 ---
 layout: default
@@ -925,54 +977,6 @@ Un **custom hook** es una función propia que empieza con `use` y combina otros 
 layout: center
 ---
 
-# Testing de componentes
-
----
-layout: default
----
-
-# React Testing Library: por qué
-
-- Librería para testear componentes de React — hoy el estándar de facto, viene incluida por default en un proyecto creado con Vite + plantilla de testing.
-- Su filosofía: testear el componente **como lo usa una persona real** (qué texto ve, qué botón puede clickear), no los detalles internos de implementación (qué hook usa, cuántas veces se renderizó).
-- Un test que sobrevive a un refactor interno del componente, mientras la UI resultante no cambie, es una señal de que está bien escrito.
-
-<div class="mt-6 text-sm italic opacity-80">
-
-Contraste con testear implementación: si el test se rompe porque se cambió `useState` por `useReducer` sin cambiar nada visible en pantalla, el test estaba mal enfocado desde el principio.
-
-</div>
-
----
-layout: default
----
-
-# Un test simple
-
-```tsx
-import { render, screen, fireEvent } from '@testing-library/react'
-import { Counter } from './Counter'
-
-test('incrementa el contador al hacer click', () => {
-  render(<Counter />)
-
-  const button = screen.getByRole('button', { name: '+' })
-  fireEvent.click(button)
-
-  expect(screen.getByText('1')).toBeInTheDocument()
-})
-```
-
-<div class="mt-4 text-sm opacity-80">
-
-`render` monta el componente en un DOM virtual de prueba. `screen.getByRole` busca el botón igual que lo encontraría alguien usando un lector de pantalla — por su rol y su texto, no por un `id` interno. `fireEvent.click` simula la interacción real. El `expect` final verifica lo que **ve** la persona usuaria (el texto "1" en pantalla), no una variable interna del componente.
-
-</div>
-
----
-layout: center
----
-
 # Probar y correr un proyecto React
 
 ---
@@ -1045,6 +1049,49 @@ src/
 <div class="mt-3 text-sm opacity-80">
 
 Ninguna de estas carpetas la exige React — es una convención de organización que aparece una y otra vez en proyectos reales, a medida que crecen más allá de un puñado de componentes. Empezar un proyecto nuevo con esta estructura desde el día uno ahorra una reorganización dolorosa más adelante.
+
+</div>
+
+---
+layout: default
+---
+
+# Manos a la obra: un catálogo con filtro
+
+```tsx
+function App() {
+  const [showAvailable, setShowAvailable] = useState(false)
+  const filtered = showAvailable ? products.filter((p) => p.stock > 0) : products
+  return (
+    <>
+      <h1>Catálogo</h1>
+      <button onClick={() => setShowAvailable(!showAvailable)}>
+        {showAvailable ? 'Ver todos' : 'Solo con stock'}
+      </button>
+      <ul>{filtered.map((p) => <li key={p.name}>{p.name} — ${p.price}</li>)}</ul>
+    </>
+  )
+}
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+Nada nuevo — es todo lo visto hasta ahora, armado en un componente real.
+
+</div>
+
+---
+layout: default
+---
+
+# A dónde va esto
+
+- De un catálogo con un filtro simple a una pantalla con **rutas** (una URL por producto), **parámetros** (`/products/:id`), un **formulario** para editar, y una **tabla** con acciones — todo lo que viene en lo que resta de este módulo.
+- Cada pieza nueva (router, formularios, una librería de componentes) se suma sobre esta misma base, sin tirar nada de lo ya construido.
+
+<div class="mt-6 text-sm italic opacity-80 text-center">
+
+Así se ve un proyecto real: no se arranca por la versión completa, se llega ahí sumando una pieza genuina por vez.
 
 </div>
 
@@ -1122,6 +1169,124 @@ export default Layout
 `NavLink` navega sin recargar la página (a diferencia de un `<a href>` común) y marca automáticamente el link activo. `<Outlet />` es el "hueco" donde React Router inserta el componente de la ruta hija que corresponda a la URL actual — así el `<nav>` y el resto del layout se escriben una sola vez, en vez de repetirlos en cada página.
 
 </div>
+
+---
+layout: default
+---
+
+# Parámetros de ruta: `useParams`
+
+```tsx
+<Route path="products/:id" element={<ProductDetail />} />
+```
+
+```tsx
+import { useParams } from 'react-router-dom'
+
+function ProductDetail() {
+  const { id } = useParams()   // "42", si la URL es /products/42
+  const [product, setProduct] = useState<Product | null>(null)
+
+  useEffect(() => {
+    fetch(`/api/products/${id}`).then((res) => res.json()).then(setProduct)
+  }, [id])
+
+  return product ? <h1>{product.name}</h1> : <p>Cargando...</p>
+}
+```
+
+<div class="mt-2 text-xs opacity-80">
+
+`:id` en la ruta es un **parámetro dinámico** — cualquier valor en esa posición de la URL. `useParams()` lo devuelve como string, listo para usar (acá, para pedirle ese producto puntual a la API).
+
+</div>
+
+---
+layout: default
+---
+
+# Query params: `useSearchParams`
+
+```tsx
+// URL: /products?category=electronics
+import { useSearchParams } from 'react-router-dom'
+
+function Products() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const category = searchParams.get('category')   // "electronics" o null
+
+  return (
+    <button onClick={() => setSearchParams({ category: 'books' })}>
+      Ver libros
+    </button>
+  )
+}
+```
+
+<div class="mt-2 text-xs opacity-80">
+
+A diferencia de `:id`, los **query params** (`?clave=valor`) son opcionales y no cambian qué componente se renderiza — típicos para filtros, orden, paginado. `useSearchParams` funciona parecido a `useState`, y además actualiza la URL.
+
+</div>
+
+---
+layout: default
+---
+
+# Rutas protegidas (autenticadas)
+
+```tsx
+import { Navigate, Outlet } from 'react-router-dom'
+import { getToken } from '../services/auth'
+
+function RequireAuth() {
+  return getToken() ? <Outlet /> : <Navigate to="/login" replace />
+}
+
+// En las rutas:
+<Route element={<RequireAuth />}>
+  <Route path="products" element={<Products />} />
+  <Route path="profile" element={<Profile />} />
+</Route>
+```
+
+<div class="mt-2 text-xs opacity-80">
+
+`RequireAuth` es un componente "guardián": no renderiza contenido propio, solo decide — si hay token, deja pasar (`<Outlet />`, la ruta hija real); si no, redirige a `/login` con `<Navigate />`. Cualquier ruta anidada adentro queda protegida, sin repetir esta lógica en cada una.
+
+</div>
+
+---
+layout: default
+---
+
+# Ruta 404: catch-all
+
+```tsx
+<Routes>
+  <Route element={<Layout />}>
+    <Route path="/" element={<Home />} />
+    <Route path="products" element={<Products />} />
+  </Route>
+  <Route path="*" element={<NotFound />} />   {/* cualquier otra URL */}
+</Routes>
+```
+
+<div class="mt-3 text-sm opacity-80">
+
+`path="*"` funciona como comodín: si ninguna ruta anterior coincidió con la URL, React Router cae acá. Sin esta ruta, una URL inexistente muestra una pantalla en blanco en vez de un mensaje claro.
+
+</div>
+
+---
+layout: default
+---
+
+# ¿Qué es un middleware?
+
+- Un **middleware** es una función que se ubica en el medio de un flujo (una request, una navegación) y puede inspeccionar, modificar o **cortar** el paso antes de que siga — llamando (o no) a `next()`.
+- `RequireAuth`, recién visto, es exactamente esa idea aplicada a rutas del lado del cliente: intercepta la navegación y decide si continúa o redirige.
+- Del lado del servidor (Node + Express, más adelante en la unidad) el mismo concepto valida un token **antes** de que la request llegue a la lógica real de la ruta — la misma pregunta ("¿tiene permiso?"), resuelta en un lugar central en vez de repetirla en cada endpoint.
 
 ---
 layout: center
@@ -1416,7 +1581,85 @@ export function clearToken() {
 
 <div class="mt-4 text-sm opacity-80">
 
-`localStorage` es una API nativa del navegador — no hace falta ninguna librería para usarla. Este mismo `getToken()` es el que se llamaría desde el interceptor de Axios visto un par de secciones atrás, para agregar el header `Authorization` en cada request.
+`localStorage` es una API nativa del navegador — no hace falta ninguna librería para usarla.
+
+</div>
+
+---
+layout: default
+---
+
+# Axios: incorporar y leer el token
+
+```tsx
+import axios from 'axios'
+import { getToken, clearToken } from './auth'
+const api = axios.create({ baseURL: import.meta.env.VITE_API_URL })
+api.interceptors.request.use((config) => {
+  const token = getToken()
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
+})
+api.interceptors.response.use(
+  (res) => res,
+  (error) => {
+    if (error.response?.status === 401) clearToken()
+    return Promise.reject(error)
+  }
+)
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+El interceptor de **request** agrega el token con `getToken()`; el de **response** detecta un `401` ("token vencido") y desloguea.
+
+</div>
+
+---
+layout: center
+---
+
+# Testing de componentes
+
+---
+layout: default
+---
+
+# React Testing Library: por qué
+
+- Librería para testear componentes de React — hoy el estándar de facto, viene incluida por default en un proyecto creado con Vite + plantilla de testing.
+- Su filosofía: testear el componente **como lo usa una persona real** (qué texto ve, qué botón puede clickear), no los detalles internos de implementación (qué hook usa, cuántas veces se renderizó).
+- Un test que sobrevive a un refactor interno del componente, mientras la UI resultante no cambie, es una señal de que está bien escrito.
+
+<div class="mt-6 text-sm italic opacity-80">
+
+Contraste con testear implementación: si el test se rompe porque se cambió `useState` por `useReducer` sin cambiar nada visible en pantalla, el test estaba mal enfocado desde el principio.
+
+</div>
+
+---
+layout: default
+---
+
+# Un test simple
+
+```tsx
+import { render, screen, fireEvent } from '@testing-library/react'
+import { Counter } from './Counter'
+
+test('incrementa el contador al hacer click', () => {
+  render(<Counter />)
+
+  const button = screen.getByRole('button', { name: '+' })
+  fireEvent.click(button)
+
+  expect(screen.getByText('1')).toBeInTheDocument()
+})
+```
+
+<div class="mt-4 text-sm opacity-80">
+
+`render` monta el componente en un DOM virtual de prueba. `screen.getByRole` busca el botón igual que lo encontraría alguien usando un lector de pantalla — por su rol y su texto, no por un `id` interno. `fireEvent.click` simula la interacción real. El `expect` final verifica lo que **ve** la persona usuaria (el texto "1" en pantalla), no una variable interna del componente.
 
 </div>
 
@@ -1449,8 +1692,9 @@ layout: default
 | `useEffect(fn, deps)` | Efectos: fetch, timers, suscripciones |
 | `useContext`, `useRef` | Contexto global, referencias al DOM |
 | `useMemo`/`useCallback`/`useReducer` | Cachear valor/función, estado complejo |
-| Vite / Router / Axios | Scaffolding, rutas, HTTP |
-| Testing Library | Testear componentes |
+| `useParams`, `useSearchParams` | Parámetros de ruta y query params |
+| `RequireAuth` + `<Outlet/>` | Ruta protegida (patrón middleware) |
+| Vite / Axios / Testing Library | Scaffolding, HTTP, testear componentes |
 
 </div>
 </div>
