@@ -42,4 +42,6 @@ typescript/public/pdfs/originales/*.pdf
 typescript/pdfs/originales/*.pdf
 react/public/pdfs/originales/*.pdf
 react/pdfs/originales/*.pdf
+node-express/public/pdfs/originales/*.pdf
+node-express/pdfs/originales/*.pdf
 **/pdfs/exports/*.pdf
