@@ -809,17 +809,174 @@ curl http://localhost:4000/profile \
 </div>
 
 ---
+layout: center
+---
+
+# Testing del backend
+
+---
+layout: default
+---
+
+# Vitest o Jest: dos alternativas
+
+<div class="grid grid-cols-2 gap-3 mt-4 text-sm">
+<div class="p-3 rounded-lg bg-gray-100">
+
+**Jest**
+
+El más usado en proyectos ya existentes. Necesita configuración extra para TypeScript/ESM (`ts-jest` o Babel).
+
+```bash
+npm install -D jest @types/jest ts-jest
+```
+
+</div>
+<div class="p-3 rounded-lg bg-gray-100">
+
+**Vitest**
+
+Más nuevo. TypeScript/ESM nativo, sin configuración extra — y es el mismo motor que ya usa Vite en el frontend.
+
+```bash
+npm install -D vitest
+```
+
+</div>
+</div>
+
+<div class="mt-4 text-sm opacity-80">
+
+Mismo `describe`/`it`/`expect` en los dos — migrar de uno a otro es casi gratis. La diferencia real está en la configuración inicial y en detalles puntuales, como se ve a continuación.
+
+</div>
+
+---
+layout: default
+---
+
+# Mismo test, en los dos
+
+<div class="grid grid-cols-2 gap-3 text-xs mt-2">
+<div>
+
+**Jest**
+
+```ts
+// pricing.test.ts
+import { applyDiscount } from './pricing'
+
+test('applyDiscount resta el %', () => {
+  expect(applyDiscount(1000, 0.1)).toBe(900)
+})
+```
+
+</div>
+<div>
+
+**Vitest**
+
+```ts
+// pricing.test.ts
+import { it, expect } from 'vitest'
+import { applyDiscount } from './pricing'
+
+it('applyDiscount resta el %', () => {
+  expect(applyDiscount(1000, 0.1)).toBe(900)
+})
+```
+
+</div>
+</div>
+
+<div class="mt-3 text-sm opacity-80">
+
+`applyDiscount`, ya tipada en TypeScript — una función pura es, literalmente, el caso más simple de testear: mismo input, mismo output, sin nada que mockear. Jest expone `test`/`expect` como globales; Vitest los importa explícitamente (o se activan con `globals: true` en su configuración).
+
+</div>
+
+---
+layout: default
+---
+
+# Testear un endpoint con `supertest`
+
+```ts
+import request from 'supertest'
+import app from '../app'
+
+test('GET /products devuelve el catálogo', async () => {
+  const res = await request(app).get('/products')
+  expect(res.status).toBe(200)
+  expect(res.body).toHaveLength(2)
+})
+```
+
+<div class="mt-3 text-sm opacity-80">
+
+`supertest` envuelve la instancia de `app` directamente, sin levantar un puerto real — funciona igual con Jest o con Vitest, es independiente del runner elegido. `request(app).get(...)` simula la request; los `expect` verifican status y body, igual que un test de función pura.
+
+</div>
+
+---
+layout: default
+---
+
+# Mockear una dependencia
+
+<div class="grid grid-cols-2 gap-3 text-xs mt-2">
+<div>
+
+**Jest**
+
+```ts
+jest.mock('../services/email')
+import { sendWelcomeEmail } from '../services/email'
+
+test('el registro avisa por mail', async () => {
+  await registerUser({ email: 'ada@mail.com' })
+  expect(sendWelcomeEmail)
+    .toHaveBeenCalledWith('ada@mail.com')
+})
+```
+
+</div>
+<div>
+
+**Vitest**
+
+```ts
+vi.mock('../services/email')
+import { sendWelcomeEmail } from '../services/email'
+
+test('el registro avisa por mail', async () => {
+  await registerUser({ email: 'ada@mail.com' })
+  expect(sendWelcomeEmail)
+    .toHaveBeenCalledWith('ada@mail.com')
+})
+```
+
+</div>
+</div>
+
+<div class="mt-3 text-sm opacity-80">
+
+`mock(...)` reemplaza el módulo real por una versión falsa y controlada — acá, para no mandar un email real en cada corrida de tests. El `expect` no comprueba que el mail se haya enviado de verdad, solo que la función se **llamó** con los datos correctos: alcanza para testear `registerUser` de forma aislada, sin depender de un servicio externo.
+
+</div>
+
+---
 layout: default
 ---
 
 # Qué sigue
 
 - El array en memoria se pierde cada vez que el servidor reinicia — el próximo tema (**MongoDB**) lo reemplaza por persistencia real, sobre las mismas rutas y el mismo patrón de `Router()`.
-- ¿Cómo saber que todo esto realmente funciona, más allá de probarlo a mano con `curl`? Eso es **Testing** (`supertest`), el tema después de MongoDB — sobre esta misma API.
+- El módulo de **Testing**, más adelante, retoma esto con más profundidad: tests de integración contra una base real mockeada (`mongodb-memory-server`), la pirámide de testing, y qué tipo de test conviene en cada capa de la aplicación.
 
 <div class="mt-6 text-sm italic opacity-80 text-center">
 
-Con esto, el círculo full-stack está completo: un componente de React pidiendo datos, y un servidor Express respondiéndolos.
+Con esto, el círculo full-stack está completo: un componente de React pidiendo datos, y un servidor Express respondiéndolos — probado.
 
 </div>
 
@@ -858,6 +1015,9 @@ layout: default
 | `bcrypt.hash`/`compare` | Hashear y verificar contraseñas |
 | `jwt.sign`/`verify` | Emitir y validar tokens |
 | `dotenv/config` | Variables de entorno |
+| `test`/`expect` (Jest o Vitest) | Unit tests |
+| `request(app).get(...)` | Testear un endpoint (`supertest`) |
+| `jest.mock`/`vi.mock` | Mockear una dependencia |
 
 </div>
 </div>
@@ -876,6 +1036,7 @@ layout: default
 - [jwt.io](https://jwt.io/) — documentación y debugger de JSON Web Tokens (permite decodificar un token y ver su contenido)
 - [npmjs.com/package/bcrypt](https://www.npmjs.com/package/bcrypt) — hashing de contraseñas
 - [npmjs.com/package/cors](https://www.npmjs.com/package/cors) · [npmjs.com/package/dotenv](https://www.npmjs.com/package/dotenv)
+- [vitest.dev](https://vitest.dev/) · [jestjs.io/es-ES](https://jestjs.io/es-ES/) · [npmjs.com/package/supertest](https://www.npmjs.com/package/supertest)
 - [github.com/goldbergyoni/nodebestpractices](https://github.com/goldbergyoni/nodebestpractices) — buenas prácticas reales, mantenido por la comunidad
 
 </div>
