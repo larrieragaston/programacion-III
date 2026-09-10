@@ -47,4 +47,6 @@ react/public/pdfs/originales/*.pdf
 react/pdfs/originales/*.pdf
 node-express/public/pdfs/originales/*.pdf
 node-express/pdfs/originales/*.pdf
+mongodb/public/pdfs/originales/*.pdf
+mongodb/pdfs/originales/*.pdf
 **/pdfs/exports/*.pdf
