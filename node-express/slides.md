@@ -199,11 +199,11 @@ npm install -D typescript @types/express @types/node tsx
 
 ```ts
 // index.ts
-import express from 'express'
+import express, { Request, Response } from 'express'
 
 const app = express()
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.send('Hola, Programación III')
 })
 
@@ -212,7 +212,13 @@ app.listen(4000, () => console.log('Servidor en http://localhost:4000'))
 
 <div class="mt-2 text-sm opacity-80">
 
-`tsx` corre un archivo TypeScript directamente, sin un paso de compilación manual — similar a `ts-node`, ya mencionado en TypeScript. `app.listen` arranca el servidor y lo deja escuchando conexiones en el puerto indicado.
+`Request`/`Response` son los tipos que trae `@types/express` — se usan desde acá en más, en cada handler: todo el código de este módulo es TypeScript real, no JS con nombres en inglés. `tsx` corre el archivo directamente, sin compilar a mano — similar a `ts-node`, ya visto en TypeScript.
+
+</div>
+
+<div class="mt-1 text-xs italic opacity-50">
+
+Doc: <a href="https://expressjs.com/es/4x/api.html">expressjs.com/es/4x/api</a>
 
 </div>
 
@@ -271,16 +277,23 @@ layout: default
 # `req` y `res`: parámetros y query params
 
 ```ts
-app.get('/products/:id', (req, res) => {
+app.get('/products/:id', (req: Request, res: Response) => {
   const id = req.params.id              // parámetro de ruta
   const category = req.query.category   // query param, ?category=...
   res.status(200).json({ id, category })
 })
 ```
 
-<div class="mt-3 text-sm opacity-80">
+```
+GET /products/42?category=electronics
 
-Mismo vocabulario que `useParams`/`useSearchParams` de React Router, del otro lado de la conexión: ahí, el navegador **leía** la URL; acá, Express la **recibe** — `req.params` para lo obligatorio (`:id`), `req.query` para lo opcional (`?category=...`).
+→ 200 OK
+{ "id": "42", "category": "electronics" }
+```
+
+<div class="mt-1 text-sm opacity-80">
+
+Mismo vocabulario que `useParams`/`useSearchParams` de React Router, del otro lado de la conexión: ahí, el navegador **leía** la URL; acá, Express la **recibe** — `req.params` para lo obligatorio (`:id`), `req.query` para lo opcional (`?category=...`). Nota: ambos llegan siempre como **string**, aunque parezcan números.
 
 </div>
 
@@ -303,7 +316,9 @@ Un middleware es una función que se ubica en el medio del flujo de una request 
 </div>
 
 ```ts
-function logger(req, res, next) {
+import { Request, Response, NextFunction } from 'express'
+
+function logger(req: Request, res: Response, next: NextFunction) {
   console.log(`${req.method} ${req.url}`)
   next()   // sin next(), la request se queda colgada — nunca llega a su ruta
 }
@@ -321,12 +336,39 @@ app.use(logger)   // corre en TODAS las rutas, en el orden en que se declaran
 layout: default
 ---
 
+# Middleware con datos de usuario
+
+```ts
+declare global {
+  namespace Express {
+    interface Request { user?: any }   // se afina más en Autenticación
+  }
+}
+
+function attachUser(req: Request, res: Response, next: NextFunction) {
+  const userId = req.headers['x-user-id']
+  if (!userId) return res.status(401).json({ error: 'Falta identificarse' })
+  req.user = { userId }
+  next()
+}
+```
+
+<div class="mt-2 text-sm opacity-80">
+
+Un ejemplo más útil que un logger: exige un dato antes de dejar pasar la request, y lo deja disponible en `req.user` para las rutas de abajo. `declare global` le enseña a TypeScript que `Request` ahora tiene `user` — sin esto, asignarlo sería un error de tipos. Es una versión simplificada; la real, verificando un token en vez de un header a ojo, se arma en Autenticación.
+
+</div>
+
+---
+layout: default
+---
+
 # `express.json()`: el middleware que faltaba
 
 ```ts
 app.use(express.json())   // parsea el body si es JSON, antes de llegar a la ruta
 
-app.post('/products', (req, res) => {
+app.post('/products', (req: Request, res: Response) => {
   console.log(req.body)   // ya viene parseado, como un objeto
   res.status(201).json(req.body)
 })
@@ -360,10 +402,10 @@ const products: Product[] = [
   { id: 1, name: 'Mouse', price: 18000 },
   { id: 2, name: 'Teclado', price: 25000 },
 ]
-app.get('/products', (req, res) => {
+app.get('/products', (req: Request, res: Response) => {
   res.json(products)
 })
-app.get('/products/:id', (req, res) => {
+app.get('/products/:id', (req: Request, res: Response) => {
   const product = products.find((p) => p.id === Number(req.params.id))
   if (!product) return res.status(404).json({ error: 'No encontrado' })
   res.json(product)
@@ -383,7 +425,7 @@ layout: default
 # El catálogo: crear
 
 ```ts
-app.post('/products', (req, res) => {
+app.post('/products', (req: Request, res: Response) => {
   const newProduct: Product = { id: Date.now(), ...req.body }
   products.push(newProduct)
   res.status(201).json(newProduct)
@@ -403,13 +445,13 @@ layout: default
 # El catálogo: modificar y borrar
 
 ```ts
-app.put('/products/:id', (req, res) => {
+app.put('/products/:id', (req: Request, res: Response) => {
   const index = products.findIndex((p) => p.id === Number(req.params.id))
   if (index === -1) return res.status(404).json({ error: 'No encontrado' })
   products[index] = { ...products[index], ...req.body }
   res.json(products[index])
 })
-app.delete('/products/:id', (req, res) => {
+app.delete('/products/:id', (req: Request, res: Response) => {
   const index = products.findIndex((p) => p.id === Number(req.params.id))
   if (index === -1) return res.status(404).json({ error: 'No encontrado' })
   products.splice(index, 1)
@@ -460,10 +502,37 @@ Un solo archivo con todas las rutas no escala — `Router()` agrupa las de un mi
 layout: default
 ---
 
+# Los controllers, en código
+
+```ts
+// controllers/products.ts
+import { Request, Response } from 'express'
+import { products } from '../data/products'
+
+export function getAllProducts(req: Request, res: Response) {
+  res.json(products)
+}
+export function getProductById(req: Request, res: Response) {
+  const product = products.find((p) => p.id === Number(req.params.id))
+  if (!product) return res.status(404).json({ error: 'No encontrado' })
+  res.json(product)
+}
+```
+
+<div class="mt-2 text-xs opacity-80">
+
+Exactamente el mismo código de las slides de CRUD — movido a su propio archivo, exportado función por función (`createProduct` sigue el mismo patrón, movido tal cual). `router.get('/', getAllProducts)` ya no define la lógica ahí mismo, solo la conecta con su URL.
+
+</div>
+
+---
+layout: default
+---
+
 # Manejo de errores centralizado
 
 ```ts
-app.get('/products/:id', (req, res, next) => {
+app.get('/products/:id', (req: Request, res: Response, next: NextFunction) => {
   try {
     const product = products.find((p) => p.id === Number(req.params.id))
     if (!product) throw new Error('No encontrado')
@@ -473,15 +542,15 @@ app.get('/products/:id', (req, res, next) => {
   }
 })
 // al final de todas las rutas:
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err)
   res.status(500).json({ error: err.message })
 })
 ```
 
-<div class="mt-2 text-sm opacity-80">
+<div class="mt-1 text-sm opacity-80">
 
-Un middleware con **cuatro** parámetros (incluido `err`) es, para Express, un manejador de errores — se registra al final y captura cualquier error que llegue por `next(err)`, sin repetir `try`/`catch` en cada ruta.
+Un middleware con **cuatro** parámetros (incluido `err`) es un manejador de errores para Express — se registra al final y captura lo que llegue por `next(err)`, sin repetir `try`/`catch` en cada ruta. `console.error` alcanza para practicar; en un proyecto real se reemplaza por una librería de logging (Winston, Pino).
 
 </div>
 
@@ -539,6 +608,12 @@ app.use(cors({ origin: 'https://mi-tienda.com' }))   // en producción, restring
 
 </div>
 
+<div class="mt-1 text-xs italic opacity-50">
+
+Doc: <a href="https://developer.mozilla.org/es/docs/Web/HTTP/Guides/CORS">developer.mozilla.org — CORS</a>
+
+</div>
+
 ---
 layout: center
 ---
@@ -562,48 +637,26 @@ npm install dotenv
 ```
 
 ```bash
-# .env
+# .env.development
 PORT=4000
-JWT_SECRET=un-secreto-largo-y-dificil-de-adivinar
+JWT_SECRET=un-secreto-de-desarrollo
+
+# .env.production
+PORT=8080
+JWT_SECRET=un-secreto-mucho-mas-largo-y-real
 ```
 
 ```ts
 // index.ts — primera línea del archivo
-import 'dotenv/config'
+import dotenv from 'dotenv'
+dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` })
 
-const port = process.env.PORT || 4000
-app.listen(port, () => console.log(`Servidor en el puerto ${port}`))
+const port = Number(process.env.PORT) || 4000
 ```
 
 <div class="mt-1 text-xs opacity-80">
 
-`process.env.PORT` siempre es un **string** (o `undefined`) — a diferencia de `import.meta.env` de Vite, Node no infiere tipos. Convertir a número explícitamente cuando haga falta.
-
-</div>
-
----
-layout: default
----
-
-# TypeScript en Express
-
-```ts
-import { Request, Response, NextFunction } from 'express'
-
-app.get('/products/:id', (req: Request<{ id: string }>, res: Response) => {
-  const id = Number(req.params.id)   // TS ya sabe que req.params.id es string
-  res.json({ id })
-})
-
-function logger(req: Request, res: Response, next: NextFunction) {
-  console.log(`${req.method} ${req.url}`)
-  next()
-}
-```
-
-<div class="mt-3 text-sm opacity-80">
-
-`Request`/`Response`/`NextFunction` son los tipos que `@types/express` agrega — el mismo patrón de tipar parámetros ya visto en TypeScript, aplicado a los objetos que Express le pasa a cada ruta. `Request<{ id: string }>` tipa específicamente la forma de `req.params`.
+A diferencia de Vite, `dotenv` **no** elige el archivo solo según el ambiente — hay que decírselo explícitamente con `path`. `process.env.PORT` siempre es un **string** (o `undefined`); convertir a número a mano cuando haga falta, como acá con `Number(...)`.
 
 </div>
 
@@ -629,7 +682,7 @@ layout: default
 
 <div class="mt-3 text-sm opacity-80">
 
-Mismas opciones ya vistas en TypeScript, con una diferencia: `module`/`moduleResolution` en `"NodeNext"` en vez de `"ESNext"`/`"bundler"` — porque acá no hay un bundler (Vite) resolviendo los imports, es Node ejecutando los archivos directamente.
+Mismas opciones ya vistas en TypeScript, con una diferencia: `module`/`moduleResolution` en `"NodeNext"` en vez de `"ESNext"`/`"bundler"` — acá no hay un bundler (Vite) resolviendo los imports, es Node ejecutando los archivos directamente.
 
 </div>
 
@@ -643,7 +696,51 @@ layout: center
 layout: default
 ---
 
-# `bcrypt`: nunca contraseñas en texto plano
+# El backend es el responsable
+
+- **Genera el token** — nadie más puede emitir uno válido, porque nadie más tiene el secreto (o la clave privada) que lo firma.
+- **Nunca guarda la contraseña en texto plano** — guarda su hash y compara contra ese hash en cada login. Importante: no es "encriptar y desencriptar" — un hash **no se puede revertir**, solo comparar.
+- **Decide cuándo un token es válido** (firma correcta, no vencido) y puede invalidarlo antes de tiempo si hace falta.
+- El cliente solo hace dos cosas: guardar el token, y reenviarlo — toda la lógica de "quién sos" vive del lado del servidor.
+
+<div class="mt-4 text-sm italic opacity-80 text-center">
+
+Por eso `bcrypt.compare` (próxima slide) no "desencripta" nada — recalcula el hash del intento y lo compara contra el guardado.
+
+</div>
+
+---
+layout: default
+---
+
+# HS256 vs. RS256: cómo se firma el token
+
+<div class="grid grid-cols-2 gap-3 mt-4 text-sm">
+<div class="p-3 rounded-lg bg-gray-100">
+
+**HS256 (simétrica)**
+
+Un solo secreto — la misma clave firma y verifica. Simple y rápido, pero cualquiera con el secreto puede firmar tokens falsos. La que usa este curso.
+</div>
+<div class="p-3 rounded-lg bg-gray-100">
+
+**RS256 (asimétrica)**
+
+Un par de claves: la **privada** firma (solo el backend la tiene), la **pública** verifica — se puede repartir sin dar poder de emitir tokens nuevos.
+</div>
+</div>
+
+<div class="mt-4 text-sm opacity-80">
+
+RS256 tiene sentido con varios servicios que necesitan **verificar** un token sin poder **crear** uno (microservicios, por ejemplo). Con un solo backend, como acá, HS256 alcanza y es más simple de manejar.
+
+</div>
+
+---
+layout: default
+---
+
+# `bcrypt`: hashear contraseñas
 
 ```bash
 npm install bcrypt
@@ -663,6 +760,12 @@ const isWrong = await bcrypt.compare('otraCosa', hashed)          // false
 <div class="mt-2 text-sm opacity-80">
 
 `bcrypt.hash` es de **una sola vía**: no se puede "deshacer" para recuperar la contraseña original, solo comparar (`compare`) si un intento coincide con el hash guardado. El `10` es el costo del algoritmo (*salt rounds*) — más alto, más lento de calcular y más difícil de romper por fuerza bruta.
+
+</div>
+
+<div class="mt-1 text-xs italic opacity-50">
+
+Doc: <a href="https://www.npmjs.com/package/bcrypt">npmjs.com/package/bcrypt</a>
 
 </div>
 
@@ -699,6 +802,37 @@ const token = jwt.sign(
 
 </div>
 
+<div class="mt-1 text-xs italic opacity-50">
+
+Doc: <a href="https://jwt.io/">jwt.io</a> — permite decodificar un token real y ver su contenido
+
+</div>
+
+---
+layout: default
+---
+
+# Los usuarios, en memoria
+
+```ts
+interface User {
+  id: number
+  email: string
+  passwordHash: string
+  role: 'admin' | 'client'
+}
+
+const users: User[] = [
+  { id: 1, email: 'ada@mail.com', passwordHash: '$2b$10$N9qo8u...', role: 'admin' },
+]
+```
+
+<div class="mt-4 text-sm opacity-80">
+
+Mismo patrón que `products`: un array en memoria, con la contraseña ya hasheada (nunca en texto plano) — el `passwordHash` de ejemplo es un hash real de `bcrypt.hash`, no un string inventado.
+
+</div>
+
 ---
 layout: default
 ---
@@ -706,7 +840,7 @@ layout: default
 # Endpoint de login completo
 
 ```ts
-app.post('/auth/login', async (req, res) => {
+app.post('/auth/login', async (req: Request, res: Response) => {
   const { email, password } = req.body
   const user = users.find((u) => u.email === email)
   if (!user) return res.status(401).json({ error: 'Credenciales inválidas' })
@@ -745,7 +879,7 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
     res.status(401).json({ error: 'Token inválido o vencido' })
   }
 }
-app.get('/profile', requireAuth, (req, res) => {
+app.get('/profile', requireAuth, (req: Request, res: Response) => {
   res.json({ userId: req.user.userId })
 })
 ```
@@ -770,12 +904,36 @@ function requireAdmin(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
+// deleteProduct: la misma lógica de borrar ya vista, como controller
 app.delete('/products/:id', requireAuth, requireAdmin, deleteProduct)
 ```
 
 <div class="mt-3 text-sm opacity-80">
 
 Dos middlewares encadenados en la misma ruta — corren en orden: primero confirma que hay una sesión válida (`requireAuth`), después que esa sesión tiene el rol necesario (`requireAdmin`). `401` ("no sé quién sos") y `403` ("sé quién sos, pero no podés") son errores distintos a propósito.
+
+</div>
+
+---
+layout: default
+---
+
+# Scaffolding recomendado
+
+```
+src/
+├── routes/        # products.ts, auth.ts — solo definen qué URL va a dónde
+├── controllers/   # getAllProducts, createProduct... la lógica de cada ruta
+├── middleware/    # requireAuth, requireAdmin, el logger, el manejador de errores
+├── services/      # auth.ts (bcrypt/jwt), email.ts...
+├── data/          # products.ts, users.ts — los arrays en memoria, por ahora
+├── app.ts         # crea la app, registra middleware y rutas
+└── index.ts       # arranca el servidor (app.listen)
+```
+
+<div class="mt-2 text-sm opacity-80">
+
+Mismo criterio de organización ya visto en React (`components/`, `routes/`, `services/`). Separar `app.ts` (arma la `app`, sin escuchar nada) de `index.ts` (la importa y recién ahí llama a `.listen`) no es solo prolijidad: `supertest`, más adelante, importa `app` directo — si `app.listen` estuviera en el mismo archivo, cada test abriría un puerto real de más.
 
 </div>
 
@@ -847,7 +1005,7 @@ npm install -D vitest
 
 <div class="mt-4 text-sm opacity-80">
 
-Mismo `describe`/`it`/`expect` en los dos — migrar de uno a otro es casi gratis. La diferencia real está en la configuración inicial y en detalles puntuales, como se ve a continuación.
+Mismo `describe`/`it`/`expect` en los dos — migrar de uno a otro es casi gratis. Ojo con `ts-jest`: al momento de escribir esto, todavía no soporta TypeScript 7 (recién liberado) — si al instalar `typescript` a secas aparece un error de `ts-jest` sobre la "compiler API", fijar `"typescript": "^6"` en el `package.json` lo resuelve. Vitest no tiene este problema.
 
 </div>
 
@@ -912,9 +1070,15 @@ test('GET /products devuelve el catálogo', async () => {
 })
 ```
 
-<div class="mt-3 text-sm opacity-80">
+<div class="mt-1 text-sm opacity-80">
 
-`supertest` envuelve la instancia de `app` directamente, sin levantar un puerto real — funciona igual con Jest o con Vitest, es independiente del runner elegido. `request(app).get(...)` simula la request; los `expect` verifican status y body, igual que un test de función pura.
+`supertest` envuelve la instancia de `app` directamente, sin levantar un puerto real — funciona igual con Jest o con Vitest. Responde `200` porque la ruta no tiene ninguna condición que la haga fallar; el body tiene longitud `2` porque el array en memoria (Mouse, Teclado) arranca así — en un test real conviene **sembrar** un estado conocido antes de cada test, para no depender de qué haya quedado de una corrida anterior.
+
+</div>
+
+<div class="mt-1 text-xs italic opacity-50">
+
+Doc: <a href="https://www.npmjs.com/package/supertest">npmjs.com/package/supertest</a>
 
 </div>
 
