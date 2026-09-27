@@ -1,0 +1,440 @@
+/* Mismo criterio que lambda-calculus-docs / clojure-docs: pie visible con sidebar, impresión sin cromo. */
+.VPFooter.has-sidebar {
+  display: block !important;
+}
+
+.nav-p3-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.nav-p3-home svg {
+  flex-shrink: 0;
+  opacity: 0.92;
+}
+
+.vp-doc p,
+.vp-doc li {
+  line-height: 1.65;
+}
+
+.vp-doc strong {
+  color: var(--vp-c-text-1);
+}
+
+.vp-doc .shiki {
+  font-size: 0.92em;
+}
+
+.vp-doc :is(ul, ol) :is(ul, ol) {
+  margin-top: 0.35em;
+  margin-bottom: 0.45em;
+  padding-inline-start: 1.4em;
+}
+
+.vp-doc :is(ul, ol) :is(ul, ol) :is(ul, ol) {
+  padding-inline-start: 1.25em;
+}
+
+.vp-doc li > :is(ul, ol) {
+  margin-top: 0.35em;
+}
+
+/* Guías con enunciados numerados y subítems a), b), c)… (mismo criterio que clojure-docs/lambda-calculus-docs) */
+.Layout.ejercicios .vp-doc ol > li {
+  counter-reset: ej-sub;
+}
+
+.Layout.ejercicios .vp-doc ol > li > ul {
+  list-style: none;
+  padding-inline-start: 0.25em;
+}
+
+.Layout.ejercicios .vp-doc ol > li > ul > li {
+  counter-increment: ej-sub;
+  position: relative;
+  padding-inline-start: 1.85em;
+}
+
+.Layout.ejercicios .vp-doc ol > li > ul > li::before {
+  content: counter(ej-sub, lower-alpha) ') ';
+  position: absolute;
+  left: 0;
+  width: 1.7em;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+}
+
+/* Tarjetas de comparación (centralizado/distribuido, GitHub y competidores, instalar Git) */
+.card-grid {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.card-grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card-grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.info-card {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.info-card.tone-red {
+  background: var(--vp-c-red-soft);
+  border-color: var(--vp-c-red-3);
+}
+
+.info-card.tone-green {
+  background: var(--vp-c-green-soft);
+  border-color: var(--vp-c-green-3);
+}
+
+.info-card h4 {
+  margin: 0 0 0.5rem;
+  border-top: none;
+  padding-top: 0;
+}
+
+.info-card .card-note {
+  font-size: 0.85em;
+  color: var(--vp-c-text-2);
+}
+
+.info-card ul {
+  text-align: left;
+  font-size: 0.85em;
+}
+
+@media (max-width: 640px) {
+  .card-grid-2,
+  .card-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Flujo de cajas con flechas (tres áreas de trabajo, ciclo de una feature) */
+.flow-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.flow-box {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  background: var(--vp-c-bg-soft);
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.flow-box.tone-brand {
+  background: var(--vp-c-brand-soft);
+}
+
+.flow-box.tone-yellow {
+  background: var(--vp-c-yellow-soft);
+}
+
+.flow-box.tone-green {
+  background: var(--vp-c-green-soft);
+}
+
+.flow-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.75em;
+  color: var(--vp-c-text-2);
+  padding: 0 0.25rem;
+}
+
+.flow-arrow .arrow-glyph {
+  font-size: 1.3em;
+  line-height: 1;
+}
+
+/* Variante vertical: para secuencias cortas en páginas angostas (evita que
+   una caja quede huérfana debajo de una flecha horizontal al hacer wrap). */
+.flow-row.flow-vertical {
+  flex-direction: column;
+}
+
+.flow-row.flow-vertical .flow-arrow {
+  flex-direction: row;
+  gap: 0.35em;
+}
+
+.flow-row.flow-vertical .arrow-glyph {
+  display: inline-block;
+  transform: rotate(90deg);
+}
+
+/* Mini-práctica al final de un tema puntual (no reemplaza la guía de ejercicios) */
+.practice-box {
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  border-radius: 0 8px 8px 0;
+  padding: 0.9rem 1.15rem;
+  margin: 1.5rem 0;
+}
+
+.practice-box .practice-label {
+  font-weight: 600;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--vp-c-brand-1);
+  margin: 0 0 0.4rem;
+}
+
+.practice-box > :last-child {
+  margin-bottom: 0;
+}
+
+/* Árbol de paradigmas: dos columnas con sub-tarjetas */
+.paradigm-tree {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.paradigm-branch {
+  border-radius: 10px;
+  padding: 0.9rem;
+  border: 1px solid var(--vp-c-divider);
+}
+
+.paradigm-branch.tone-blue {
+  background: var(--vp-c-brand-soft);
+  border-color: var(--vp-c-brand-1);
+}
+
+.paradigm-branch.tone-yellow {
+  background: var(--vp-c-yellow-soft);
+  border-color: #fcd34d;
+}
+
+.paradigm-branch h4 {
+  text-align: center;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+.paradigm-branch .paradigm-branch-sub {
+  text-align: center;
+  font-size: 0.8em;
+  opacity: 0.7;
+  margin-bottom: 0.75rem;
+}
+
+.paradigm-leaves {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.85em;
+}
+
+.paradigm-branch.tone-blue .paradigm-leaves {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.paradigm-branch.tone-yellow .paradigm-leaves {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.paradigm-leaf {
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.paradigm-leaf.highlight {
+  border-width: 2px;
+  border-color: #fbbf24;
+}
+
+.paradigm-leaf img {
+  height: 1.1rem;
+  margin: 0 auto 0.3rem;
+  display: inline-block;
+}
+
+.paradigm-leaf .paradigm-leaf-imgs {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Cronología horizontal con posiciones proporcionales a los años */
+.timeline-wrap {
+  position: relative;
+  margin: 3rem 0 1.5rem;
+  height: 6.5rem;
+}
+
+.timeline-wrap .timeline-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2rem;
+  border-top: 2px solid var(--vp-c-divider);
+}
+
+.timeline-node {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 2.3rem;
+}
+
+.timeline-node .timeline-label {
+  height: 1.25rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.62em;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.timeline-node .timeline-label img {
+  height: 1rem;
+}
+
+.timeline-node .timeline-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  border: 2px solid var(--vp-c-bg);
+  margin-top: 0.4rem;
+}
+
+.timeline-node .timeline-year {
+  font-size: 0.7em;
+  opacity: 0.6;
+  margin-top: 0.4rem;
+  line-height: 1.2;
+}
+
+/* Diagramas de ramas (SVG) */
+.branch-diagram-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.branch-diagram {
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+}
+
+.diagram-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.85em;
+  color: var(--vp-c-text-2);
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.diagram-legend .dot {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  margin-right: 0.35em;
+  vertical-align: middle;
+}
+
+@media print {
+  .VPNav,
+  .VPSidebar,
+  .VPLocalNav,
+  .VPDocAside,
+  aside.aside,
+  .VPFooter,
+  .VPFooter.has-sidebar,
+  .VPDocFooter,
+  .pager,
+  .prev-next,
+  .edit-link,
+  .VPSkipLink,
+  .VPLocalNavOutlineDropdown,
+  .VPDocAsideOutline {
+    display: none !important;
+  }
+
+  .VPContent {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .VPDoc,
+  .vp-doc {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  /* Sin esto, un marcador de ol de 2+ dígitos (10., 11., ...) queda cortado por el padding:0 de arriba. */
+  .vp-doc ol {
+    padding-inline-start: 1.85em;
+  }
+
+  .vp-doc > h1:first-of-type {
+    display: none !important;
+  }
+
+  .vp-doc hr {
+    display: none !important;
+  }
+
+  .vp-doc h2 {
+    border-top: none !important;
+  }
+
+  .card-grid,
+  .flow-row,
+  .branch-diagram-wrap,
+  .info-card,
+  .practice-box,
+  .paradigm-tree,
+  .timeline-wrap,
+  .vp-doc div[class*='language-'] {
+    break-inside: avoid;
+  }
+
+  .vp-doc h1,
+  .vp-doc h2,
+  .vp-doc h3,
+  .vp-doc h4 {
+    break-after: avoid;
+  }
+
+  body {
+    print-color-adjust: exact;
+  }
+}
