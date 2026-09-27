@@ -35,18 +35,45 @@ layout: default
 
 # Cómo se dividen las bases de datos
 
-```
-Bases de datos
-├── Relacionales (SQL)
-│   └── PostgreSQL, MySQL, SQL Server, Oracle...
-└── No relacionales (NoSQL)
-    ├── Documentos    → MongoDB, Couchbase
-    ├── Clave-valor   → Redis, DynamoDB
-    ├── Columnares    → Cassandra, HBase
-    └── Grafos        → Neo4j, ArangoDB
-```
+<div class="flex flex-col items-center mt-4">
+<div class="px-4 py-2 rounded-lg border-2 border-gray-400 bg-gray-100 font-bold text-sm">Bases de datos</div>
+<div class="w-px h-5 bg-gray-400"></div>
+<div class="flex gap-16">
 
-<div class="mt-3 text-sm italic opacity-80 text-center">
+<div class="flex flex-col items-center">
+<div class="px-3 py-1.5 rounded-lg border-2 border-blue-400 bg-blue-50 font-bold text-xs whitespace-nowrap">Relacionales (SQL)</div>
+<div class="w-px h-4 bg-blue-300"></div>
+<img src="/logos/postgresql.svg" class="h-7" />
+<div class="text-[9px] opacity-60 mt-1 text-center">PostgreSQL, MySQL,<br/>SQL Server...</div>
+</div>
+
+<div class="flex flex-col items-center">
+<div class="px-3 py-1.5 rounded-lg border-2 border-green-400 bg-green-50 font-bold text-xs whitespace-nowrap">No relacionales (NoSQL)</div>
+<div class="w-px h-4 bg-green-300"></div>
+<div class="flex gap-5 border-t-2 border-green-300 pt-2">
+<div class="flex flex-col items-center w-14">
+<img src="/logos/mongodb.svg" class="h-6" />
+<div class="text-[9px] font-bold mt-1 text-center">Documentos</div>
+</div>
+<div class="flex flex-col items-center w-14">
+<img src="/logos/redis.svg" class="h-6" />
+<div class="text-[9px] font-bold mt-1 text-center">Clave-valor</div>
+</div>
+<div class="flex flex-col items-center w-14">
+<img src="/logos/apachecassandra.svg" class="h-6" />
+<div class="text-[9px] font-bold mt-1 text-center">Columnares</div>
+</div>
+<div class="flex flex-col items-center w-14">
+<img src="/logos/neo4j.svg" class="h-6" />
+<div class="text-[9px] font-bold mt-1 text-center">Grafos</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="mt-4 text-sm italic opacity-80 text-center">
 
 MongoDB es una base de **documentos** — una familia dentro de NoSQL, no un sinónimo de NoSQL en sí.
 
@@ -59,11 +86,11 @@ layout: default
 # ¿Para qué sirve cada tipo?
 
 <div class="grid grid-cols-3 gap-3 mt-4 text-sm">
-<div class="p-3 rounded-lg bg-gray-100"><strong>Relacional (SQL)</strong> — datos muy estructurados, con relaciones claras y consistencia estricta (transacciones ACID).</div>
-<div class="p-3 rounded-lg bg-green-50 border border-green-300"><strong>Documentos (MongoDB)</strong> — datos semi-estructurados o anidados, con un esquema que puede variar.</div>
-<div class="p-3 rounded-lg bg-blue-50 border border-blue-300"><strong>Clave-valor (Redis)</strong> — lecturas/escrituras extremadamente rápidas de datos simples: cache, sesiones.</div>
-<div class="p-3 rounded-lg bg-purple-50 border border-purple-300"><strong>Columnares (Cassandra)</strong> — volúmenes enormes de escritura distribuidos en muchos nodos: series de tiempo, big data.</div>
-<div class="p-3 rounded-lg bg-yellow-50 border border-yellow-300"><strong>Grafos (Neo4j)</strong> — relaciones complejas entre entidades: redes sociales, recomendaciones.</div>
+<div class="p-3 rounded-lg bg-gray-100"><div class="flex items-center gap-2 mb-1"><img src="/logos/postgresql.svg" class="h-4" /><strong>Relacional (SQL)</strong></div>Datos muy estructurados, con relaciones claras y consistencia estricta (transacciones ACID).</div>
+<div class="p-3 rounded-lg bg-green-50 border border-green-300"><div class="flex items-center gap-2 mb-1"><img src="/logos/mongodb.svg" class="h-4" /><strong>Documentos (MongoDB)</strong></div>Datos semi-estructurados o anidados, con un esquema que puede variar.</div>
+<div class="p-3 rounded-lg bg-blue-50 border border-blue-300"><div class="flex items-center gap-2 mb-1"><img src="/logos/redis.svg" class="h-4" /><strong>Clave-valor (Redis)</strong></div>Lecturas/escrituras extremadamente rápidas de datos simples: cache, sesiones.</div>
+<div class="p-3 rounded-lg bg-purple-50 border border-purple-300"><div class="flex items-center gap-2 mb-1"><img src="/logos/apachecassandra.svg" class="h-4" /><strong>Columnares (Cassandra)</strong></div>Volúmenes enormes de escritura distribuidos en muchos nodos: series de tiempo, big data.</div>
+<div class="p-3 rounded-lg bg-yellow-50 border border-yellow-300"><div class="flex items-center gap-2 mb-1"><img src="/logos/neo4j.svg" class="h-4" /><strong>Grafos (Neo4j)</strong></div>Relaciones complejas entre entidades: redes sociales, recomendaciones.</div>
 </div>
 
 ---
@@ -95,13 +122,12 @@ layout: default
 
 # MongoDB: un poco de historia
 
-- **2007** — se funda como **10gen**, por tres ex-ejecutivos de DoubleClick, buscando una base para infraestructura propia a gran escala.
+- **2007** — nace como proyecto interno (**10gen**), buscando una base de documentos para infraestructura propia a gran escala.
 - **2009** — se libera como código abierto. El nombre viene de "humongous" (enorme).
-- **2013** — 10gen se renombra a **MongoDB Inc.**
-- **2015** — **WiredTiger** (adquirido en 2014) se vuelve el motor de almacenamiento por defecto, en la versión 3.2.
-- **2016** — lanza **MongoDB Atlas**, la base gestionada en la nube usada en este curso.
-- **2017** — sale a bolsa en el Nasdaq.
-- **Hoy** — una de las bases NoSQL más usadas del mundo, con soporte multi-modelo (búsqueda de texto, series de tiempo, transacciones ACID).
+- **2010** — con Node recién despegando, surge **Mongoose**: le agrega schemas y validación a Mongo, pensado específicamente para ese ecosistema.
+- **2015** — **WiredTiger** se vuelve el motor de almacenamiento por defecto (versión 3.2), con mejor concurrencia y compresión.
+- **2016** — lanza **Atlas**, la versión gestionada en la nube — la que usa este curso.
+- **Hoy** — soporte multi-modelo (búsqueda de texto, series de tiempo, transacciones ACID desde 2018).
 
 ---
 layout: default
@@ -549,6 +575,26 @@ await ProductModel.countDocuments({ stock: { $gt: 0 } })
 layout: default
 ---
 
+# Las mismas queries, en Compass
+
+```json
+// Barra de Filter
+{ category: "electronics", price: { $gte: 10000, $lte: 50000 } }
+
+// Barra de Sort
+{ price: -1 }
+```
+
+<div class="mt-4 text-sm opacity-80">
+
+Compass no tiene un lenguaje propio: su barra de **Filter** acepta exactamente la misma sintaxis que el argumento de `.find()` en Mongoose, y la de **Sort** la de `.sort()` — lo que se prueba ahí se puede pegar directo en el código, y viceversa.
+
+</div>
+
+---
+layout: default
+---
+
 # Modificar y borrar
 
 ```ts
@@ -614,21 +660,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 <div class="mt-2 text-sm opacity-80">
 
 Mismo middleware de errores del módulo anterior, ahora distinguiendo dos casos típicos de Mongoose: `ValidationError` (violó una regla del schema) y `CastError` (un `id` que ni siquiera tiene la forma de un `ObjectId`) — ambos, errores del cliente (`400`), no del servidor.
-
-</div>
-
----
-layout: default
----
-
-# Confirmar que se guardó de verdad
-
-- Crear un producto real contra la API: `curl -X POST http://localhost:4000/products -d '{"name":"Monitor","price":80000}' ...`
-- Abrir Compass (o la vista de colecciones en Atlas), refrescar la colección `products`, y confirmar que el documento aparece — con su `_id` real, generado por Mongo.
-
-<div class="mt-3 text-sm italic opacity-80 text-center">
-
-Mismo cierre de círculo que entre React y esta API en el módulo anterior: no alcanza con que el código "no tire error" — hay que confirmar, en la base real, que el dato efectivamente quedó guardado.
 
 </div>
 
@@ -734,34 +765,6 @@ Un índice compuesto cubre **varios** campos a la vez — útil cuando una consu
 </div>
 
 ---
-layout: center
----
-
-# Por dentro de Mongo
-
----
-layout: default
----
-
-# Cómo está armado un cluster
-
-- **`mongod`** — el proceso que atiende los pedidos y guarda los datos en disco, usando **WiredTiger** como motor de almacenamiento.
-- **Replica set** — varios `mongod` con la misma copia de los datos: uno **primario** (recibe las escrituras), varios **secundarios** (las replican). Si el primario cae, el conjunto elige uno nuevo solo.
-- **Sharding** — para volúmenes muy grandes, los datos se parten entre varios *shards* (cada uno, un replica set); un proceso `mongos` enruta cada consulta al shard correcto.
-
-<div class="mt-3 text-sm italic opacity-80 text-center">
-
-Un cluster de Atlas, incluso el gratuito, ya es por dentro un replica set de tres nodos — toda esta arquitectura viene armada, sin configurar nada a mano.
-
-</div>
-
-<div class="mt-1 text-xs opacity-60">
-
-→ [mongodb.com/docs/manual/replication](https://www.mongodb.com/docs/manual/replication/)
-
-</div>
-
----
 layout: default
 ---
 
@@ -815,7 +818,7 @@ layout: default
 - [mongoosejs.com/docs/middleware](https://mongoosejs.com/docs/middleware.html) — `pre`/`post` hooks, en profundidad
 - [mongoosejs.com/docs/populate](https://mongoosejs.com/docs/populate.html) — referencias entre colecciones
 - [mongodb.com/docs/manual/indexes](https://www.mongodb.com/docs/manual/indexes/) — tipos de índices y cuándo usarlos
-- [mongodb.com/docs/manual/replication](https://www.mongodb.com/docs/manual/replication/) — replica sets, en profundidad
+- [mongodb.com/docs/manual/query-selectors](https://www.mongodb.com/docs/manual/reference/operator/query/) — todos los operadores de consulta (`$gte`, `$in`, `$or`...)
 - [mongodb.com/atlas](https://www.mongodb.com/atlas) — base de datos gestionada, capa gratuita para proyectos chicos
 - [npmjs.com/package/mongodb-memory-server](https://www.npmjs.com/package/mongodb-memory-server) — Mongo en memoria para tests, sin instalar nada
 - [University de MongoDB](https://learn.mongodb.com/) — cursos gratuitos oficiales, con certificado
