@@ -24,52 +24,84 @@ INSPT - UTN · Ciclo Lectivo 2026
 </div>
 
 ---
-layout: default
+layout: center
 ---
 
-# Del array a una base real
-
-<div class="mt-6 text-xl opacity-90">
-
-El módulo anterior dejó una API completa — con un problema conocido de antemano.
-
-</div>
-
-<div class="mt-6 text-base opacity-80">
-
-`products` era un array en memoria: cada vez que el servidor se reinicia, se pierde todo. Este módulo reemplaza ese array por una base de datos real — **MongoDB** — sin tocar las rutas ni los verbos HTTP ya construidos, solo lo que hay del otro lado de cada `req`/`res`.
-
-</div>
-
-```ts
-// Node + Express, módulo anterior
-const products: Product[] = [ /* ... */ ]
-app.get('/products', (req, res) => res.json(products))
-```
-
-```ts
-// Este módulo: la misma ruta, ahora contra una base real
-app.get('/products', async (req, res) => {
-  const products = await Product.find()
-  res.json(products)
-})
-```
+# Tipos de bases de datos
 
 ---
 layout: default
 ---
 
-# ¿Qué es una base NoSQL?
+# Cómo se dividen las bases de datos
 
-- **SQL** (SQL Server, ya visto en Estructura y Base de Datos): datos en **tablas** con filas y columnas fijas, relacionadas entre sí con claves foráneas y `JOIN`.
-- **NoSQL** agrupa varios modelos que se apartan de eso — clave-valor, columnar, grafos, y el que usa MongoDB: **documentos**.
-- Un documento es una estructura flexible tipo JSON — cada uno puede tener campos distintos, sin una tabla que los fuerce a ser todos iguales.
+```
+Bases de datos
+├── Relacionales (SQL)
+│   └── PostgreSQL, MySQL, SQL Server, Oracle...
+└── No relacionales (NoSQL)
+    ├── Documentos    → MongoDB, Couchbase
+    ├── Clave-valor   → Redis, DynamoDB
+    ├── Columnares    → Cassandra, HBase
+    └── Grafos        → Neo4j, ArangoDB
+```
 
-<div class="mt-4 text-sm italic opacity-80 text-center">
+<div class="mt-3 text-sm italic opacity-80 text-center">
 
-No es "mejor" que lo relacional — es un modelo distinto, con otros trade-offs, útil cuando los datos son naturalmente irregulares o anidados.
+MongoDB es una base de **documentos** — una familia dentro de NoSQL, no un sinónimo de NoSQL en sí.
 
 </div>
+
+---
+layout: default
+---
+
+# ¿Para qué sirve cada tipo?
+
+<div class="grid grid-cols-3 gap-3 mt-4 text-sm">
+<div class="p-3 rounded-lg bg-gray-100"><strong>Relacional (SQL)</strong> — datos muy estructurados, con relaciones claras y consistencia estricta (transacciones ACID).</div>
+<div class="p-3 rounded-lg bg-green-50 border border-green-300"><strong>Documentos (MongoDB)</strong> — datos semi-estructurados o anidados, con un esquema que puede variar.</div>
+<div class="p-3 rounded-lg bg-blue-50 border border-blue-300"><strong>Clave-valor (Redis)</strong> — lecturas/escrituras extremadamente rápidas de datos simples: cache, sesiones.</div>
+<div class="p-3 rounded-lg bg-purple-50 border border-purple-300"><strong>Columnares (Cassandra)</strong> — volúmenes enormes de escritura distribuidos en muchos nodos: series de tiempo, big data.</div>
+<div class="p-3 rounded-lg bg-yellow-50 border border-yellow-300"><strong>Grafos (Neo4j)</strong> — relaciones complejas entre entidades: redes sociales, recomendaciones.</div>
+</div>
+
+---
+layout: default
+---
+
+# SQL vs. NoSQL
+
+<div class="overflow-x-auto mt-3 text-sm">
+
+| | SQL | NoSQL (documentos) |
+|---|---|---|
+| Esquema | Rígido, definido de antemano | Flexible, puede variar por documento |
+| Consistencia | Fuerte (ACID) | Eventual en muchos casos (modelo BASE) |
+| Escalado típico | Vertical (más CPU/RAM al servidor) | Horizontal (más servidores, sharding) |
+| Relaciones | `JOIN` entre tablas | Embedding o `populate` |
+
+</div>
+
+<div class="mt-2 text-sm opacity-80">
+
+Ambos persisten datos, ambos se consultan e indexan — la elección depende de la forma de los datos, no de que uno sea "mejor". Aclaración honesta: desde 2018, Mongo también soporta transacciones ACID multi-documento — la distinción de arriba es la más común en la práctica, no una regla absoluta.
+
+</div>
+
+---
+layout: default
+---
+
+# MongoDB: un poco de historia
+
+- **2007** — se funda como **10gen**, por tres ex-ejecutivos de DoubleClick, buscando una base para infraestructura propia a gran escala.
+- **2009** — se libera como código abierto. El nombre viene de "humongous" (enorme).
+- **2013** — 10gen se renombra a **MongoDB Inc.**
+- **2015** — **WiredTiger** (adquirido en 2014) se vuelve el motor de almacenamiento por defecto, en la versión 3.2.
+- **2016** — lanza **MongoDB Atlas**, la base gestionada en la nube usada en este curso.
+- **2017** — sale a bolsa en el Nasdaq.
+- **Hoy** — una de las bases NoSQL más usadas del mundo, con soporte multi-modelo (búsqueda de texto, series de tiempo, transacciones ACID).
 
 ---
 layout: default
@@ -149,18 +181,62 @@ layout: center
 layout: default
 ---
 
-# Conseguir una base
+# Conseguir una base: local o remota
+
+<div class="grid grid-cols-2 gap-4 mt-4 text-sm">
+<div class="p-4 rounded-lg bg-blue-50 border border-blue-300">
+
+**Local**
 
 ```bash
-# Opción 1: instalar MongoDB local
-brew install mongodb-community   # macOS, con Homebrew
+brew install mongodb-community
 ```
 
-<div class="mt-2 text-sm opacity-80">
-
-**Opción 2, recomendada para este curso:** [MongoDB Atlas](https://www.mongodb.com/atlas) — una base gestionada, gratis para proyectos chicos, sin instalar nada localmente. Da una *connection string* (`mongodb+srv://...`) lista para usar, que funciona igual desde cualquier máquina — útil para trabajar en equipo sin que cada quien tenga su propia base local desincronizada.
+Corre en tu propia máquina (`mongodb://localhost:27017`). Cada quien tiene su propia base, sin compartir datos con el equipo.
 
 </div>
+<div class="p-4 rounded-lg bg-green-50 border border-green-300">
+
+**Remota — [MongoDB Atlas](https://www.mongodb.com/atlas)** *(recomendada)*
+
+Base gestionada, capa gratis para proyectos chicos. Da una *connection string* (`mongodb+srv://...`) que funciona igual desde cualquier máquina.
+
+</div>
+</div>
+
+---
+layout: default
+---
+
+# Explorar Mongo con Compass
+
+<div class="text-sm opacity-90 mb-2">
+
+**MongoDB Compass** es la interfaz gráfica oficial para conectarse y navegar una base — local o Atlas — sin escribir una sola línea de código.
+
+</div>
+
+- Descargar Compass, pegar la misma *connection string* de la slide anterior, conectar.
+- Ver las bases que ya vienen por defecto (`admin`, `config`, `local`) — internas de Mongo, no para datos de la app.
+- Crear a mano una base y una colección propia, e insertar un documento de prueba — verlo aparecer como JSON en el árbol de la izquierda.
+
+<div class="mt-2 text-sm italic opacity-80 text-center">
+
+El objetivo: entender qué es realmente un documento y una colección, antes de que Mongoose agregue una capa de abstracción encima.
+
+</div>
+
+<div class="mt-2 text-xs opacity-60">
+
+→ [mongodb.com/products/compass](https://www.mongodb.com/products/compass)
+
+</div>
+
+---
+layout: center
+---
+
+# MongoDB en el proyecto de Node
 
 ---
 layout: default
@@ -170,11 +246,12 @@ layout: default
 
 ```bash
 npm install mongoose
+npm install -D @types/node
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-3 text-sm opacity-80">
 
-Se podría hablar directo con el driver oficial de MongoDB (`mongodb`), pero **Mongoose** agrega algo que ese driver no tiene: **schemas**. Define la forma esperada de cada documento, valida antes de guardar, y da una API más cómoda — la misma idea de "forma esperada" que una `interface` de TypeScript, ahora aplicada a lo que se persiste.
+Se podría hablar directo con el driver oficial (`mongodb`), pero ese driver no valida nada — solo envía y trae documentos tal cual. **Mongoose** es un *ODM* (*Object Document Mapper*) para Node, que surge en 2010, muy pronto en la vida de Node: agrega **schemas** (la forma esperada de un documento), validación antes de guardar, y una API más cómoda — la misma idea de "forma esperada" que una `interface` de TypeScript, ahora aplicada a lo que se persiste.
 
 </div>
 
@@ -195,9 +272,17 @@ async function connectDB() {
 connectDB()
 ```
 
-<div class="mt-3 text-sm opacity-80">
+```bash
+# .env.development (local)
+MONGO_URL=mongodb://localhost:27017/mi-app
 
-`mongoose.connect` es asíncrono — devuelve una Promise que se resuelve cuando la conexión queda lista. La *connection string* nunca va hardcodeada en el código: vive en `.env`, mismo patrón ya visto para `JWT_SECRET` en el módulo anterior.
+# .env.production (Atlas)
+MONGO_URL=mongodb+srv://user:pass@cluster.mongodb.net/mi-app
+```
+
+<div class="mt-1 text-sm opacity-80">
+
+Mismo código de conexión para los dos casos — lo único que cambia es la *connection string*, fuera del código, en `.env`.
 
 </div>
 
@@ -225,7 +310,7 @@ const productSchema = new Schema({
 
 <div class="mt-3 text-sm opacity-80">
 
-Un `Schema` describe la forma de un documento — qué campos tiene, de qué tipo, y con qué reglas. `required: true` obliga a que el campo esté presente; `default` lo completa solo si no se manda. Mismo `interface Product` de siempre, ahora con las validaciones que TypeScript no puede expresar (van a existir siempre, en runtime — algo que TS, al borrarse en la compilación, no puede hacer).
+Un `Schema` describe la forma de un documento — qué campos tiene, de qué tipo, y con qué reglas. `required: true` obliga a que el campo esté presente; `default` lo completa solo si no se manda. Estas validaciones existen siempre, en runtime — algo que TypeScript, al borrarse en la compilación, no puede ofrecer.
 
 </div>
 
@@ -246,7 +331,7 @@ const productSchema = new Schema({
 
 <div class="mt-3 text-sm opacity-80">
 
-`min` rechaza un precio o stock negativo; `trim` limpia espacios de más; `enum` limita `category` a un conjunto cerrado de valores — el mismo concepto que un *literal type* de TypeScript (`'electronics' | 'clothing' | 'books'`), acá aplicado del lado de la base, en runtime.
+`min` rechaza un precio o stock negativo; `trim` limpia espacios de más; `enum` limita `category` a un conjunto cerrado de valores — el mismo concepto que un *literal type* de TypeScript, acá aplicado del lado de la base, en runtime.
 
 </div>
 
@@ -254,10 +339,64 @@ const productSchema = new Schema({
 layout: default
 ---
 
-# Crear el modelo
+# Constraints de un campo
+
+<div class="grid grid-cols-2 gap-6 mt-4 text-sm">
+<div class="overflow-x-auto">
+
+| Constraint | Para qué |
+|---|---|
+| `required` | Campo obligatorio |
+| `unique` | Sin valores repetidos (crea un índice) |
+| `min` / `max` | Rango permitido, para números |
+| `minlength` / `maxlength` | Longitud permitida, para strings |
+
+</div>
+<div class="overflow-x-auto">
+
+| Constraint | Para qué |
+|---|---|
+| `match` | Debe cumplir una expresión regular |
+| `enum` | Conjunto cerrado de valores |
+| `default` | Valor si no se manda ninguno |
+| `validate` | Función de validación propia |
+
+</div>
+</div>
+
+---
+layout: default
+---
+
+# Validación propia con `validate`
 
 ```ts
-import mongoose, { Schema } from 'mongoose'
+const productSchema = new Schema({
+  email: { type: String, required: true, match: /^\S+@\S+\.\S+$/ },
+  price: {
+    type: Number,
+    validate: {
+      validator: (v: number) => v > 0,
+      message: 'El precio debe ser positivo',
+    },
+  },
+})
+```
+
+<div class="mt-3 text-sm opacity-80">
+
+`match` alcanza para reglas simples (un formato de email); `validate` recibe una función propia para cualquier regla más específica, con un mensaje de error a medida.
+
+</div>
+
+---
+layout: default
+---
+
+# Crear el modelo, tipado
+
+```ts
+import { Schema, model, InferSchemaType } from 'mongoose'
 
 const productSchema = new Schema({
   name: { type: String, required: true },
@@ -265,14 +404,65 @@ const productSchema = new Schema({
   stock: { type: Number, default: 0 },
 })
 
-const Product = mongoose.model('Product', productSchema)
+type Product = InferSchemaType<typeof productSchema>
+// { name: string; price: number; stock: number }
 
-export default Product
+const ProductModel = model<Product>('Product', productSchema)
 ```
 
 <div class="mt-2 text-sm opacity-80">
 
-`mongoose.model('Product', productSchema)` registra el schema y devuelve un **modelo**: el objeto que se usa para consultar y escribir en la colección `products` (Mongoose la pluraliza y minimiza el nombre solo). De acá en más, `Product` reemplaza al array en memoria.
+`mongoose.model(...)` registra el schema y devuelve un **modelo**: el objeto para consultar y escribir en la colección. `InferSchemaType` lee el schema y arma el tipo solo — ya no hace falta escribir una `interface` aparte que, tarde o temprano, se desincroniza del schema real. Esto alcanza mientras el modelo solo tenga datos; en cuanto agrega métodos propios (próxima slide), Mongoose sí necesita conocer la forma de antemano.
+
+</div>
+
+---
+layout: default
+---
+
+# Métodos de instancia y estáticos
+
+```ts
+interface ProductMethods { applyDiscount(pct: number): Promise<void> }
+type ProductModelType = Model<Product, {}, ProductMethods> & {
+  findCheapest(): Promise<HydratedDocument<Product, ProductMethods> | null>
+}
+
+const productSchema = new Schema<Product, ProductModelType, ProductMethods>({ /* los mismos campos */ })
+
+productSchema.methods.applyDiscount = async function (pct) {
+  this.price = this.price * (1 - pct)
+  await this.save()
+}
+productSchema.statics.findCheapest = function () {
+  return this.findOne().sort({ price: 1 })
+}
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+Un método de **instancia** opera sobre un documento ya cargado (`this` es el documento); uno **estático**, sobre el modelo completo. `ProductModelType` (importando `Model`/`HydratedDocument` de `mongoose`) es lo que le permite a TypeScript reconocer estas llamadas del lado de quien las usa.
+
+</div>
+
+---
+layout: default
+---
+
+# Middleware de schema: `pre` y `post`
+
+```ts
+import bcrypt from 'bcrypt'
+
+userSchema.pre('save', async function () {
+  if (!this.isModified('password')) return
+  this.password = await bcrypt.hash(this.password, 10)
+})
+```
+
+<div class="mt-3 text-sm opacity-80">
+
+Mismo `bcrypt.hash` del módulo anterior — ahora corre solo, antes de cada guardado, sin que cada ruta tenga que acordarse de llamarlo. `isModified('password')` evita rehashear una contraseña que no cambió (por ejemplo, al actualizar solo el email). Con una función `async`, Mongoose espera la Promise sola — no hace falta un `next()` manual. `post('save', ...)` existe igual, para correr algo justo después de guardar.
 
 </div>
 
@@ -289,15 +479,17 @@ layout: default
 # Crear
 
 ```ts
-app.post('/products', async (req, res) => {
-  const product = await Product.create(req.body)
+import { Request, Response } from 'express'
+
+app.post('/products', async (req: Request, res: Response) => {
+  const product = await ProductModel.create(req.body)
   res.status(201).json(product)
 })
 ```
 
 <div class="mt-4 text-sm opacity-80">
 
-`Product.create(req.body)` valida contra el schema y guarda en un solo paso — si falta un campo `required` o `price` es negativo, la Promise rechaza antes de tocar la base, y el error llega al manejador centralizado ya visto en el módulo anterior.
+`ProductModel.create(req.body)` valida contra el schema y guarda en un solo paso — si falta un campo `required` o `price` es negativo, la Promise rechaza antes de tocar la base, y el error llega al manejador centralizado ya visto en el módulo anterior.
 
 </div>
 
@@ -308,13 +500,13 @@ layout: default
 # Leer
 
 ```ts
-app.get('/products', async (req, res) => {
-  const products = await Product.find()
+app.get('/products', async (req: Request, res: Response) => {
+  const products = await ProductModel.find()
   res.json(products)
 })
 
-app.get('/products/:id', async (req, res) => {
-  const product = await Product.findById(req.params.id)
+app.get('/products/:id', async (req: Request, res: Response) => {
+  const product = await ProductModel.findById(req.params.id)
   if (!product) return res.status(404).json({ error: 'No encontrado' })
   res.json(product)
 })
@@ -322,7 +514,34 @@ app.get('/products/:id', async (req, res) => {
 
 <div class="mt-2 text-sm opacity-80">
 
-`find()` sin argumentos trae todos los documentos de la colección; `findById` busca por `_id` — Mongoose lo convierte automáticamente desde el string que llega en `req.params.id`.
+`find()` sin argumentos trae todos los documentos; `findById` busca por `_id` — Mongoose lo convierte automáticamente desde el string que llega en `req.params.id`.
+
+</div>
+
+---
+layout: default
+---
+
+# Queries más útiles
+
+```ts
+// Filtrar por categoría y rango de precio
+await ProductModel.find({ category: 'electronics', price: { $gte: 10000, $lte: 50000 } })
+
+// Ordenar por precio descendente
+await ProductModel.find().sort({ price: -1 })
+
+// Paginar: página 2, 10 por página
+await ProductModel.find().skip(10).limit(10)
+
+// Solo ciertos campos, y contar sin traer nada
+await ProductModel.find().select('name price')
+await ProductModel.countDocuments({ stock: { $gt: 0 } })
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+`$gte`/`$lte`/`$gt` son operadores de comparación de Mongo — hay muchos más (`$in`, `$or`, `$regex`) en la referencia de operadores de consulta.
 
 </div>
 
@@ -333,8 +552,8 @@ layout: default
 # Modificar y borrar
 
 ```ts
-app.put('/products/:id', async (req, res) => {
-  const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+app.put('/products/:id', async (req: Request, res: Response) => {
+  const product = await ProductModel.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   })
@@ -342,15 +561,15 @@ app.put('/products/:id', async (req, res) => {
   res.json(product)
 })
 
-app.delete('/products/:id', async (req, res) => {
-  await Product.findByIdAndDelete(req.params.id)
+app.delete('/products/:id', async (req: Request, res: Response) => {
+  await ProductModel.findByIdAndDelete(req.params.id)
   res.status(204).end()
 })
 ```
 
 <div class="mt-1 text-xs opacity-80">
 
-`new: true` hace que devuelva el documento **ya actualizado** (por defecto, Mongoose devuelve el anterior). `runValidators: true` corre las validaciones del schema también en un `update` — sin esto, se pueden colar datos inválidos que `create` sí habría rechazado.
+`new: true` hace que devuelva el documento **ya actualizado**. `runValidators: true` corre las validaciones del schema también en un `update` — sin esto, se pueden colar datos inválidos que `create` sí habría rechazado.
 
 </div>
 
@@ -361,7 +580,7 @@ layout: default
 # El `_id` de Mongo
 
 ```ts
-const product = await Product.findById('671f3a2b9e1c4a001f8b4567')
+const product = await ProductModel.findById('671f3a2b9e1c4a001f8b4567')
 
 console.log(product._id)              // ObjectId('671f3a2b9e1c4a001f8b4567')
 console.log(product._id.toString())   // '671f3a2b9e1c4a001f8b4567'
@@ -369,7 +588,7 @@ console.log(product._id.toString())   // '671f3a2b9e1c4a001f8b4567'
 
 <div class="mt-3 text-sm opacity-80">
 
-`_id` es un **ObjectId**, no un string — 12 bytes que codifican, entre otras cosas, la fecha de creación. Se genera solo, es único sin coordinación entre servidores (a diferencia de un contador incremental), y reemplaza definitivamente el `Date.now()` usado como parche en el módulo anterior. Al viajar por JSON se ve como string; adentro de Mongoose sigue siendo un `ObjectId`.
+`_id` es un **ObjectId**, no un string — 12 bytes que codifican, entre otras cosas, la fecha de creación. Se genera solo, es único sin coordinación entre servidores, y reemplaza definitivamente el `Date.now()` usado como parche en el módulo anterior. Al viajar por JSON se ve como string; adentro de Mongoose sigue siendo un `ObjectId`.
 
 </div>
 
@@ -380,7 +599,7 @@ layout: default
 # Errores de Mongoose
 
 ```ts
-app.use((err, req, res, next) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   if (err.name === 'ValidationError') {
     return res.status(400).json({ error: err.message })
   }
@@ -395,6 +614,21 @@ app.use((err, req, res, next) => {
 <div class="mt-2 text-sm opacity-80">
 
 Mismo middleware de errores del módulo anterior, ahora distinguiendo dos casos típicos de Mongoose: `ValidationError` (violó una regla del schema) y `CastError` (un `id` que ni siquiera tiene la forma de un `ObjectId`) — ambos, errores del cliente (`400`), no del servidor.
+
+</div>
+
+---
+layout: default
+---
+
+# Confirmar que se guardó de verdad
+
+- Crear un producto real contra la API: `curl -X POST http://localhost:4000/products -d '{"name":"Monitor","price":80000}' ...`
+- Abrir Compass (o la vista de colecciones en Atlas), refrescar la colección `products`, y confirmar que el documento aparece — con su `_id` real, generado por Mongo.
+
+<div class="mt-3 text-sm italic opacity-80 text-center">
+
+Mismo cierre de círculo que entre React y esta API en el módulo anterior: no alcanza con que el código "no tire error" — hay que confirmar, en la base real, que el dato efectivamente quedó guardado.
 
 </div>
 
@@ -414,14 +648,14 @@ layout: default
 const categorySchema = new Schema({
   name: { type: String, required: true },
 })
-const Category = mongoose.model('Category', categorySchema)
+const Category = model('Category', categorySchema)
 
 const productSchema = new Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   category: { type: Schema.Types.ObjectId, ref: 'Category' },
 })
-const Product = mongoose.model('Product', productSchema)
+const Product = model('Product', productSchema)
 ```
 
 <div class="mt-1 text-sm opacity-80">
@@ -449,11 +683,21 @@ Sin `populate`, `product.category` sería solo el `ObjectId` guardado. `populate
 
 </div>
 
+<div class="mt-1 text-xs opacity-60">
+
+→ [mongoosejs.com/docs/populate](https://mongoosejs.com/docs/populate.html)
+
+</div>
+
 ---
 layout: default
 ---
 
-# Índices
+# Índices: qué son y para qué sirven
+
+- Una estructura auxiliar (por defecto, un **B-tree**) que Mongo mantiene ordenada por el valor de un campo — permite encontrar documentos sin recorrer la colección entera.
+- Sin índice, buscar por `email` revisa **todos** los documentos (*collection scan*); con un índice, salta directo a los que coinciden.
+- El costo: ocupa espacio en disco/memoria, y hace un poco más lenta cada escritura (hay que actualizar también el índice).
 
 ```ts
 const userSchema = new Schema({
@@ -461,37 +705,9 @@ const userSchema = new Schema({
 })
 ```
 
-<div class="mt-4 text-sm opacity-80">
+<div class="mt-1 text-xs opacity-80">
 
-`unique: true` crea un **índice único** sobre `email` — Mongo rechaza cualquier intento de guardar un segundo documento con el mismo valor, a nivel de base de datos (no solo validado en el código). Un índice además acelera las búsquedas por ese campo, al costo de un poco más de espacio y de tiempo al escribir.
-
-</div>
-
----
-layout: default
----
-
-# TypeScript + Mongoose
-
-```ts
-import mongoose, { Schema, Document } from 'mongoose'
-interface Product {
-  name: string
-  price: number
-  stock: number
-}
-interface ProductDocument extends Product, Document {}
-const productSchema = new Schema<ProductDocument>({
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-  stock: { type: Number, default: 0 },
-})
-const ProductModel = mongoose.model<ProductDocument>('Product', productSchema)
-```
-
-<div class="mt-2 text-sm opacity-80">
-
-`Schema<ProductDocument>` tipa el schema — `ProductModel.find()` ya devuelve documentos tipados, con autocompletado, en vez de `any`.
+`unique: true` ya venía creando un índice único, sin nombrarlo como tal hasta ahora.
 
 </div>
 
@@ -499,38 +715,49 @@ const ProductModel = mongoose.model<ProductDocument>('Product', productSchema)
 layout: default
 ---
 
-# Variables de entorno
-
-```bash
-# .env
-MONGO_URL=mongodb+srv://usuario:clave@cluster.mongodb.net/mi-app
-```
+# Índices compuestos
 
 ```ts
-import 'dotenv/config'
-import mongoose from 'mongoose'
-
-mongoose.connect(process.env.MONGO_URL!)
+productSchema.index({ category: 1, price: -1 })
 ```
 
 <div class="mt-3 text-sm opacity-80">
 
-La *connection string* incluye usuario y contraseña — exactamente el tipo de secreto que nunca va al repositorio. Mismo patrón ya establecido: `.env` fuera de git, `.env.local` para overrides personales, nada hardcodeado en el código fuente.
+Un índice compuesto cubre **varios** campos a la vez — útil cuando una consulta filtra y ordena por más de uno, como "productos de esta categoría, del más caro al más barato". `1` = ascendente, `-1` = descendente: el **orden** de los campos importa, este índice acelera filtrar por `category` (solo, o junto con `price`), pero no acelera filtrar por `price` solo.
 
 </div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [mongodb.com/docs/manual/indexes](https://www.mongodb.com/docs/manual/indexes/)
+
+</div>
+
+---
+layout: center
+---
+
+# Por dentro de Mongo
 
 ---
 layout: default
 ---
 
-# Qué sigue
+# Cómo está armado un cluster
 
-- La API ya persiste de verdad — reinicia el servidor todas las veces que quiera, los datos siguen ahí.
-- El módulo de **Testing** puede ahora escribir tests de integración reales: `mongodb-memory-server` levanta una base temporal en memoria para cada corrida, sin tocar la base real ni necesitar Mongo instalado en la máquina que corre los tests.
+- **`mongod`** — el proceso que atiende los pedidos y guarda los datos en disco, usando **WiredTiger** como motor de almacenamiento.
+- **Replica set** — varios `mongod` con la misma copia de los datos: uno **primario** (recibe las escrituras), varios **secundarios** (las replican). Si el primario cae, el conjunto elige uno nuevo solo.
+- **Sharding** — para volúmenes muy grandes, los datos se parten entre varios *shards* (cada uno, un replica set); un proceso `mongos` enruta cada consulta al shard correcto.
 
-<div class="mt-6 text-sm italic opacity-80 text-center">
+<div class="mt-3 text-sm italic opacity-80 text-center">
 
-React pide datos, Express los sirve, Mongo los guarda — el stack completo, de punta a punta.
+Un cluster de Atlas, incluso el gratuito, ya es por dentro un replica set de tres nodos — toda esta arquitectura viene armada, sin configurar nada a mano.
+
+</div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [mongodb.com/docs/manual/replication](https://www.mongodb.com/docs/manual/replication/)
 
 </div>
 
@@ -547,21 +774,24 @@ layout: default
 
 | Forma | Ejemplo |
 |---|---|
-| Definir schema | `new Schema({ name: { type: String, required: true } })` |
-| Crear el modelo | `mongoose.model('Product', schema)` |
-| Conectar | `mongoose.connect(url)` |
-| Validación | `required`, `min`/`max`, `enum`, `unique` |
-| Referencia | `{ type: ObjectId, ref: 'Category' }` |
+| Definir schema | `new Schema({ campo: {...} })` |
+| Inferir el tipo | `InferSchemaType<typeof schema>` |
+| Crear el modelo | `model<T>('Product', schema)` |
+| Método/estático | `schema.methods.x` / `.statics.x` |
+| Hook | `schema.pre('save', fn)` |
+| Índice compuesto | `schema.index({ a: 1, b: -1 })` |
 
 </div>
 <div>
 
-**CRUD**
+**CRUD y queries**
 
 | Forma | Para qué |
 |---|---|
 | `Model.create(data)` | Crear |
 | `Model.find()` / `findById(id)` | Leer |
+| `.sort()` / `.skip()` / `.limit()` | Ordenar y paginar |
+| `.select('campos')` | Traer solo ciertos campos |
 | `findByIdAndUpdate(id, data, opts)` | Modificar |
 | `findByIdAndDelete(id)` | Borrar |
 | `.populate('campo')` | Traer una referencia completa |
@@ -578,10 +808,16 @@ layout: default
 <div class="space-y-2 mt-2 text-sm">
 
 - [mongodb.com/docs](https://www.mongodb.com/docs/manual/) — documentación oficial de MongoDB
-- [mongoosejs.com](https://mongoosejs.com/docs/) — documentación oficial de Mongoose, incluida su guía de TypeScript
+- [mongodb.com/products/compass](https://www.mongodb.com/products/compass) — interfaz gráfica oficial, para navegar la base sin código
+- [mongoosejs.com](https://mongoosejs.com/docs/) — documentación oficial de Mongoose
+- [mongoosejs.com/docs/typescript](https://mongoosejs.com/docs/typescript.html) — Mongoose + TypeScript, incluido `InferSchemaType`
+- [mongoosejs.com/docs/validation](https://mongoosejs.com/docs/validation.html) — todas las validaciones de schema disponibles
+- [mongoosejs.com/docs/middleware](https://mongoosejs.com/docs/middleware.html) — `pre`/`post` hooks, en profundidad
+- [mongoosejs.com/docs/populate](https://mongoosejs.com/docs/populate.html) — referencias entre colecciones
+- [mongodb.com/docs/manual/indexes](https://www.mongodb.com/docs/manual/indexes/) — tipos de índices y cuándo usarlos
+- [mongodb.com/docs/manual/replication](https://www.mongodb.com/docs/manual/replication/) — replica sets, en profundidad
 - [mongodb.com/atlas](https://www.mongodb.com/atlas) — base de datos gestionada, capa gratuita para proyectos chicos
-- [mongoosejs.com/docs/validation.html](https://mongoosejs.com/docs/validation.html) — todas las validaciones de schema disponibles
-- [mongoosejs.com/docs/populate.html](https://mongoosejs.com/docs/populate.html) — referencias entre colecciones, en profundidad
 - [npmjs.com/package/mongodb-memory-server](https://www.npmjs.com/package/mongodb-memory-server) — Mongo en memoria para tests, sin instalar nada
+- [University de MongoDB](https://learn.mongodb.com/) — cursos gratuitos oficiales, con certificado
 
 </div>
