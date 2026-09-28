@@ -98,6 +98,21 @@
   border-color: var(--vp-c-green-3);
 }
 
+.info-card.tone-yellow {
+  background: var(--vp-c-yellow-soft);
+  border-color: var(--vp-c-yellow-3);
+}
+
+.info-card.tone-indigo {
+  background: var(--vp-c-indigo-soft);
+  border-color: var(--vp-c-indigo-3);
+}
+
+.info-card.tone-purple {
+  background: var(--vp-c-purple-soft);
+  border-color: var(--vp-c-purple-3);
+}
+
 .info-card h4 {
   margin: 0 0 0.5rem;
   border-top: none;
