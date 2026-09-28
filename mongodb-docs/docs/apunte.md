@@ -13,7 +13,7 @@ app.get('/products', (req, res) => res.json(products))
 ```ts
 // Este módulo: la misma ruta, ahora contra una base real
 app.get('/products', async (req, res) => {
-  const products = await Product.find()
+  const products = await ProductModel.find()
   res.json(products)
 })
 ```
@@ -40,11 +40,11 @@ MongoDB es una base de **documentos** — una familia dentro de NoSQL, no un sin
 ### El objetivo de cada tipo
 
 <div class="card-grid card-grid-3">
-<div class="info-card"><h4>Relacional (SQL)</h4>Datos muy estructurados, con relaciones claras y consistencia estricta (transacciones ACID).</div>
-<div class="info-card tone-green" style="background:var(--vp-c-green-soft);border-color:#86efac"><h4>Documentos (MongoDB)</h4>Datos semi-estructurados o anidados, con un esquema que puede variar.</div>
-<div class="info-card" style="background:var(--vp-c-blue-soft, #eff6ff);border-color:#93c5fd"><h4>Clave-valor (Redis)</h4>Lecturas/escrituras extremadamente rápidas de datos simples: cache, sesiones.</div>
-<div class="info-card" style="background:#f3e8ff;border-color:#d8b4fe"><h4>Columnares (Cassandra)</h4>Volúmenes enormes de escritura distribuidos en muchos nodos: series de tiempo, big data.</div>
-<div class="info-card tone-yellow" style="background:var(--vp-c-yellow-soft);border-color:#fcd34d"><h4>Grafos (Neo4j)</h4>Relaciones complejas entre entidades: redes sociales, recomendaciones.</div>
+<div class="info-card" style="background:#eff6ff;border-color:#93c5fd"><h4>Relacional (SQL)</h4>Datos muy estructurados, con relaciones claras y consistencia estricta (transacciones ACID). Ejemplos: PostgreSQL, MySQL.</div>
+<div class="info-card tone-green" style="background:var(--vp-c-green-soft);border-color:#86efac"><h4>Documentos</h4>Datos semi-estructurados o anidados, con un esquema que puede variar. Ejemplos: MongoDB, Couchbase.</div>
+<div class="info-card" style="background:#fff7ed;border-color:#fdba74"><h4>Clave-valor</h4>Lecturas/escrituras extremadamente rápidas de datos simples: cache, sesiones. Ejemplos: Redis, DynamoDB.</div>
+<div class="info-card" style="background:#f3e8ff;border-color:#d8b4fe"><h4>Columnares</h4>Volúmenes enormes de escritura distribuidos en muchos nodos: series de tiempo, big data. Ejemplos: Cassandra, HBase.</div>
+<div class="info-card tone-yellow" style="background:var(--vp-c-yellow-soft);border-color:#fcd34d"><h4>Grafos</h4>Relaciones complejas entre entidades: redes sociales, recomendaciones. Ejemplos: Neo4j, ArangoDB.</div>
 </div>
 
 Ninguno de estos tipos reemplaza a los demás — un sistema real suele combinar más de uno (por ejemplo, MongoDB para el catálogo y Redis como cache de sesiones), eligiendo cada pieza según el problema puntual que resuelve.
@@ -252,6 +252,9 @@ const productSchema = new Schema({
 ```ts
 const userSchema = new Schema({
   email: { type: String, required: true, match: /^\S+@\S+\.\S+$/ },
+})
+
+const productSchema = new Schema({
   price: {
     type: Number,
     validate: {
@@ -318,6 +321,11 @@ El tipo extra (`ProductModelType`, construido con `Model`/`HydratedDocument` de 
 
 ```ts
 import bcrypt from 'bcrypt'
+
+const userSchema = new Schema({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+})
 
 userSchema.pre('save', async function () {
   if (!this.isModified('password')) return
@@ -458,14 +466,16 @@ Sobre tu propio modelo `Product`, armá las cinco rutas del CRUD contra Mongo (r
 const categorySchema = new Schema({
   name: { type: String, required: true },
 })
-const Category = model('Category', categorySchema)
+type Category = InferSchemaType<typeof categorySchema>
+const CategoryModel = model<Category>('Category', categorySchema)
 
 const productSchema = new Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   category: { type: Schema.Types.ObjectId, ref: 'Category' },
 })
-const Product = model('Product', productSchema)
+type Product = InferSchemaType<typeof productSchema>
+const ProductModel = model<Product>('Product', productSchema)
 ```
 
 `ref: 'Category'` no guarda la categoría completa — guarda su `_id`, y le dice a Mongoose a qué modelo apunta. Es *referencing*, de la comparación vista antes.
@@ -473,7 +483,7 @@ const Product = model('Product', productSchema)
 ### Traer la relación con `populate`
 
 ```ts
-const product = await Product.findById(id).populate('category')
+const product = await ProductModel.findById(id).populate('category')
 
 console.log(product.category)
 // { _id: '...', name: 'Periféricos' }   — no solo el id

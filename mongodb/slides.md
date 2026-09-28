@@ -35,38 +35,61 @@ layout: default
 
 # Cómo se dividen las bases de datos
 
-<div class="flex flex-col items-center mt-4">
-<div class="px-4 py-2 rounded-lg border-2 border-gray-400 bg-gray-100 font-bold text-sm">Bases de datos</div>
-<div class="w-px h-5 bg-gray-400"></div>
-<div class="flex gap-16">
+<div class="flex flex-col items-center mt-2">
+<div class="px-4 py-1.5 rounded-lg border-2 border-gray-400 bg-gray-100 font-bold text-sm">Bases de datos</div>
+<div class="w-px h-3 bg-gray-400"></div>
+<div class="flex gap-14 border-t-2 border-gray-300 pt-3">
 
 <div class="flex flex-col items-center">
-<div class="px-3 py-1.5 rounded-lg border-2 border-blue-400 bg-blue-50 font-bold text-xs whitespace-nowrap">Relacionales (SQL)</div>
-<div class="w-px h-4 bg-blue-300"></div>
-<img src="/logos/postgresql.svg" class="h-7" />
-<div class="text-[9px] opacity-60 mt-1 text-center">PostgreSQL, MySQL,<br/>SQL Server...</div>
+<div class="px-3 py-1 rounded-lg border-2 border-blue-400 bg-blue-50 font-bold text-xs whitespace-nowrap">Relacionales (SQL)</div>
+<div class="w-px h-2 bg-blue-300"></div>
+<div class="flex flex-col items-start gap-0.5 border-t border-blue-200 pt-1.5">
+<div class="flex items-center gap-1"><img src="/logos/postgresql.svg" class="h-3" /><span class="text-[8px]">PostgreSQL</span></div>
+<div class="flex items-center gap-1"><img src="/logos/mysql.svg" class="h-3" /><span class="text-[8px]">MySQL</span></div>
+</div>
 </div>
 
 <div class="flex flex-col items-center">
-<div class="px-3 py-1.5 rounded-lg border-2 border-green-400 bg-green-50 font-bold text-xs whitespace-nowrap">No relacionales (NoSQL)</div>
-<div class="w-px h-4 bg-green-300"></div>
-<div class="flex gap-5 border-t-2 border-green-300 pt-2">
-<div class="flex flex-col items-center w-14">
-<img src="/logos/mongodb.svg" class="h-6" />
-<div class="text-[9px] font-bold mt-1 text-center">Documentos</div>
+<div class="px-3 py-1 rounded-lg border-2 border-teal-400 bg-teal-50 font-bold text-xs whitespace-nowrap">No relacionales (NoSQL)</div>
+<div class="w-px h-2 bg-teal-300"></div>
+<div class="flex gap-4 border-t-2 border-teal-300 pt-2">
+
+<div class="flex flex-col items-center">
+<div class="px-2 py-1 rounded-lg border-2 border-green-400 bg-green-50 font-bold text-[10px] whitespace-nowrap">Documentos</div>
+<div class="w-px h-2 bg-green-300"></div>
+<div class="flex flex-col items-start gap-0.5 border-t border-green-200 pt-1.5">
+<div class="flex items-center gap-1"><img src="/logos/mongodb.svg" class="h-3" /><span class="text-[8px]">MongoDB</span></div>
+<div class="flex items-center gap-1"><img src="/logos/couchbase.svg" class="h-3" /><span class="text-[8px]">Couchbase</span></div>
 </div>
-<div class="flex flex-col items-center w-14">
-<img src="/logos/redis.svg" class="h-6" />
-<div class="text-[9px] font-bold mt-1 text-center">Clave-valor</div>
 </div>
-<div class="flex flex-col items-center w-14">
-<img src="/logos/apachecassandra.svg" class="h-6" />
-<div class="text-[9px] font-bold mt-1 text-center">Columnares</div>
+
+<div class="flex flex-col items-center">
+<div class="px-2 py-1 rounded-lg border-2 border-orange-400 bg-orange-50 font-bold text-[10px] whitespace-nowrap">Clave-valor</div>
+<div class="w-px h-2 bg-orange-300"></div>
+<div class="flex flex-col items-start gap-0.5 border-t border-orange-200 pt-1.5">
+<div class="flex items-center gap-1"><img src="/logos/redis.svg" class="h-3" /><span class="text-[8px]">Redis</span></div>
+<div class="flex items-center gap-1"><img src="/logos/amazondynamodb.svg" class="h-3" /><span class="text-[8px]">DynamoDB</span></div>
 </div>
-<div class="flex flex-col items-center w-14">
-<img src="/logos/neo4j.svg" class="h-6" />
-<div class="text-[9px] font-bold mt-1 text-center">Grafos</div>
 </div>
+
+<div class="flex flex-col items-center">
+<div class="px-2 py-1 rounded-lg border-2 border-purple-400 bg-purple-50 font-bold text-[10px] whitespace-nowrap">Columnares</div>
+<div class="w-px h-2 bg-purple-300"></div>
+<div class="flex flex-col items-start gap-0.5 border-t border-purple-200 pt-1.5">
+<div class="flex items-center gap-1"><img src="/logos/apachecassandra.svg" class="h-3" /><span class="text-[8px]">Cassandra</span></div>
+<div class="flex items-center gap-1"><img src="/logos/apachehbase.svg" class="h-3" /><span class="text-[8px]">HBase</span></div>
+</div>
+</div>
+
+<div class="flex flex-col items-center">
+<div class="px-2 py-1 rounded-lg border-2 border-yellow-400 bg-yellow-50 font-bold text-[10px] whitespace-nowrap">Grafos</div>
+<div class="w-px h-2 bg-yellow-300"></div>
+<div class="flex flex-col items-start gap-0.5 border-t border-yellow-200 pt-1.5">
+<div class="flex items-center gap-1"><img src="/logos/neo4j.svg" class="h-3" /><span class="text-[8px]">Neo4j</span></div>
+<div class="flex items-center gap-1"><img src="/logos/arangodb.svg" class="h-3" /><span class="text-[8px]">ArangoDB</span></div>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -86,11 +109,11 @@ layout: default
 # ¿Para qué sirve cada tipo?
 
 <div class="grid grid-cols-3 gap-3 mt-4 text-sm">
-<div class="p-3 rounded-lg bg-gray-100"><div class="flex items-center gap-2 mb-1"><img src="/logos/postgresql.svg" class="h-4" /><strong>Relacional (SQL)</strong></div>Datos muy estructurados, con relaciones claras y consistencia estricta (transacciones ACID).</div>
-<div class="p-3 rounded-lg bg-green-50 border border-green-300"><div class="flex items-center gap-2 mb-1"><img src="/logos/mongodb.svg" class="h-4" /><strong>Documentos (MongoDB)</strong></div>Datos semi-estructurados o anidados, con un esquema que puede variar.</div>
-<div class="p-3 rounded-lg bg-blue-50 border border-blue-300"><div class="flex items-center gap-2 mb-1"><img src="/logos/redis.svg" class="h-4" /><strong>Clave-valor (Redis)</strong></div>Lecturas/escrituras extremadamente rápidas de datos simples: cache, sesiones.</div>
-<div class="p-3 rounded-lg bg-purple-50 border border-purple-300"><div class="flex items-center gap-2 mb-1"><img src="/logos/apachecassandra.svg" class="h-4" /><strong>Columnares (Cassandra)</strong></div>Volúmenes enormes de escritura distribuidos en muchos nodos: series de tiempo, big data.</div>
-<div class="p-3 rounded-lg bg-yellow-50 border border-yellow-300"><div class="flex items-center gap-2 mb-1"><img src="/logos/neo4j.svg" class="h-4" /><strong>Grafos (Neo4j)</strong></div>Relaciones complejas entre entidades: redes sociales, recomendaciones.</div>
+<div class="p-3 rounded-lg border border-blue-300 bg-blue-50"><strong>Relacional (SQL)</strong><br/>Datos muy estructurados, con relaciones claras y consistencia estricta (transacciones ACID). Ejemplos: PostgreSQL, MySQL.</div>
+<div class="p-3 rounded-lg bg-green-50 border border-green-300"><strong>Documentos</strong><br/>Datos semi-estructurados o anidados, con un esquema que puede variar. Ejemplos: MongoDB, Couchbase.</div>
+<div class="p-3 rounded-lg bg-orange-50 border border-orange-300"><strong>Clave-valor</strong><br/>Lecturas/escrituras extremadamente rápidas de datos simples: cache, sesiones. Ejemplos: Redis, DynamoDB.</div>
+<div class="p-3 rounded-lg bg-purple-50 border border-purple-300"><strong>Columnares</strong><br/>Volúmenes enormes de escritura distribuidos en muchos nodos: series de tiempo, big data. Ejemplos: Cassandra, HBase.</div>
+<div class="p-3 rounded-lg bg-yellow-50 border border-yellow-300"><strong>Grafos</strong><br/>Relaciones complejas entre entidades: redes sociales, recomendaciones. Ejemplos: Neo4j, ArangoDB.</div>
 </div>
 
 ---
@@ -397,8 +420,11 @@ layout: default
 # Validación propia con `validate`
 
 ```ts
-const productSchema = new Schema({
+const userSchema = new Schema({
   email: { type: String, required: true, match: /^\S+@\S+\.\S+$/ },
+})
+
+const productSchema = new Schema({
   price: {
     type: Number,
     validate: {
@@ -479,6 +505,11 @@ layout: default
 
 ```ts
 import bcrypt from 'bcrypt'
+
+const userSchema = new Schema({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+})
 
 userSchema.pre('save', async function () {
   if (!this.isModified('password')) return
@@ -679,14 +710,16 @@ layout: default
 const categorySchema = new Schema({
   name: { type: String, required: true },
 })
-const Category = model('Category', categorySchema)
+type Category = InferSchemaType<typeof categorySchema>
+const CategoryModel = model<Category>('Category', categorySchema)
 
 const productSchema = new Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   category: { type: Schema.Types.ObjectId, ref: 'Category' },
 })
-const Product = model('Product', productSchema)
+type Product = InferSchemaType<typeof productSchema>
+const ProductModel = model<Product>('Product', productSchema)
 ```
 
 <div class="mt-1 text-sm opacity-80">
@@ -702,7 +735,7 @@ layout: default
 # Traer la relación con `populate`
 
 ```ts
-const product = await Product.findById(id).populate('category')
+const product = await ProductModel.findById(id).populate('category')
 
 console.log(product.category)
 // { _id: '...', name: 'Periféricos' }   — no solo el id
