@@ -6,7 +6,7 @@ info: |
   Testing - Programación III
   INSPT - UTN
 author: Gastón Larriera
-keywords: testing, unit testing, integration testing, e2e, coverage, jest, vitest, supertest, playwright, INSPT, UTN
+keywords: testing, unit testing, integration testing, e2e, tdd, coverage, jest, vitest, playwright, cypress, husky, INSPT, UTN
 transition: slide-left
 mdc: true
 ---
@@ -38,7 +38,7 @@ Cada módulo de esta unidad ya probó una parte del stack, por separado.
 
 <div class="mt-6 text-base opacity-80">
 
-React Testing Library sobre componentes; `supertest` sobre las rutas de Express; `mongodb-memory-server`, mencionado al cerrar Mongo. Este módulo no repite ninguno de esos ejemplos — da el panorama completo: qué tipos de test existen, cómo se combinan, y cómo saber si un proyecto está **realmente** cubierto, más allá de la sensación de "ya probé esto a mano".
+React Testing Library sobre componentes; `supertest` sobre las rutas de Express; `mongodb-memory-server`, mencionado al cerrar Mongo. Este módulo no repite ninguno de esos ejemplos — da el panorama completo: qué tipos de test existen, qué metodologías y patrones los rodean, cómo automatizarlos, y cómo saber si un proyecto está **realmente** cubierto.
 
 </div>
 
@@ -56,7 +56,7 @@ layout: default
 
 - Un test corre en segundos y detecta una regresión **antes** de que la vea un usuario real — probar todo a mano, cada vez, no escala.
 - Da confianza para refactorizar: si algo se rompe al cambiar código, un test lo avisa en el momento, no semanas después.
-- Es documentación ejecutable — un test bien nombrado explica qué se espera de una función o pantalla, y se mantiene sincronizado con el código a la fuerza (si el código cambia y el comportamiento no, el test debería seguir pasando).
+- Es documentación ejecutable — un test bien nombrado explica qué se espera de una función o pantalla, y se mantiene sincronizado con el código a la fuerza.
 
 <div class="mt-4 text-sm italic opacity-80 text-center">
 
@@ -81,25 +81,106 @@ layout: default
 
 **Unitario**
 
-Prueba **una pieza aislada** — una función, un componente — sin sus dependencias reales.
+Prueba **una pieza aislada** — una función, un componente — sin dependencias reales.
 </div>
 <div class="p-3 rounded-lg bg-yellow-50 border-2 border-yellow-300">
 
 **Integración**
 
-Prueba **varias piezas juntas** — una ruta Express con su base de datos, un componente con sus hijos reales.
+Prueba **varias piezas juntas** — con al menos una dependencia real de por medio.
 </div>
 <div class="p-3 rounded-lg bg-red-50 border-2 border-red-300">
 
 **End-to-end (e2e)**
 
-Prueba el **sistema completo**, como lo usaría una persona real — un navegador, contra la app corriendo entera.
+Prueba el **sistema completo**, como lo usaría una persona real.
 </div>
 </div>
 
 <div class="mt-6 text-sm opacity-80">
 
-Ya vistos en la unidad: `applyDiscount` sola es **unitario**; `supertest` contra una ruta que sí toca la base es **integración**. Ninguno de los módulos anteriores llegó a escribir un e2e — se menciona acá, al cierre.
+Tres niveles, cada uno con su propia lógica de cuándo conviene — se ven en detalle en las próximas slides, y vuelven a aparecer con cada tecnología concreta del curso.
+
+</div>
+
+---
+layout: default
+---
+
+# Tests unitarios
+
+<div class="text-sm opacity-90 mb-2">
+
+Prueban **una sola pieza** — una función, un método — con todas sus dependencias reemplazadas o directamente sin ninguna. Si algo de afuera hiciera falta (una base, una API), ya no es unitario.
+
+</div>
+
+```ts
+export function applyDiscount(price: number, rate: number): number {
+  if (rate < 0 || rate > 1) throw new Error('rate debe estar entre 0 y 1')
+  return price - price * rate
+}
+```
+
+```ts
+test('aplica el descuento correctamente', () => {
+  expect(applyDiscount(1000, 0.1)).toBe(900)
+})
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+Sin red, sin servidor, sin nada externo — por eso corren en milisegundos y se pueden tener miles. En el ecosistema JS/TS, **Jest** y **Vitest** son los más usados (en otros lenguajes existe el mismo concepto: JUnit en Java, pytest en Python).
+
+</div>
+
+---
+layout: default
+---
+
+# Tests de integración
+
+<div class="text-sm opacity-90 mb-2">
+
+Prueban **varias piezas juntas**, con al menos una dependencia real de por medio — una ruta Express contra una base real, un componente con sus hijos reales en vez de mockeados.
+
+</div>
+
+```ts
+import request from 'supertest'
+import app from '../app'
+
+test('GET /products devuelve el catálogo', async () => {
+  const res = await request(app).get('/products')
+  expect(res.status).toBe(200)
+})
+```
+
+<div class="mt-2 text-sm opacity-80">
+
+Ya visto en Node + Express: acá `app` es real. La base puede ser real también (con `mongodb-memory-server`) o no, según qué parte se quiera probar — la línea entre unitario e integración depende de **qué tan real** es lo que hay alrededor, no de la herramienta usada.
+
+</div>
+
+---
+layout: default
+---
+
+# Tests end-to-end (E2E)
+
+<div class="text-sm opacity-90 mb-2">
+
+Prueban el **sistema completo**, sin ningún reemplazo — un navegador real, contra la app corriendo entera, con su backend y su base reales.
+
+</div>
+
+- Simulan exactamente lo que haría una persona: abrir una página, hacer clic, escribir, leer lo que aparece en pantalla.
+- Son los más lentos y los más caros de mantener — un cambio de diseño puede romperlos sin que la lógica haya cambiado.
+- Las herramientas (**Playwright**, **Cypress**) se ven en profundidad más adelante en este módulo.
+
+<div class="mt-2 text-sm italic opacity-80 text-center">
+
+Por eso se reservan para los flujos más críticos de la app — no para repetir ahí lo que ya probaron los niveles anteriores.
 
 </div>
 
@@ -117,7 +198,53 @@ layout: default
 
 <div class="mt-6 text-sm opacity-80">
 
-Cuantos **más** tests, más abajo en la pirámide: los unitarios son rápidos, baratos y estables — conviene tener muchos. Los e2e son lentos, caros de mantener y frágiles (un cambio de diseño rompe el test sin que la lógica haya cambiado) — se reservan para los flujos más críticos, unos pocos, no para cada pantalla.
+Cuantos **más** tests, más abajo en la pirámide: los unitarios son rápidos, baratos y estables — conviene tener muchos. Los e2e son lentos y frágiles — se reservan para los flujos más críticos, unos pocos.
+
+</div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [martinfowler.com/bliki/TestPyramid](https://martinfowler.com/bliki/TestPyramid.html)
+
+</div>
+
+---
+layout: default
+---
+
+# Otro modelo: la Testing Trophy
+
+<div class="flex flex-col items-center mt-4 text-sm">
+<div class="w-28 py-1.5 bg-red-100 border-2 border-red-300 text-center rounded-t-lg">e2e</div>
+<div class="w-80 py-2.5 bg-yellow-100 border-2 border-yellow-300 text-center font-bold">Integración</div>
+<div class="w-56 py-1.5 bg-blue-100 border-2 border-blue-300 text-center">Unitarios</div>
+<div class="w-72 py-1.5 bg-gray-100 border-2 border-gray-300 text-center rounded-b-lg">Estáticos (lint, tipos)</div>
+</div>
+
+<div class="mt-3 text-xs opacity-80">
+
+Propuesta de Kent C. Dodds: **menos unitarios, más integración** — surge porque herramientas como React Testing Library y `supertest` volvieron los tests de integración rápidos y baratos, algo que no era cierto cuando se diseñó la pirámide. Ninguno de los dos modelos es una ley — son heurísticas para decidir dónde conviene poner el esfuerzo.
+
+</div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [Kent C. Dodds — Write tests. Not too many. Mostly integration](https://kentcdodds.com/blog/write-tests)
+
+</div>
+
+---
+layout: default
+---
+
+# Testing de regresión
+
+- Confirmar que un cambio **nuevo** no rompió algo que **ya andaba** — ese es, literalmente, el nombre: evitar que el software "regrese" a un estado con bugs ya resueltos.
+- No es un cuarto nivel que compita con unitario/integración/e2e — es el **rol** que cumple cualquiera de esos niveles cuando la suite se corre repetidamente, no una sola vez.
+
+<div class="mt-4 text-sm italic opacity-80 text-center">
+
+Por eso importa correr la suite en cada cambio, no "una vez y listo" — el próximo bloque es, justamente, cómo automatizar eso.
 
 </div>
 
@@ -146,9 +273,15 @@ layout: default
 
 <div class="mt-4 text-sm opacity-80">
 
-`supertest` sin base real es unitario (prueba solo la lógica de la ruta); combinado con `mongodb-memory-server` pasa a ser un test de integración — la línea entre niveles depende de **qué tan real** es lo que hay del otro lado del test, no de la herramienta usada.
+`supertest` sin base real es unitario (prueba solo la lógica de la ruta); combinado con `mongodb-memory-server` pasa a ser un test de integración — la misma idea de la slide anterior, ahora con las herramientas concretas del curso.
 
 </div>
+
+---
+layout: center
+---
+
+# Patrones y metodología
 
 ---
 layout: default
@@ -172,7 +305,7 @@ test('applyDiscount resta el porcentaje', () => {
 
 <div class="mt-3 text-sm opacity-80">
 
-**Arrange / Act / Assert** — un mismo esqueleto para casi cualquier test, sin importar el nivel: preparar el escenario, ejecutar una sola acción, y verificar un resultado. Un test que mezcla varios "Act" seguidos suele ser señal de que en realidad son dos tests distintos.
+**Arrange / Act / Assert** — un mismo esqueleto para casi cualquier test: preparar el escenario, ejecutar una sola acción, verificar un resultado. Un test con varios "Act" seguidos suele ser, en realidad, dos tests.
 
 </div>
 
@@ -180,32 +313,226 @@ test('applyDiscount resta el porcentaje', () => {
 layout: default
 ---
 
-# Test doubles: mocks, stubs y spies
+# Given-When-Then
 
-<div class="grid grid-cols-3 gap-3 mt-4 text-sm">
-<div class="p-3 rounded-lg bg-gray-100">
+```gherkin
+Scenario: Aplicar un descuento
+  Given un producto de $1000
+  When se aplica un descuento del 10%
+  Then el precio final es $900
+```
 
-**Stub**
+<div class="mt-3 text-sm opacity-80">
 
-Devuelve una respuesta fija, sin lógica real — "si te preguntan, contestá esto".
-</div>
-<div class="p-3 rounded-lg bg-gray-100">
+Mismo esqueleto de tres partes que AAA (`Given`=Arrange, `When`=Act, `Then`=Assert) — lo que cambia es el público: nace de **BDD** (*Behavior-Driven Development*) y se escribe en lenguaje de negocio, pensado para que lo lea todo el equipo, no solo quien programa. Herramientas como Cucumber lo convierten en un test real a partir de ese mismo texto.
 
-**Mock**
-
-Un stub que además **verifica** cómo lo llamaron — el `jest.mock`/`vi.mock` ya visto en Node + Express.
-</div>
-<div class="p-3 rounded-lg bg-gray-100">
-
-**Spy**
-
-Envuelve una función **real** y registra sus llamadas, sin reemplazar su comportamiento.
-</div>
 </div>
 
-<div class="mt-6 text-sm italic opacity-80 text-center">
+<div class="mt-1 text-xs opacity-60">
 
-Los tres son "dobles de test" — reemplazos controlados de una dependencia real, para no depender de una API externa, un timer, o una base de datos en un test unitario.
+→ [automationpanda.com — Arrange-Act-Assert](https://automationpanda.com/2020/07/07/arrange-act-assert-a-pattern-for-writing-good-tests/)
+
+</div>
+
+---
+layout: default
+---
+
+# TDD: red, green, refactor
+
+```ts
+// 1. Red — el test falla: applyDiscount todavía no existe
+test('aplica 10% de descuento', () => {
+  expect(applyDiscount(1000, 0.1)).toBe(900)
+})
+
+// 2. Green — lo mínimo para que pase
+export function applyDiscount(price: number, rate: number) {
+  return price - price * rate
+}
+
+// 3. Refactor — con la red de seguridad puesta, se valida el input
+export function applyDiscount(price: number, rate: number) {
+  if (rate < 0 || rate > 1) throw new Error('rate inválido')
+  return price - price * rate
+}
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+Es una **metodología de desarrollo** (el test se escribe antes que el código), no un nivel de test ni una forma de estructurarlo. Cada vuelta cubre un comportamiento chico a propósito — si cuesta terminar una, el paso elegido fue muy grande, no que faltó tiempo.
+
+</div>
+
+---
+layout: default
+---
+
+# Test doubles: los 5 tipos
+
+<div class="grid grid-cols-3 gap-2 mt-3 text-xs">
+<div class="p-2 rounded-lg bg-gray-100"><strong>Dummy</strong><br/>Se pasa porque hace falta el parámetro — a nadie le importa qué hace.</div>
+<div class="p-2 rounded-lg bg-gray-100"><strong>Fake</strong><br/>Una implementación liviana que <strong>sí funciona</strong> (un repo en memoria, no la base real).</div>
+<div class="p-2 rounded-lg bg-gray-100"><strong>Stub</strong><br/>Devuelve una respuesta fija, prearmada — sin lógica real.</div>
+<div class="p-2 rounded-lg bg-gray-100"><strong>Spy</strong><br/>Envuelve algo <strong>real</strong> y registra cómo lo llamaron.</div>
+<div class="p-2 rounded-lg bg-gray-100"><strong>Mock</strong><br/>Se arma con expectativas — el test verifica que lo llamaron como esperaba.</div>
+</div>
+
+<div class="mt-3 text-sm italic opacity-80 text-center">
+
+La distinción real: Stub/Fake verifican **estado** (mirás el resultado); Mock verifica **comportamiento** (mirás la interacción). Spy está en el medio — mira la interacción sobre algo que sigue siendo real.
+
+</div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [martinfowler.com/bliki/TestDouble](https://martinfowler.com/bliki/TestDouble.html)
+
+</div>
+
+---
+layout: default
+---
+
+# Otra corriente: London vs. Chicago
+
+```ts
+// Chicago (clasicista): usa un Fake, mira el RESULTADO
+it('crea el pedido si hay stock', () => {
+  const ok = placeOrder('1', new FakeProductRepo(), realEmail, realLogger)
+  expect(ok).toBe(true)
+})
+```
+
+```ts
+// London (mockista): mockea todo, mira las LLAMADAS
+it('crea el pedido si hay stock', () => {
+  const mockEmail = { send: vi.fn() }
+  placeOrder('1', stubRepo, mockEmail, dummyLogger)
+  expect(mockEmail.send).toHaveBeenCalled()
+})
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+Dos escuelas de **TDD**, no dos herramientas distintas. Chicago evita mocks — tests más resistentes a refactors internos. London mockea todas las dependencias para aislar una sola unidad — al costo de acoplarse a <em>cómo</em> está implementada, no solo a <em>qué</em> hace.
+
+</div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [chuniversiteit.nl — Chicago and London schools of TDD](https://chuniversiteit.nl/programming/chicago-and-london-schools-of-tdd)
+
+</div>
+
+---
+layout: default
+---
+
+# Buenas prácticas
+
+- **Un test, una razón para fallar** — si falla, tiene que quedar claro qué se rompió sin leer el código de producción.
+- **Tests independientes** — no deberían depender del orden en que corren, ni compartir estado mutable entre sí.
+- **Nombres descriptivos** — el nombre es la primera (a veces única) documentación que alguien lee.
+- **No testear implementación** — verificar *qué* hace el código, no *cómo* por dentro; si no, cada refactor rompe tests sin que el comportamiento haya cambiado.
+- **Tests rápidos** — una suite lenta es una suite que, en la práctica, la gente deja de correr.
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [github.com/goldbergyoni/javascript-testing-best-practices](https://github.com/goldbergyoni/javascript-testing-best-practices)
+
+</div>
+
+---
+layout: default
+---
+
+# Un test con varios casos
+
+```ts
+describe('applyDiscount', () => {
+  it.each([
+    [1000, 0, 1000],
+    [1000, 0.1, 900],
+    [1000, 0.5, 500],
+    [1000, 1, 0],
+  ])('con precio %i y tasa %p, devuelve %i', (price, rate, expected) => {
+    expect(applyDiscount(price, rate)).toBe(expected)
+  })
+
+  it('rechaza una tasa negativa', () => {
+    expect(() => applyDiscount(1000, -0.1)).toThrow()
+  })
+})
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+`it.each` evita copiar y pegar el mismo test cuatro veces — una tabla de casos, incluidos los límite (`0`, `1`), no solo el camino feliz. Un test real casi nunca es una sola aserción suelta.
+
+</div>
+
+---
+layout: default
+---
+
+# Testear los tipos <img src="/logos/typescript.svg" class="h-6 inline align-middle ml-1"/>
+
+```ts
+import { expectTypeOf } from 'vitest'
+import { applyDiscount } from './pricing'
+
+expectTypeOf(applyDiscount).parameter(0).toBeNumber()
+expectTypeOf(applyDiscount).returns.toBeNumber()
+```
+
+```bash
+npx vitest --typecheck
+```
+
+<div class="mt-2 text-sm opacity-80">
+
+Esto no corre en runtime — TypeScript chequea estas relaciones al compilar. Detecta algo que un test normal no puede: que la firma de una función cambió sin querer, aunque el valor devuelto siga siendo "correcto". Por convención, estos tests viven en archivos `*.test-d.ts`.
+
+</div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [vitest.dev/guide/testing-types](https://vitest.dev/guide/testing-types.html)
+
+</div>
+
+---
+layout: center
+---
+
+# Automatizar: pre-commits y CI
+
+---
+layout: default
+---
+
+# Pre-commit hooks con Husky
+
+```bash
+npm install -D husky lint-staged
+npx husky init
+```
+
+```json
+// .lintstagedrc.json
+{ "*.ts": "vitest related --run" }
+```
+
+<div class="mt-2 text-sm opacity-80">
+
+`husky init` crea `.husky/pre-commit` y un script `prepare` en `package.json` (corre solo con `npm install`, para que quede configurado en cualquier clon del repo). **lint-staged** corre `vitest related` solo sobre los archivos modificados — mucho más rápido que toda la suite en cada commit. Si un test falla, el commit se cancela.
+
+</div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [typicode.github.io/husky](https://typicode.github.io/husky/get-started.html) · [github.com/lint-staged/lint-staged](https://github.com/lint-staged/lint-staged)
 
 </div>
 
@@ -214,6 +541,8 @@ layout: default
 ---
 
 # Tests en CI
+
+<img src="/logos/githubactions.svg" class="h-8 opacity-90 mb-1"/>
 
 ```yaml
 # .github/workflows/test.yml
@@ -230,6 +559,37 @@ jobs:
 <div class="mt-3 text-sm opacity-80">
 
 Mismo GitHub Actions ya visto en Git & GitHub — correr los tests automáticamente en cada `push`/Pull Request, no solo "a mano antes de acordarme". Un PR con un test roto queda marcado en rojo, visible para todo el equipo, antes de mergear.
+
+</div>
+
+---
+layout: default
+---
+
+# Branch protection
+
+- El job `test` del workflow anterior aparece, automáticamente, como un **status check** sobre cada Pull Request.
+- En *Settings → Branches → Branch protection rules*, activar "Require status checks to pass before merging" y elegir ese job por nombre.
+- Con eso activado, GitHub **no deja mergear** mientras el check esté en rojo — deja de depender de que alguien se acuerde de mirar.
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [docs.github.com — Managing a branch protection rule](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)
+
+</div>
+
+---
+layout: default
+---
+
+# ¿Y el rol del QA?
+
+- **Testing manual/exploratorio** — una persona probando la app a mano, buscando casos raros que nadie pensó en automatizar. Insustituible para usabilidad; no tiene sentido para repetir lo mismo mil veces.
+- **QA de automatización** — escribe exactamente el tipo de tests de este módulo, a veces como su rol principal dentro de un equipo.
+
+<div class="mt-3 text-sm italic opacity-80 text-center">
+
+No son roles opuestos, se complementan. En un equipo grande suelen ser personas distintas; en uno chico — como el proyecto final — la misma persona hace las dos cosas.
 
 </div>
 
@@ -255,7 +615,7 @@ layout: default
 <div class="p-3 rounded-lg bg-gray-100"><strong>Line coverage</strong> — % de líneas ejecutadas.</div>
 <div class="p-3 rounded-lg bg-gray-100"><strong>Branch coverage</strong> — % de ramas de un `if`/`switch` tomadas (las dos, no solo una).</div>
 <div class="p-3 rounded-lg bg-gray-100"><strong>Function coverage</strong> — % de funciones invocadas al menos una vez.</div>
-<div class="p-3 rounded-lg bg-gray-100"><strong>Statement coverage</strong> — % de sentencias ejecutadas (similar a líneas, más preciso con varias por línea).</div>
+<div class="p-3 rounded-lg bg-gray-100"><strong>Statement coverage</strong> — % de sentencias ejecutadas (más preciso que líneas, si hay varias por línea).</div>
 </div>
 
 ---
@@ -265,24 +625,40 @@ layout: default
 # Cómo medirlo
 
 ```bash
-# Vitest
 npm install -D @vitest/coverage-v8
 npx vitest run --coverage
-
-# Jest (ya lo trae incluido)
-npx jest --coverage
 ```
 
 ```
-File          | % Stmts | % Branch | % Funcs | % Lines |
---------------|---------|----------|---------|---------|
-pricing.ts    |   100   |    100   |   100   |   100   |
-products.ts   |    72   |     50   |    80   |    72   |
+File        | % Stmts | % Branch | % Funcs | % Lines |
+------------|---------|----------|---------|---------|
+pricing.ts  |   60.00 |   100.00 |   33.33 |   50.00 |
 ```
 
 <div class="mt-2 text-sm opacity-80">
 
-Ambos generan un reporte por archivo (texto en la terminal, y opcionalmente HTML navegable) — útil para encontrar rápido qué archivo quedó menos probado, no solo un número global.
+Sin configuración extra, un solo comando genera **dos** reportes a la vez: texto en la terminal (arriba) y uno HTML navegable, en `coverage/index.html`. Jest trae esto mismo incluido, con `npx jest --coverage`.
+
+</div>
+
+---
+layout: default
+---
+
+# Leer el reporte HTML
+
+- Abrir `coverage/index.html` en el navegador — un listado de archivos, cada uno clickeable.
+- Adentro de un archivo, el código fuente se ve resaltado línea por línea:
+
+<div class="grid grid-cols-3 gap-2 mt-2 text-xs">
+<div class="p-2 rounded-lg bg-green-100 border border-green-400 text-center">Verde — se ejecutó</div>
+<div class="p-2 rounded-lg bg-pink-100 border border-pink-400 text-center">Rosa — nunca se ejecutó</div>
+<div class="p-2 rounded-lg bg-yellow-100 border border-yellow-400 text-center">Amarillo — rama parcial</div>
+</div>
+
+<div class="mt-3 text-sm italic opacity-80 text-center">
+
+La forma más rápida de encontrar qué falta probar, archivo por archivo — mucho más útil que mirar solo el número global.
 
 </div>
 
@@ -292,13 +668,13 @@ layout: default
 
 # ¿Cuánto coverage alcanza?
 
-- **100% no es el objetivo** — se puede llegar ahí con tests triviales que ejecutan una línea sin verificar nada útil (`expect(true).toBe(true)`), inflando el número sin agregar confianza real.
-- Un **piso razonable** (60-80%, según el proyecto) sirve como red de seguridad: por debajo de eso, hay demasiado código sin ninguna verificación.
-- Coverage mide **qué corrió**, no **qué tan bien se probó** — cien por ciento de cobertura con asserts débiles vale menos que 70% con tests que realmente verifican casos límite.
+- **100% no es el objetivo** — se llega ahí con tests triviales que ejecutan una línea sin verificar nada útil, inflando el número sin agregar confianza real.
+- Un **piso razonable** (60-80%, según el proyecto) sirve como red de seguridad: por debajo, hay demasiado código sin ninguna verificación.
+- Coverage mide **qué corrió**, no **qué tan bien se probó** — cien por ciento con asserts débiles vale menos que 70% con tests que verifican casos límite de verdad.
 
 <div class="mt-4 text-sm italic opacity-80 text-center">
 
-Una métrica útil para detectar código completamente huérfano de tests — no un sustituto de revisar si los tests que existen son buenos.
+Útil para detectar código completamente huérfano de tests — no un sustituto de revisar si los tests que existen son buenos.
 
 </div>
 
@@ -306,32 +682,93 @@ Una métrica útil para detectar código completamente huérfano de tests — no
 layout: default
 ---
 
-# Coverage en el proyecto final
+# Automatizar el coverage en CI
 
-<div class="text-sm opacity-80 mb-2">
+```ts
+// vitest.config.ts
+export default defineConfig({
+  test: {
+    coverage: { thresholds: { lines: 70, branches: 70 } },
+  },
+})
+```
 
-Con esa salvedad ya hecha, es una buena idea medirlo también ahí.
+<div class="mt-2 text-sm opacity-80">
+
+Con un umbral configurado, `vitest run --coverage` termina con código de error si el proyecto cae por debajo — mismo mecanismo que un test roto, corriendo como un paso más del workflow de CI. Para ver la tendencia entre Pull Requests, servicios como <img src="/logos/codecov.svg" class="h-4 inline align-middle"/> **Codecov** suben el reporte y lo comentan directo en el PR.
 
 </div>
 
-- Es objetivo y automatizable: un umbral (`--coverage.thresholds.lines=70` en Vitest, similar en Jest) puede hacer fallar el CI si el proyecto cae por debajo — mismo mecanismo que un test roto.
-- Empuja a testear las partes que en la práctica se suelen saltear (manejo de errores, casos límite) — no solo el camino feliz.
-- Como criterio de evaluación, conviene combinarlo con revisar la **calidad** de esos tests (¿verifican algo real?), no usarlo solo.
+<div class="mt-1 text-xs opacity-60">
+
+→ [github.com/codecov/codecov-action](https://github.com/codecov/codecov-action)
+
+</div>
 
 ---
 layout: center
 ---
 
-# Un vistazo a E2E
+# Testing end-to-end, en profundidad
 
 ---
 layout: default
 ---
 
-# Playwright y Cypress
+# Playwright vs. Cypress
+
+<div class="overflow-x-auto mt-3 text-sm">
+
+| | <img src="/logos/playwright.svg" class="h-4 inline align-middle mr-1"/>Playwright | <img src="/logos/cypress.svg" class="h-4 inline align-middle mr-1"/>Cypress |
+|---|---|---|
+| Navegadores | Chromium, Firefox, WebKit | Chrome/Firefox (WebKit experimental) |
+| Velocidad | Paralelización incluida, gratis | Serial por defecto, buen auto-wait |
+| Debugging | Sólido | *Time-travel debugger*, muy interactivo |
+
+</div>
+
+<div class="mt-2 text-sm opacity-80">
+
+Ninguno "gana" para siempre — hoy **Playwright** es el punto de partida más común salvo que el debugger interactivo de Cypress pese más para el equipo. Ninguno de los dos es nuevo en este repo: Playwright es, literalmente, lo que exporta a PDF cada apunte y cada deck de esta materia.
+
+</div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [playwright.dev](https://playwright.dev/) · [cypress.io](https://www.cypress.io/)
+
+</div>
+
+---
+layout: default
+---
+
+# ¿Dónde viven los tests E2E?
+
+```
+mi-proyecto/
+├── src/              # el código de la app
+├── tests/            # unitarios e integración, junto al código
+└── e2e/              # tests end-to-end, carpeta propia
+    └── cart.spec.ts
+```
+
+- Viven en el **mismo repo** que el resto del proyecto — no hace falta (ni es lo común) un repo aparte.
+- Corren contra la app ya **levantada** — local o contra un ambiente de staging, nunca mockeando nada del sistema.
+
+<div class="mt-1 text-xs opacity-80">
+
+Playwright y Cypress pueden levantar el servidor solos antes de correr los tests (`webServer` en la config) — el CI no necesita un paso manual aparte.
+
+</div>
+
+---
+layout: default
+---
+
+# Un test E2E real
 
 ```ts
-// Playwright: un flujo completo, en un navegador real
 test('agregar un producto al carrito', async ({ page }) => {
   await page.goto('http://localhost:5173/products')
   await page.getByText('Mouse').click()
@@ -342,7 +779,7 @@ test('agregar un producto al carrito', async ({ page }) => {
 
 <div class="mt-3 text-sm opacity-80">
 
-Ninguno de los dos es nuevo en este repo: **Playwright** es, literalmente, lo que exporta a PDF cada apunte y cada deck de esta materia — la misma herramienta, controlando un navegador real, ahora para simular a una persona usando la app en vez de imprimir una página.
+Mismo estilo de API que ya se usa para controlar un navegador real en los scripts de export de PDF de este repo — acá, en vez de imprimir una página, simula a una persona usando la app completa.
 
 </div>
 
@@ -352,30 +789,33 @@ layout: default
 
 # Cheat sheet
 
-<div class="grid grid-cols-2 gap-8 mt-2 text-xs">
+<div class="grid grid-cols-2 gap-6 mt-2 text-xs">
 <div>
 
-**Tipos y patrón**
+**Niveles, patrones y metodología**
 
 | Forma | Para qué |
 |---|---|
-| Unitario | Una pieza aislada |
-| Integración | Varias piezas juntas |
-| E2E | El sistema completo |
-| Arrange/Act/Assert | Esqueleto de cualquier test |
-| Mock/Stub/Spy | Reemplazar una dependencia |
+| Unit / Integ. / E2E | Aislado / piezas juntas / sistema completo |
+| Pirámide / Trophy | Cuánto esfuerzo por nivel |
+| AAA / GWT | Esqueleto de un test |
+| TDD | Red, green, refactor |
+| London / Chicago | Mockear todo vs. lo mínimo |
+| 5 test doubles | Dummy, Fake, Stub, Spy, Mock |
 
 </div>
 <div>
 
-**Coverage**
+**Automatizar y medir**
 
 | Forma | Para qué |
 |---|---|
-| `vitest run --coverage` | Reporte de cobertura (Vitest) |
-| `jest --coverage` | Reporte de cobertura (Jest) |
-| Line/branch/function coverage | Qué se mide, exactamente |
-| Piso razonable | 60-80%, no 100% a toda costa |
+| `npx husky init` | Pre-commit hooks |
+| `.lintstagedrc.json` | Correr tests solo en lo modificado |
+| Branch protection | Bloquear merge si el check falla |
+| `vitest run --coverage` | Reporte de cobertura |
+| `coverage.thresholds` | Umbral que falla el build |
+| `webServer` (Playwright/Cypress) | Levantar la app antes del E2E |
 
 </div>
 </div>
@@ -388,12 +828,17 @@ layout: default
 
 <div class="space-y-2 mt-2 text-sm">
 
+- [martinfowler.com — Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html) · [Test Double](https://martinfowler.com/bliki/TestDouble.html)
+- [Kent C. Dodds — Write tests. Not too many. Mostly integration](https://kentcdodds.com/blog/write-tests) — el artículo original de la Testing Trophy
+- [chuniversiteit.nl — Chicago and London schools of TDD](https://chuniversiteit.nl/programming/chicago-and-london-schools-of-tdd)
 - [vitest.dev/guide/coverage](https://vitest.dev/guide/coverage.html) — coverage con Vitest, configuración y umbrales
+- [vitest.dev/guide/testing-types](https://vitest.dev/guide/testing-types.html) — testear tipos con `expectTypeOf`
 - [jestjs.io/es-ES/docs/configuration#collectcoverage-boolean](https://jestjs.io/es-ES/docs/configuration#collectcoverage-boolean) — coverage con Jest
-- [testing-library.com](https://testing-library.com/) — React Testing Library
-- [npmjs.com/package/supertest](https://www.npmjs.com/package/supertest) · [npmjs.com/package/mongodb-memory-server](https://www.npmjs.com/package/mongodb-memory-server)
-- [playwright.dev](https://playwright.dev/) · [cypress.io](https://www.cypress.io/) — testing end-to-end
-- [martinfowler.com — Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html) — el artículo original de Martin Fowler sobre la pirámide de testing
+- [typicode.github.io/husky](https://typicode.github.io/husky/get-started.html) · [github.com/lint-staged/lint-staged](https://github.com/lint-staged/lint-staged)
+- [docs.github.com — Branch protection rules](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)
+- [github.com/codecov/codecov-action](https://github.com/codecov/codecov-action)
+- [testing-library.com](https://testing-library.com/) · [npmjs.com/package/supertest](https://www.npmjs.com/package/supertest) · [npmjs.com/package/mongodb-memory-server](https://www.npmjs.com/package/mongodb-memory-server)
+- [playwright.dev](https://playwright.dev/) · [cypress.io](https://www.cypress.io/)
 - [github.com/goldbergyoni/javascript-testing-best-practices](https://github.com/goldbergyoni/javascript-testing-best-practices) — buenas prácticas de testing en JS/TS, mantenido por la comunidad
 
 </div>
