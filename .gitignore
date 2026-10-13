@@ -21,6 +21,8 @@ node-express-docs/docs/.vitepress/dist
 node-express-docs/docs/.vitepress/cache
 mongodb-docs/docs/.vitepress/dist
 mongodb-docs/docs/.vitepress/cache
+testing-docs/docs/.vitepress/dist
+testing-docs/docs/.vitepress/cache
 # Generated from Markdown (npm run docs:pdf)
 lambda-calculus-docs/docs/public/pdfs/*.pdf
 clojure-docs/docs/public/pdfs/*.pdf
@@ -32,6 +34,7 @@ typescript-docs/docs/public/pdfs/*.pdf
 react-docs/docs/public/pdfs/*.pdf
 node-express-docs/docs/public/pdfs/*.pdf
 mongodb-docs/docs/public/pdfs/*.pdf
+testing-docs/docs/public/pdfs/*.pdf
 lambda-calculus/public/pdfs/originales/*.pdf
 lambda-calculus/pdfs/originales/*.pdf
 clojure/public/pdfs/originales/*.pdf
