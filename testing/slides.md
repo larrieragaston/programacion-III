@@ -15,9 +15,11 @@ mdc: true
 
 Programación III
 
-<div class="flex gap-8 justify-end mr-16 mt-6 items-center">
+<div class="flex gap-6 justify-end mr-16 mt-6 items-center">
 <img src="/logos/vitest.svg" alt="Vitest" class="h-14 opacity-90" />
 <img src="/logos/jest.svg" alt="Jest" class="h-14 opacity-90" />
+<img src="/logos/playwright.svg" alt="Playwright" class="h-12 opacity-90" />
+<img src="/logos/cypress.svg" alt="Cypress" class="h-12 opacity-90" />
 </div>
 
 <div class="abs-b mb-8 text-sm opacity-60">
@@ -441,19 +443,19 @@ Al hacer TDD aparece una pregunta: en el paso <strong>Red</strong>, ¿cuánto mo
 </div>
 
 ```ts
-// Chicago (clasicista): usa un Fake, mira el RESULTADO
+// Chicago (clasicista): usa el Fake de la slide anterior, mira el RESULTADO
 it('crea el pedido si hay stock', () => {
-  const ok = placeOrder('1', new FakeProductRepo(), realEmail, realLogger)
-  expect(ok).toBe(true)
+  const repo = new FakeProductRepo([{ id: '1', stock: 5 }])
+  expect(createOrder('1', repo)).toBe(true)
 })
 ```
 
 ```ts
-// London (mockista): mockea todo, mira las LLAMADAS
+// London (mockista): mockea el repo, mira las LLAMADAS
 it('crea el pedido si hay stock', () => {
-  const mockEmail = { send: vi.fn() }
-  placeOrder('1', stubRepo, mockEmail, dummyLogger)
-  expect(mockEmail.send).toHaveBeenCalled()
+  const repo = { findById: vi.fn().mockReturnValue({ id: '1', stock: 5 }) }
+  createOrder('1', repo)
+  expect(repo.findById).toHaveBeenCalledWith('1')
 })
 ```
 
