@@ -190,15 +190,15 @@ layout: default
 
 # La pirámide de testing
 
-<div class="flex flex-col items-center mt-6 text-sm">
+<div class="flex flex-col items-center mt-4 text-sm">
 <div class="w-32 py-2 bg-red-100 border-2 border-red-300 text-center rounded-t-lg">e2e</div>
 <div class="w-64 py-2 bg-yellow-100 border-2 border-yellow-300 text-center">Integración</div>
 <div class="w-96 py-2 bg-blue-100 border-2 border-blue-300 text-center rounded-b-lg">Unitarios</div>
 </div>
 
-<div class="mt-6 text-sm opacity-80">
+<div class="mt-3 text-sm opacity-80">
 
-Cuantos **más** tests, más abajo en la pirámide: los unitarios son rápidos, baratos y estables — conviene tener muchos. Los e2e son lentos y frágiles — se reservan para los flujos más críticos, unos pocos.
+Propuesta de **Mike Cohn** (2009, *Succeeding with Agile*), popularizada por Martin Fowler. Su enfoque es la **velocidad y el costo** del feedback: cuantos más tests rápidos y baratos (unitarios), más rápido se entera el equipo si algo se rompió — los e2e, lentos y frágiles, se reservan para los flujos más críticos, unos pocos.
 
 </div>
 
@@ -223,7 +223,7 @@ layout: default
 
 <div class="mt-3 text-xs opacity-80">
 
-Propuesta de Kent C. Dodds: **menos unitarios, más integración** — surge porque herramientas como React Testing Library y `supertest` volvieron los tests de integración rápidos y baratos, algo que no era cierto cuando se diseñó la pirámide. Ninguno de los dos modelos es una ley — son heurísticas para decidir dónde conviene poner el esfuerzo.
+Propuesta de **Kent C. Dodds** (2017): **menos unitarios, más integración**. Su enfoque no es la velocidad sino la **confianza por esfuerzo invertido** — un test de integración, aunque sea más lento que uno unitario, suele probar cómo las piezas trabajan juntas de verdad, en vez de piezas aisladas que nadie usa solas. Surge porque React Testing Library y `supertest` volvieron esos tests rápidos y baratos, algo que no era cierto cuando se diseñó la pirámide. Ninguno de los dos modelos es una ley — son heurísticas para decidir dónde conviene poner el esfuerzo.
 
 </div>
 
@@ -239,12 +239,23 @@ layout: default
 
 # Testing de regresión
 
-- Confirmar que un cambio **nuevo** no rompió algo que **ya andaba** — ese es, literalmente, el nombre: evitar que el software "regrese" a un estado con bugs ya resueltos.
-- No es un cuarto nivel que compita con unitario/integración/e2e — es el **rol** que cumple cualquiera de esos niveles cuando la suite se corre repetidamente, no una sola vez.
+<div class="text-sm opacity-90 mb-2">
 
-<div class="mt-4 text-sm italic opacity-80 text-center">
+Confirmar que un cambio **nuevo** no rompió algo que **ya andaba** — literalmente el nombre: evitar que el software "regrese" a un estado con bugs ya resueltos. No es un cuarto nivel: es el **rol** que cumple cualquier test cuando la suite se corre repetidamente, no una sola vez.
 
-Por eso importa correr la suite en cada cambio, no "una vez y listo" — el próximo bloque es, justamente, cómo automatizar eso.
+</div>
+
+```ts
+// Bug real: alguien llamó applyDiscount(1000, 10) pensando en
+// "10%" en vez de 0.1 — el precio dio -9000 en vez de rechazarlo
+test('rechaza una tasa fuera de 0-1 (regresión del bug #142)', () => {
+  expect(() => applyDiscount(1000, 10)).toThrow()
+})
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+Este test existe **porque ese bug pasó una vez** — si alguien saca la validación sin darse cuenta, el test lo frena antes de que vuelva a producción. Nombrarlo con la referencia al bug (o un comentario) es una práctica común, para que quede claro por qué existe.
 
 </div>
 
@@ -289,23 +300,39 @@ layout: default
 
 # Patrón AAA
 
+<div class="grid grid-cols-2 gap-3 text-xs">
+
 ```ts
-test('applyDiscount resta el porcentaje', () => {
-  // Arrange: preparar los datos
+test('applyDiscount resta %', () => {
+  // Arrange
   const price = 1000
   const rate = 0.1
-
-  // Act: ejecutar lo que se prueba
+  // Act
   const result = applyDiscount(price, rate)
-
-  // Assert: verificar el resultado
+  // Assert
   expect(result).toBe(900)
 })
 ```
 
-<div class="mt-3 text-sm opacity-80">
+```tsx
+// Mismo patrón, con RTL
+test('el botón suma uno', () => {
+  // Arrange
+  render(<Counter />)
+  // Act
+  fireEvent.click(
+    screen.getByRole('button', { name: 'Sumar' })
+  )
+  // Assert
+  expect(screen.getByText('1')).toBeInTheDocument()
+})
+```
 
-**Arrange / Act / Assert** — un mismo esqueleto para casi cualquier test: preparar el escenario, ejecutar una sola acción, verificar un resultado. Un test con varios "Act" seguidos suele ser, en realidad, dos tests.
+</div>
+
+<div class="mt-1 text-xs opacity-80">
+
+**Arrange / Act / Assert** — un mismo esqueleto para casi cualquier test, sea una función pura o un componente: preparar el escenario, ejecutar una sola acción, verificar un resultado. Un test con varios "Act" seguidos suele ser, en realidad, dos tests.
 
 </div>
 
@@ -338,39 +365,15 @@ Mismo esqueleto de tres partes que AAA (`Given`=Arrange, `When`=Act, `Then`=Asse
 layout: default
 ---
 
-# TDD: red, green, refactor
+# Test doubles: los 5 tipos
 
-```ts
-// 1. Red — el test falla: applyDiscount todavía no existe
-test('aplica 10% de descuento', () => {
-  expect(applyDiscount(1000, 0.1)).toBe(900)
-})
+<div class="text-xs opacity-80 mb-1">
 
-// 2. Green — lo mínimo para que pase
-export function applyDiscount(price: number, rate: number) {
-  return price - price * rate
-}
-
-// 3. Refactor — con la red de seguridad puesta, se valida el input
-export function applyDiscount(price: number, rate: number) {
-  if (rate < 0 || rate > 1) throw new Error('rate inválido')
-  return price - price * rate
-}
-```
-
-<div class="mt-1 text-xs opacity-80">
-
-Es una **metodología de desarrollo** (el test se escribe antes que el código), no un nivel de test ni una forma de estructurarlo. Cada vuelta cubre un comportamiento chico a propósito — si cuesta terminar una, el paso elegido fue muy grande, no que faltó tiempo.
+Técnica general — se usan en cualquier test, unitario o de integración, no son específicos de TDD. Reemplazan una dependencia real (una base, un timer, una API externa) por algo controlado:
 
 </div>
 
----
-layout: default
----
-
-# Test doubles: los 5 tipos
-
-<div class="grid grid-cols-3 gap-2 mt-3 text-xs">
+<div class="grid grid-cols-3 gap-2 mt-1 text-xs">
 <div class="p-2 rounded-lg bg-gray-100"><strong>Dummy</strong><br/>Se pasa porque hace falta el parámetro — a nadie le importa qué hace.</div>
 <div class="p-2 rounded-lg bg-gray-100"><strong>Fake</strong><br/>Una implementación liviana que <strong>sí funciona</strong> (un repo en memoria, no la base real).</div>
 <div class="p-2 rounded-lg bg-gray-100"><strong>Stub</strong><br/>Devuelve una respuesta fija, prearmada — sin lógica real.</div>
@@ -378,9 +381,9 @@ layout: default
 <div class="p-2 rounded-lg bg-gray-100"><strong>Mock</strong><br/>Se arma con expectativas — el test verifica que lo llamaron como esperaba.</div>
 </div>
 
-<div class="mt-3 text-sm italic opacity-80 text-center">
+<div class="mt-2 text-sm italic opacity-80 text-center">
 
-La distinción real: Stub/Fake verifican **estado** (mirás el resultado); Mock verifica **comportamiento** (mirás la interacción). Spy está en el medio — mira la interacción sobre algo que sigue siendo real.
+La distinción real: Stub/Fake verifican **estado** (mirás el resultado); Mock verifica **comportamiento** (mirás la interacción).
 
 </div>
 
@@ -394,7 +397,48 @@ La distinción real: Stub/Fake verifican **estado** (mirás el resultado); Mock 
 layout: default
 ---
 
-# Otra corriente: London vs. Chicago
+# TDD: red, green, refactor
+
+<div class="flex items-center justify-center gap-3 mt-2 text-sm">
+<div class="px-4 py-1.5 rounded-full bg-red-100 border-2 border-red-400 font-bold">🔴 Red</div>
+<div class="text-lg opacity-50">→</div>
+<div class="px-4 py-1.5 rounded-full bg-green-100 border-2 border-green-400 font-bold">🟢 Green</div>
+<div class="text-lg opacity-50">→</div>
+<div class="px-4 py-1.5 rounded-full bg-blue-100 border-2 border-blue-400 font-bold">🔵 Refactor</div>
+</div>
+<div class="flex flex-col items-center -mt-1">
+<div class="text-lg opacity-50">↺</div>
+<div class="text-xs opacity-60">vuelve a empezar, con el próximo comportamiento chico</div>
+</div>
+
+```ts
+// 1. Red — el test falla: applyDiscount todavía no existe
+test('aplica 10% de descuento', () => {
+  expect(applyDiscount(1000, 0.1)).toBe(900)
+})
+// 2. Green — lo mínimo para que pase
+export function applyDiscount(price: number, rate: number) {
+  return price - price * rate
+}
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+Es una **metodología de desarrollo** (el test va antes que el código), no un nivel de test. **Red** fuerza a pensar la interfaz antes de implementar; **Green** prioriza velocidad; **Refactor** limpia con la red de seguridad ya puesta. Si cuesta terminar una vuelta, el paso elegido fue muy grande, no que faltó tiempo.
+
+</div>
+
+---
+layout: default
+---
+
+# Dentro de TDD: London vs. Chicago
+
+<div class="text-xs opacity-80 mb-1">
+
+Al hacer TDD aparece una pregunta: en el paso <strong>Red</strong>, ¿cuánto mockeo? Dos escuelas responden distinto, usando los test doubles recién vistos:
+
+</div>
 
 ```ts
 // Chicago (clasicista): usa un Fake, mira el RESULTADO
@@ -415,7 +459,7 @@ it('crea el pedido si hay stock', () => {
 
 <div class="mt-1 text-xs opacity-80">
 
-Dos escuelas de **TDD**, no dos herramientas distintas. Chicago evita mocks — tests más resistentes a refactors internos. London mockea todas las dependencias para aislar una sola unidad — al costo de acoplarse a <em>cómo</em> está implementada, no solo a <em>qué</em> hace.
+Chicago evita mocks — tests más resistentes a refactors internos. London mockea todas las dependencias para aislar una sola unidad — al costo de acoplarse a <em>cómo</em> está implementada, no solo a <em>qué</em> hace. Ninguna es la "correcta".
 
 </div>
 
@@ -450,6 +494,9 @@ layout: default
 # Un test con varios casos
 
 ```ts
+// TypeScript, con Vitest (en Jest es igual, cambia el import)
+import { describe, it, expect } from 'vitest'
+
 describe('applyDiscount', () => {
   it.each([
     [1000, 0, 1000],
@@ -468,7 +515,7 @@ describe('applyDiscount', () => {
 
 <div class="mt-1 text-xs opacity-80">
 
-`it.each` evita copiar y pegar el mismo test cuatro veces — una tabla de casos, incluidos los límite (`0`, `1`), no solo el camino feliz. Un test real casi nunca es una sola aserción suelta.
+`it.each` evita copiar el mismo test cuatro veces — una tabla de casos, incluidos los límite (`0`, `1`), no solo el camino feliz.
 
 </div>
 
@@ -476,29 +523,33 @@ describe('applyDiscount', () => {
 layout: default
 ---
 
-# Testear los tipos <img src="/logos/typescript.svg" class="h-6 inline align-middle ml-1"/>
+# TypeScript en los tests <img src="/logos/typescript.svg" class="h-6 inline align-middle ml-1"/>
 
 ```ts
-import { expectTypeOf } from 'vitest'
-import { applyDiscount } from './pricing'
+import { vi } from 'vitest'
+import { sendEmail } from './email'
+import { registerUser } from './registerUser'
 
-expectTypeOf(applyDiscount).parameter(0).toBeNumber()
-expectTypeOf(applyDiscount).returns.toBeNumber()
-```
+vi.mock('./email')
 
-```bash
-npx vitest --typecheck
+test('manda un email de bienvenida', async () => {
+  const mockedSend = vi.mocked(sendEmail)
+
+  await registerUser('ada@mail.com')
+
+  expect(mockedSend).toHaveBeenCalledWith('ada@mail.com', 'Bienvenido')
+})
 ```
 
 <div class="mt-2 text-sm opacity-80">
 
-Esto no corre en runtime — TypeScript chequea estas relaciones al compilar. Detecta algo que un test normal no puede: que la firma de una función cambió sin querer, aunque el valor devuelto siga siendo "correcto". Por convención, estos tests viven en archivos `*.test-d.ts`.
+`vi.mocked(sendEmail)` no es solo cosmético: le devuelve a `mockedSend` el tipo real de `sendEmail`, con autocompletado y chequeo en los argumentos. Si `sendEmail` cambia de firma, TypeScript avisa en el test — no hace falta el `any` que se cuela al escribir un mock a mano.
 
 </div>
 
 <div class="mt-1 text-xs opacity-60">
 
-→ [vitest.dev/guide/testing-types](https://vitest.dev/guide/testing-types.html)
+→ [vitest.dev/api/vi#vi-mocked](https://vitest.dev/api/vi.html#vi-mocked)
 
 </div>
 
@@ -743,6 +794,33 @@ Ninguno "gana" para siempre — hoy **Playwright** es el punto de partida más c
 layout: default
 ---
 
+# Instalar y configurar Playwright
+
+```bash
+npm init playwright@latest
+```
+
+<div class="text-xs opacity-80 mb-1">
+
+Pregunta, interactivamente: TypeScript o JavaScript, en qué carpeta poner los tests (`tests` o `e2e`), si agregar un workflow de GitHub Actions, si instalar los navegadores ya mismo. Genera `playwright.config.ts` (navegadores a probar, `baseURL`, timeouts, reintentos) y una carpeta con un test de ejemplo.
+
+</div>
+
+```bash
+npx playwright test        # corre toda la suite, sin ventana (headless)
+npx playwright test --ui   # modo interactivo, para debuggear paso a paso
+```
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [playwright.dev/docs/intro](https://playwright.dev/docs/intro)
+
+</div>
+
+---
+layout: default
+---
+
 # ¿Dónde viven los tests E2E?
 
 ```
@@ -759,6 +837,26 @@ mi-proyecto/
 <div class="mt-1 text-xs opacity-80">
 
 Playwright y Cypress pueden levantar el servidor solos antes de correr los tests (`webServer` en la config) — el CI no necesita un paso manual aparte.
+
+</div>
+
+---
+layout: default
+---
+
+# Selectors y auto-wait
+
+```ts
+// Frágil: depende de una clase CSS que puede cambiar en cualquier refactor
+await page.click('.btn-primary')
+
+// Mejor: depende de lo que vería una persona, no de la implementación
+await page.getByRole('button', { name: 'Agregar' }).click()
+```
+
+<div class="mt-2 text-sm opacity-80">
+
+**Locators** como `getByRole`/`getByText`/`getByLabel` se prefieren sobre selectores CSS/XPath — son los mismos que ya usan React Testing Library. Además, Playwright espera solo a que el elemento exista **y** sea interactuable antes de actuar (*auto-wait*) — no hace falta un `sleep` manual, a diferencia de automatizaciones más viejas.
 
 </div>
 
@@ -787,6 +885,29 @@ Mismo estilo de API que ya se usa para controlar un navegador real en los script
 layout: default
 ---
 
+# Fragilidad y debugging
+
+- **Flakiness** — un test que a veces pasa y a veces no, casi siempre por timing (una animación, un dato no determinista). El auto-wait lo reduce mucho, no lo elimina del todo.
+- `retries` en la config reintenta un test fallido antes de marcarlo rojo — útil en CI, nunca para tapar un bug real.
+- Al fallar, Playwright guarda automáticamente screenshot, video y un *trace* navegable — mucho más fácil de debuggear que un log de texto.
+
+```ts
+export default defineConfig({
+  retries: process.env.CI ? 2 : 0,
+  use: { trace: 'on-first-retry', screenshot: 'only-on-failure' },
+})
+```
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [playwright.dev/docs/trace-viewer](https://playwright.dev/docs/trace-viewer)
+
+</div>
+
+---
+layout: default
+---
+
 # Cheat sheet
 
 <div class="grid grid-cols-2 gap-6 mt-2 text-xs">
@@ -797,16 +918,16 @@ layout: default
 | Forma | Para qué |
 |---|---|
 | Unit / Integ. / E2E | Aislado / piezas juntas / sistema completo |
-| Pirámide / Trophy | Cuánto esfuerzo por nivel |
+| Pirámide / Trophy | Velocidad y costo / confianza por esfuerzo |
 | AAA / GWT | Esqueleto de un test |
-| TDD | Red, green, refactor |
-| London / Chicago | Mockear todo vs. lo mínimo |
 | 5 test doubles | Dummy, Fake, Stub, Spy, Mock |
+| TDD | Red, green, refactor |
+| London / Chicago | Cuánto mockeás, dentro de TDD |
 
 </div>
 <div>
 
-**Automatizar y medir**
+**Automatizar, medir y E2E**
 
 | Forma | Para qué |
 |---|---|
@@ -815,7 +936,8 @@ layout: default
 | Branch protection | Bloquear merge si el check falla |
 | `vitest run --coverage` | Reporte de cobertura |
 | `coverage.thresholds` | Umbral que falla el build |
-| `webServer` (Playwright/Cypress) | Levantar la app antes del E2E |
+| `npm init playwright@latest` | Instalar y configurar E2E |
+| `getByRole`/`getByText` | Locators, en vez de CSS frágil |
 
 </div>
 </div>
@@ -832,13 +954,13 @@ layout: default
 - [Kent C. Dodds — Write tests. Not too many. Mostly integration](https://kentcdodds.com/blog/write-tests) — el artículo original de la Testing Trophy
 - [chuniversiteit.nl — Chicago and London schools of TDD](https://chuniversiteit.nl/programming/chicago-and-london-schools-of-tdd)
 - [vitest.dev/guide/coverage](https://vitest.dev/guide/coverage.html) — coverage con Vitest, configuración y umbrales
-- [vitest.dev/guide/testing-types](https://vitest.dev/guide/testing-types.html) — testear tipos con `expectTypeOf`
+- [vitest.dev/api/vi#vi-mocked](https://vitest.dev/api/vi.html#vi-mocked) — mocks tipados en TypeScript
 - [jestjs.io/es-ES/docs/configuration#collectcoverage-boolean](https://jestjs.io/es-ES/docs/configuration#collectcoverage-boolean) — coverage con Jest
 - [typicode.github.io/husky](https://typicode.github.io/husky/get-started.html) · [github.com/lint-staged/lint-staged](https://github.com/lint-staged/lint-staged)
 - [docs.github.com — Branch protection rules](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)
 - [github.com/codecov/codecov-action](https://github.com/codecov/codecov-action)
 - [testing-library.com](https://testing-library.com/) · [npmjs.com/package/supertest](https://www.npmjs.com/package/supertest) · [npmjs.com/package/mongodb-memory-server](https://www.npmjs.com/package/mongodb-memory-server)
-- [playwright.dev](https://playwright.dev/) · [cypress.io](https://www.cypress.io/)
+- [playwright.dev/docs/intro](https://playwright.dev/docs/intro) · [playwright.dev/docs/trace-viewer](https://playwright.dev/docs/trace-viewer) · [cypress.io](https://www.cypress.io/)
 - [github.com/goldbergyoni/javascript-testing-best-practices](https://github.com/goldbergyoni/javascript-testing-best-practices) — buenas prácticas de testing en JS/TS, mantenido por la comunidad
 
 </div>
