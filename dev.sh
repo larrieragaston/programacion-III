@@ -7,8 +7,8 @@ set -euo pipefail
 INDEX_PORT=3030
 EXPORT_ON_DEV="${DISABLE_EXPORTS_ON_DEV:-0}"
 
-MODULES=("introduction" "lambda-calculus" "fp-backus" "clojure" "git-github" "js-funcional" "js-contemporaneo" "asincronismo" "typescript" "react" "node-express")
-PORTS=("3031" "3032" "3033" "3034" "3035" "3036" "3037" "3038" "3039" "3040" "3041")
+MODULES=("introduction" "lambda-calculus" "fp-backus" "clojure" "git-github" "js-funcional" "js-contemporaneo" "asincronismo" "typescript" "react" "node-express" "mongodb")
+PORTS=("3031" "3032" "3033" "3034" "3035" "3036" "3037" "3038" "3039" "3040" "3041" "3042")
 
 function export_module_pdf() {
   local module="$1"
