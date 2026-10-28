@@ -798,6 +798,150 @@ Un índice compuesto cubre **varios** campos a la vez — útil cuando una consu
 </div>
 
 ---
+layout: center
+---
+
+# Migraciones de datos
+
+---
+layout: default
+---
+
+# ¿Por qué migrar datos?
+
+- Mongo es *schemaless* a nivel de base — Mongoose valida **al escribir**, pero no reescribe lo que ya está guardado. Cambiar un schema no cambia ni un solo documento existente.
+- Agregar un campo nuevo, renombrar uno, partir una colección en dos: todo eso deja documentos viejos en una forma y código nuevo que espera otra — hay que transformarlos.
+- Hacerlo a mano (un `updateMany` suelto en la consola) funciona una vez, en una base. No queda registro de qué se corrió, ni cuándo, ni se repite igual en staging y producción.
+
+<div class="mt-2 text-sm opacity-80">
+
+Ejemplo: si a `productSchema` se le agrega `category`, los productos que ya existían en la colección quedan **sin ese campo** hasta que algo los actualice — Mongoose no los toca retroactivamente.
+
+</div>
+
+---
+layout: default
+---
+
+# `migrate-mongo`: instalar y configurar
+
+```bash
+npm install migrate-mongo --save-dev
+npx migrate-mongo init
+```
+
+```js
+// migrate-mongo-config.js
+module.exports = {
+  mongodb: {
+    url: 'mongodb://localhost:27017',
+    databaseName: 'mi-app',
+  },
+  migrationsDir: 'migrations',
+  changelogCollectionName: 'changelog',
+}
+```
+
+<div class="mt-2 text-sm opacity-80">
+
+La herramienta dedicada a MongoDB más usada del ecosistema Node para esto — un CLI que versiona cambios de **datos** igual que Git versiona cambios de **código**: cada migración es un archivo, en orden, con fecha en el nombre.
+
+</div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [github.com/seppevs/migrate-mongo](https://github.com/seppevs/migrate-mongo)
+
+</div>
+
+---
+layout: default
+---
+
+# Crear una migración
+
+```bash
+npx migrate-mongo create add-category-field-to-products
+```
+
+```
+migrations/
+└── 20261027203532-add-category-field-to-products.js
+```
+
+```ts
+module.exports = {
+  async up(db, client) {
+    // TODO write your migration here.
+  },
+  async down(db, client) {
+    // TODO write the statements to rollback your migration (if possible)
+  }
+}
+```
+
+<div class="mt-2 text-sm opacity-80">
+
+Cada migración exporta dos funciones: `up` (aplicar el cambio) y `down` (deshacerlo). `db` llega como el driver oficial de Mongo, sin pasar por Mongoose — las migraciones trabajan un nivel más abajo, directo contra colecciones.
+
+</div>
+
+---
+layout: default
+---
+
+# Escribir la migración
+
+```ts
+// migrations/20261027203532-add-category-field-to-products.js
+module.exports = {
+  async up(db, client) {
+    await db.collection('products').updateMany(
+      { category: { $exists: false } },
+      { $set: { category: 'sin-categoria' } }
+    )
+  },
+
+  async down(db, client) {
+    await db.collection('products').updateMany(
+      {},
+      { $unset: { category: '' } }
+    )
+  }
+}
+```
+
+<div class="mt-1 text-xs opacity-80">
+
+El filtro `{ category: { $exists: false } }` evita tocar documentos que ya tienen el campo — corrible de nuevo sin romper nada si se vuelve a ejecutar. `down` revierte exactamente lo que `up` hizo.
+
+</div>
+
+---
+layout: default
+---
+
+# Correr y revisar migraciones
+
+```bash
+npx migrate-mongo up      # aplica las pendientes, en orden
+npx migrate-mongo status  # cuáles corrieron y cuáles no
+npx migrate-mongo down    # deshace la última aplicada
+```
+
+<div class="mt-2 text-sm opacity-80">
+
+`up` guarda en una colección (`changelog`) qué migración corrió y cuándo — por eso correrlo de nuevo no vuelve a aplicar lo ya aplicado. Es seguro ponerlo como un paso más del deploy, en vez de un comando manual que alguien tiene que acordarse de correr una sola vez.
+
+</div>
+
+<div class="mt-1 text-xs opacity-60">
+
+→ [github.com/seppevs/migrate-mongo#running-migrate-mongo-up](https://github.com/seppevs/migrate-mongo#running-migrate-mongo-up)
+
+</div>
+
+---
 layout: default
 ---
 
@@ -852,6 +996,7 @@ layout: default
 - [mongoosejs.com/docs/populate](https://mongoosejs.com/docs/populate.html) — referencias entre colecciones
 - [mongodb.com/docs/manual/indexes](https://www.mongodb.com/docs/manual/indexes/) — tipos de índices y cuándo usarlos
 - [mongodb.com/docs/manual/query-selectors](https://www.mongodb.com/docs/manual/reference/operator/query/) — todos los operadores de consulta (`$gte`, `$in`, `$or`...)
+- [github.com/seppevs/migrate-mongo](https://github.com/seppevs/migrate-mongo) — CLI de migraciones para MongoDB
 - [mongodb.com/atlas](https://www.mongodb.com/atlas) — base de datos gestionada, capa gratuita para proyectos chicos
 - [npmjs.com/package/mongodb-memory-server](https://www.npmjs.com/package/mongodb-memory-server) — Mongo en memoria para tests, sin instalar nada
 - [University de MongoDB](https://learn.mongodb.com/) — cursos gratuitos oficiales, con certificado
