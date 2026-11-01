@@ -91,7 +91,23 @@ jobs:
               EXPORT_FILE="${dir%/}-slides-export.pdf"
               EXPORT_PATH="pdfs/exports/${EXPORT_FILE}"
               rm -f pdfs/exports/*.pdf slides-export.pdf *-slides-export.pdf *-export.pdf
-              npm run export
+              # El export por slide usa Playwright con waitUntil: networkidle — en el
+              # runner de CI, de tanto en tanto una sola página individual se cuelga
+              # esperando ese estado y tira el timeout (visto en la práctica: export de
+              # React, slide 68, sin relación con el contenido de esa slide). Reintentar
+              # resuelve el caso típico sin tapar un fallo real y persistente.
+              for attempt in 1 2 3; do
+                if npm run export; then
+                  break
+                fi
+                echo "Export failed (attempt ${attempt}/3)"
+                if [ "$attempt" = "3" ]; then
+                  echo "::error::Export de ${dir%/} falló 3 veces, abortando."
+                  exit 1
+                fi
+                echo "Reintentando en 10s..."
+                sleep 10
+              done
               npm run build
               mkdir -p "$SITE_DIR/${dir%/}"
               cp -r dist/* "$SITE_DIR/${dir%/}/"
